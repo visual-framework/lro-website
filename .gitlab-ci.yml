@@ -110,5 +110,5 @@ deploy_prod_hx:
   variables:
     KUBE_CONFIG: $HX_EBIWD_STATIC_KUBE_CONFIG # Kube config secret for prod (hx)
     ENVIRONMENT: prod
-  needs: [build_prod_hx]
+  needs: [build_prod]
   <<: *deploy
