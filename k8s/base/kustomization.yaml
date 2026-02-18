@@ -1,0 +1,18 @@
+# This kustomization file defines the base configuration for deploying a Drupal application on Kubernetes. It includes deployments for Nginx and PHP-FPM, services to expose them, horizontal pod autoscalers to manage scaling based on CPU usage, a cron job for Drupal's scheduled tasks, and a post-deployment job to perform necessary updates and cache clearing.
+# This also adds a name prefix to all resources based on the project name (PROJECT_NAME_SANITISED) e.g project-name-php-fpm, and includes labels for better organization and selection of resources. The cron job is suspended during deployment to prevent it from running while the application is being updated.
+
+namePrefix: ${PROJECT_NAME_SANITISED}-
+
+labels:
+  - includeSelectors: true
+    includeTemplates: true
+    pairs:
+      project: ${PROJECT_NAME_SANITISED}
+
+resources:
+  - deployment-nginx.yaml
+  - service-nginx.yaml
+  - hpa-nginx.yaml # This HPA will scale the Nginx deployment based on CPU usage. You can adjust the target CPU utilization and the minimum/maximum number of replicas as needed.
+  
+generatorOptions:
+  disableNameSuffixHash: true

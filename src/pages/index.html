@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" media="all" href="./css/styles.css" />
+  <title>A VF Build boilerplate for the VF 2.0</title>
+</head>
+<body class="vf-body | vf-stack vf-stack--400">
+  <header class="vf-global-header | vf-search-client-side--no-index">
+    <a href="/" class="vf-logo | vf-logo--has-text">
+      <img class="vf-logo__image" src="https://stable.visual-framework.dev/assets/vf-logo/assets/logo.svg"
+        alt="Visual Framework" loading="eager">
+      <span class="vf-logo__text">Visual Framework</span>
+    </a>
+    <nav class="vf-navigation vf-navigation--global | vf-cluster">
+      <ul class="vf-navigation__list | vf-list | vf-cluster__inner">
+        <li class="vf-navigation__item">
+          <a href="https://stable.visual-framework.dev//search" class="vf-navigation__link">Search</a>
+        </li>
+        <li class="vf-navigation__item">
+          <a href="https://github.com/visual-framework/vf-core" class="vf-navigation__link">GitHub</a>
+        </li>
+        <li class="vf-navigation__item">
+          <a href="https://join.slack.com/t/visual-framework/shared_invite/enQtNDAxNzY0NDg4NTY0LWFhMjEwNGY3ZTk3NWYxNWVjOWQ1ZWE4YjViZmY1YjBkMDQxMTNlNjQ0N2ZiMTQ1ZTZiMGM4NjU5Y2E0MjM3ZGQ"
+            class="vf-navigation__link">Slack</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <div class="vf-grid">
+    <div>
+      <section class="vf-intro | embl-grid embl-grid--has-centered-content">
+        <div>
+          <!-- empty -->
+        </div>
+        <div>
+          <h1 class="vf-intro__heading vf-intro__heading--has-tag">Build boilerplate for VF 2.0 <a href=""
+              class="vf-badge vf-badge--primary vf-badge--phases">alpha</a></h1>
+          <p class="vf-lede">This is a bare-bones approach to build VF <a class="vf-link"
+              href="https://github.com/visual-framework/vf-core">Visual
+              Framework 2.0</a> components into CSS and JS.</p>
+          <p class="vf-intro__text">You can then deploy those assets where you need, or use the project as a starting
+            scaffold.</p>
+        </div>
+      </section>
+      <section class="embl-grid embl-grid--has-centered-content">
+        <div>
+          <!-- empty -->
+        </div>
+        <div class="vf-content">
+          <h2>Quickstart</h2>
+          <pre><code> 
+ yarn create @visual-framework/vf-project your-project-name vf-build-boilerplate
+          </code></pre>
+
+          <p>This will install a new <a
+              href="https://github.com/visual-framework/vf-build-boilerplate/"><code>vf-build-boilerplate</code></a> to
+            a folder named
+            <code>your-project-name</code>.</p>
+          <p>Then follow the onscreen prompts and links below to develop and configure.</p>
+          <h2>Longer install?</h2>
+          <p>The above too easy or have questions? <a
+              href="https://github.com/visual-framework/vf-build-boilerplate#readme">Read this guide</a>.</p>
+        </div>
+      </section>
+      <section class="vf-intro | embl-grid embl-grid--has-centered-content">
+        <div>
+          <!-- empty -->
+        </div>
+        <div class="vf-content">
+          <h2>What you get</h2>
+          <ul>
+            <li>access to the Visual Framework component system</li>
+            <li>compiled CSS and JS in a <code>./build</code></li>
+          </ul>
+          <h3>Component installation</h3>
+          <p>To add a component you can use npm/Yarn or install it manually.</p>
+          <p>In either case you'll need to re-run <code>gulp dev</code> to ensure the component is fully loaded.</p>
+          <ul>
+            <li>installation: <code>yarn add @visual-framework/vf-logo</code></li>
+            <li>updating: <code>yarn upgrade-interactive --latest</code></li>
+          </ul>
+          <h3>Manual installation for customisation</h3>
+          <ol>
+            <li>Download a pattern</li>
+            <li>Copy it to <code>./src/components/vf-component-name</code></li>
+          </ol>
+          <h3>Add your own local component</h3>
+          <p>You can add a custom VF-compatible component to <code>./src/components</code> and use it in
+            your site.</p>
+          <ul>
+            <li><code>gulp vf-component</code></li>
+          </ul>
+          <p>You'll find a <code>vf-sample</code> component there.</p>
+        </div>
+    </div>
+    </section>
+  </div>
+  </div>
+  <div class="vf-grid">
+    <div class="vf-body--text">
+      Getting started links:
+      <a href="https://github.com/visual-framework/vf-build-boilerplate" class="vf-link">View vf-build-boilerplate on
+        GitHub</a> |
+      <a href="https://github.com/visual-framework/vf-core" class="vf-link">VF-Core</a> |
+      <a href="https://join.slack.com/t/visual-framework/shared_invite/enQtNDAxNzY0NDg4NTY0LWFhMjEwNGY3ZTk3NWYxNWVjOWQ1ZWE4YjViZmY1YjBkMDQxMTNlNjQ0N2ZiMTQ1ZTZiMGM4NjU5Y2E0MjM3ZGQ"
+        class="vf-link">Chat for help</a>
+    </div>
+  </div>
+  <script src="./scripts/scripts.js"></script>
+</body>
+
+</html>
