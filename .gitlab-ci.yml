@@ -18,8 +18,7 @@ before_script:
   - export IMAGE_NGINX=$CI_REGISTRY/$CI_PROJECT_PATH:$DOCKER_PROJECT_NAME-nginx-$CI_COMMIT_SHORT_SHA-$CI_PIPELINE_ID     # Tag for NGINX image
 
 stages:
-  - build-dev
-  - build-prod
+  - build
   - deploy
 
 ####################################
