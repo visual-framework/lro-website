@@ -4,4 +4,4 @@ services:
     volumes:
       - ./build/:/usr/share/nginx/html/lro-guidelines:rw
     ports:
-      - "8082:8080"
+      - "8080:8080"
