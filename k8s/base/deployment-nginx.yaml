@@ -20,7 +20,7 @@ spec:
             - containerPort: 8080
           livenessProbe:
             httpGet:
-              path: /lro-guidelines/healthcheck
+              path: /healthcheck
               port: 8080
             initialDelaySeconds: 30
             periodSeconds: 30
@@ -28,7 +28,7 @@ spec:
             failureThreshold: 3
           readinessProbe:
             httpGet:
-              path: /lro-guidelines/healthcheck
+              path: /healthcheck
               port: 8080
             initialDelaySeconds: 10
             periodSeconds: 10
