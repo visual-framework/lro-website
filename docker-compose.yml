@@ -3,5 +3,6 @@ services:
     build: .
     volumes:
       - ./build/:/usr/share/nginx/html/lro-guidelines:rw
+      - ./docker-assets/nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "8080:8080"

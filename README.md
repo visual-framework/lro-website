@@ -18,7 +18,7 @@ Prerequisites
 ### Quickstart — Local (Docker Compose)
 1. Build and run:
   docker-compose up
-2. Open: http://localhost:8080
+2. Open: http://localhost:8080/lro-guidelines/
 3. Stop:
   docker-compose down
 
