@@ -16,8 +16,8 @@ RUN yarn install && \
     rm -rf node_modules
 # Serve it from Nginx
 FROM nginxinc/nginx-unprivileged:alpine3.23
-COPY docker-assets/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./docker-assets/nginx.conf /etc/nginx/conf.d/default.conf
 
 ### Copy compiled app output to Nginx
-COPY --from=builder /app/build/ /var/www/html/lro-guidelines
+COPY --from=builder /app/build /usr/share/nginx/html/lro-guidelines
 USER 101
