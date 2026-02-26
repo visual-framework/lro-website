@@ -19,5 +19,5 @@ FROM nginxinc/nginx-unprivileged:alpine3.23
 COPY ./docker-assets/nginx.conf /etc/nginx/conf.d/default.conf
 
 ### Copy compiled app output to Nginx
-COPY --from=builder /app/build /usr/share/nginx/html/lro-guidelines
+COPY --from=builder /app/build /usr/share/nginx/html/web-optimisation-framework
 USER 101

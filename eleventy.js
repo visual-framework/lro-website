@@ -92,6 +92,6 @@ module.exports = function (config) {
     htmlTemplateEngine: ["njk", "md"],
     markdownTemplateEngine: "njk",
     passthroughFileCopy: true,
-    pathPrefix: "/lro-guidelines" // if your site is deployed to a sub-url, otherwise comment out
+    pathPrefix: "/web-optimisation-framework" // if your site is deployed to a sub-url, otherwise comment out
   };
 };
