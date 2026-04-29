@@ -1,0 +1,42 @@
+---
+layout: layouts/base.njk
+isArticlePage: true
+---
+
+<section>
+  <div class="vf-stack vf-search-client-side--no-index">
+    <h1 class="vf-intro__heading">{{ title }}</h1>
+    {% if subtitle %}
+    <p class="vf-lede">{{ subtitle }}</p>
+    {% endif %}
+  </div>
+</section>
+
+  <div class="vf-content | vf-stack">
+    {{ content | safe }}
+  </div>
+  <div class="vf-content">
+      <hr class="vf-divider">
+      <div id="feedback-response-banner" class="vf-banner vf-banner--alert vf-u-display-none">
+        <div class="vf-banner__content">
+          <p class="vf-banner__text"></p>
+          <button role="button" aria-label="close notification banner" class="vf-button vf-button--icon vf-button--dismiss | vf-banner__button">
+            <svg role="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <title>dismiss banner</title>
+              <path d="M14.3,12.179a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1.5,0,0,0,21.439.442L12.177,9.7a.25.25,0,0,1-.354,0L2.561.442A1.5,1.5,0,0,0,.439,2.563L9.7,11.825a.25.25,0,0,1,0,.354L.439,21.442a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,0,0,2.122-2.121Z"></path>
+            </svg>
+          </button>
+        </div>
+        <br>
+      </div>
+   
+      <h2 class="vf-u-type__text-heading--3">How can we improve this article?</h2>
+      <form id="article-feedback-form" class="article-feedback-form" action="" method="POST">
+        <div class="vf-form__item">
+          <label for="article-feedback" class="vf-form__label">Comments</label>
+          <textarea class="vf-form__textarea" id="article-feedback" name="feedback" rows="2"></textarea>
+        </div>
+        <p class="article-feedback-validation-msg"></p>
+        <input class="vf-button vf-button--primary" type="submit" id="feedback_submit_btn" value="Submit feedback">
+      </form>
+    </div>

@@ -1,0 +1,234 @@
+---
+title: LRO Beyond Web Services - Look ahead
+layout: layouts/topic.njk
+templateEngineOverride: njk
+---
+
+<article class="vf-content">
+
+	<h2 id="contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400">Contents</h2>
+
+	<nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+		<ul class="vf-list">
+			<li class="vf-list__item"><a href="#introduction-and-scope" class="vf-link">Introduction and scope</a></li>
+			<li class="vf-list__item"><a href="#connectivity-and-reliability" class="vf-link">Connectivity and Reliability</a></li>
+			<li class="vf-list__item"><a href="#data-scale-and-transfer-burden" class="vf-link">Data Scale and Transfer Burden</a></li>
+			<li class="vf-list__item"><a href="#compute-and-local-capacity" class="vf-link">Compute and Local Capacity</a></li>
+			<li class="vf-list__item"><a href="#storage-and-infrastructure-constraints" class="vf-link">Storage and Infrastructure Constraints</a></li>
+			<li class="vf-list__item"><a href="#device-and-software-capability" class="vf-link">Device and Software Capability</a></li>
+			<li class="vf-list__item"><a href="#participation-barriers" class="vf-link">Participation Barriers (Submission and Contribution)</a></li>
+			<li class="vf-list__item"><a href="#skills-and-institutional-support" class="vf-link">Skills and Institutional Support</a></li>
+			<li class="vf-list__item"><a href="#economic-and-systemic-constraints" class="vf-link">Economic and Systemic Constraints</a></li>
+			<li class="vf-list__item"><a href="#summary" class="vf-link">Summary</a></li>
+		</ul>
+	</nav>
+
+	<h2 id="introduction-and-scope" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Introduction and scope</h2>
+	<p>
+		Low-resource optimisation (LRO) is often framed primarily in the context of web delivery: focusing on performance,
+		accessibility, and usability under constrained network and device conditions. While this perspective is essential,
+		it captures only one part of a broader challenge.
+	</p>
+	<p>
+		EMBL-EBI <strong>operates as part of a global biodata infrastructure</strong> rather than as a provider of standalone websites.
+		Users engage with its services through a combination of interfaces and workflows, including interactive web tools,
+		bulk data access, programmatic APIs, analysis pipelines, and data submission systems. As a result, limitations
+		affecting users frequently extend beyond the web layer.
+	</p>
+	<p>
+		This document provides a high-level definition and scope of low-resource settings across this wider service
+		landscape. It complements web-focused optimisation guidance by articulating the broader set of constraints that
+		shape how users access, analyse, submit, and reuse data.
+	</p>
+	<p>
+		Within this context, a low-resource setting is understood as an environment in which one or more constraints
+		significantly limit a user's ability to interact effectively with biodata services (for example: genomics)
+		across the full lifecycle: from discovery and access to computation, submission, and reuse.
+	</p>
+	<p>
+		These <strong>constraints are inherently multi-dimensional</strong>, spanning infrastructure, data scale, compute capacity,
+		storage, device capability, and institutional support. The sections that follow outline these dimensions and
+		their implications for service design and delivery beyond the web interface.
+	</p>
+
+	<h2 id="connectivity-and-reliability" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Connectivity and Reliability</h2>
+	<p>
+		Connectivity constraints extend beyond bandwidth to include stability, latency, and cost.
+	</p>
+	<p>
+		Workflows supported by EMBL-EBI are often sensitive to unreliable networks, particularly where they involve
+		large data transfers, long-running processes, or stateful interactions. For example, in genomics, large
+		transfers (for example, FASTA, BAM, VCF) may fail, job submissions can time out, and APIs become unreliable
+		under intermittent connectivity. Many services assume persistent connections that are not always available.
+	</p>
+	<p>
+		In practice, users may have nominal internet access but still experience low-resource conditions due to:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Intermittent or unstable connectivity (high latency, packet loss)</li>
+		<li class="vf-list__item">Unreliable access to electricity</li>
+		<li class="vf-list__item">Institutional constraints, such as data caps or costly bandwidth</li>
+	</ul>
+	<p>
+		These factors directly impact the reliability of long-running or stateful operations.
+	</p>
+
+	<h2 id="data-scale-and-transfer-burden" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Data Scale and Transfer Burden</h2>
+	<p>
+		Biodata resources are data-intensive, often involving gigabytes to terabytes per project, including reference
+		genomes, variation datasets, and annotation resources.
+	</p>
+	<p>
+		Users in constrained environments may struggle to:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Download large datasets</li>
+		<li class="vf-list__item">Maintain stable, long-lived connections</li>
+		<li class="vf-list__item">Upload data for submission workflows</li>
+	</ul>
+	<p>
+		Even where web interfaces are optimised, the data remains large. This may lead to:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Reliance on partial or pre-filtered datasets</li>
+		<li class="vf-list__item">Inability to maintain local mirrors</li>
+		<li class="vf-list__item">Reduced reproducibility of analyses</li>
+	</ul>
+	<p>
+		This highlights the tension between open data availability and practical usability.
+	</p>
+
+	<h2 id="compute-and-local-capacity" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Compute and Local Capacity</h2>
+	<p>
+		Effective use of biodata resources (for example, genomics) typically requires downstream compute capability
+		beyond simple browsing.
+	</p>
+	<p>
+		Common use cases include running analysis pipelines, indexing datasets, or hosting local reference data.
+		In low-resource environments, users may have:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">No access to HPC or cloud computing</li>
+		<li class="vf-list__item">Only consumer-grade hardware</li>
+		<li class="vf-list__item">Limited CPU, memory, or GPU capability</li>
+		<li class="vf-list__item">Restricted ability to run containerised workflows</li>
+	</ul>
+	<p>
+		In many cases, the limiting factor is not access to the service but the ability to use the data meaningfully.
+	</p>
+
+	<h2 id="storage-and-infrastructure-constraints" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Storage and Infrastructure Constraints</h2>
+	<p>
+		Biodata resource workflows depend on significant storage for raw data, intermediate files, and outputs.
+	</p>
+	<p>
+		Users may face:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Limited local or institutional storage</li>
+		<li class="vf-list__item">Shared infrastructure with restricted quotas</li>
+		<li class="vf-list__item">Lack of reliable backup</li>
+		<li class="vf-list__item">Filesystem performance limitations</li>
+	</ul>
+	<p>
+		This constrains the ability to store reference datasets, cache results, or maintain reproducible workflows,
+		and challenges the assumption that users can simply "download and run locally".
+	</p>
+
+	<h2 id="device-and-software-capability" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Device and Software Capability</h2>
+	<p>
+		Advanced biodata (for example, genomics) interfaces, particularly genome browsers and visualisation tools,
+		can be resource-intensive.
+	</p>
+	<p>
+		Users may rely on:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Low-spec or outdated institutional machines</li>
+		<li class="vf-list__item">Shared lab environments with restricted permissions</li>
+		<li class="vf-list__item">Tablets or mobile devices in the field or in teaching contexts</li>
+	</ul>
+	<p>
+		These constraints can limit usability, especially for interactive or multi-track visualisation,
+		and may restrict access to key functionality.
+	</p>
+
+	<h2 id="participation-barriers" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Participation Barriers (Submission and Contribution)</h2>
+	<p>
+		Low-resource constraints affect not only data access but also participation in data sharing.
+	</p>
+	<p>
+		Submitting data to archives (for example, ENA, EVA) typically requires:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Reliable upstream bandwidth</li>
+		<li class="vf-list__item">Preparation of complex metadata</li>
+		<li class="vf-list__item">Validation steps requiring computation and iteration</li>
+	</ul>
+	<p>
+		Failures are costly in terms of time and effort, and may discourage participation. Geographic distance from
+		infrastructure can also introduce higher latency and reduced reliability.
+	</p>
+	<p>
+		These factors can limit equitable participation in global biodata initiatives.
+	</p>
+
+	<h2 id="skills-and-institutional-support" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Skills and Institutional Support</h2>
+	<p>
+		Technical infrastructure alone is insufficient without the skills and support needed to use it effectively.
+	</p>
+	<p>
+		Barriers may include:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Limited access to bioinformatics training</li>
+		<li class="vf-list__item">Lack of institutional IT or research support</li>
+		<li class="vf-list__item">Difficulty installing or maintaining tools</li>
+		<li class="vf-list__item">Language diversity and limited localisation</li>
+	</ul>
+	<p>
+		Low-resource settings, therefore, reflect not only technical constraints but also limitations in capacity and support.
+	</p>
+
+	<h2 id="economic-and-systemic-constraints" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Economic and Systemic Constraints</h2>
+	<p>
+		Many of the above challenges are underpinned by broader economic and systemic factors, including:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Limited funding for infrastructure and equipment</li>
+		<li class="vf-list__item">High relative cost of connectivity and compute</li>
+		<li class="vf-list__item">Procurement constraints</li>
+		<li class="vf-list__item">Geopolitical factors affecting access to services or technologies</li>
+	</ul>
+	<p>
+		These influence both individual users and institutions over time.
+	</p>
+
+	<h2 id="summary" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Summary</h2>
+	<p>
+		Low-resource settings in biodata (for example, genomics) are not defined by a single limitation, but by the
+		interaction of multiple constraints across the service lifecycle. Connectivity, data scale, compute capacity,
+		storage, device capability, and institutional support all play a role in determining whether a user can
+		effectively access and use EMBL-EBI services.
+	</p>
+	<p>
+		This broader perspective highlights that, in many cases, barriers arise not at the point of web access,
+		but in downstream activities such as data transfer, local analysis, or data submission.
+		As such, <strong>optimising web interfaces alone is necessary but not sufficient</strong> to address the full spectrum of challenges.
+	</p>
+	<p>
+		Understanding <strong>low-resource settings as a multi-dimensional problem</strong> enables a more realistic interpretation
+		of user constraints and helps identify where interventions may have the greatest impact across the ecosystem.
+	</p>
+	<p>
+		At the same time, not all aspects of low-resource environments are directly addressable through service design.
+		This document therefore serves primarily as a framing layer: it defines the broader context within which low-resource
+		optimisation operates and informs where targeted, practical improvements including but not limited to web optimisation
+		can be prioritised.
+	</p>
+	<p>
+		In this way, it complements existing guidance focused on web services, while providing a foundation for future work
+		that considers low-resource optimisation across the full biodata service landscape.
+	</p>
+
+</article>

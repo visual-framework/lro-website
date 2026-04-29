@@ -1,0 +1,462 @@
+---
+title: Rendering Strategies
+layout: layouts/topic.njk
+templateEngineOverride: njk
+---
+
+<article class="vf-content">
+
+  {# ── Table of contents ── #}
+  <nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+    <ul class="vf-list">
+      <li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+      <li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO?</a></li>
+      <li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation guidance - Core Rendering Strategies</a></li>
+      <li class="vf-list__item"><a href="#summary" class="vf-link">Summary</a></li>
+      <li class="vf-list__item"><a href="#dos-dont" class="vf-link">Do's / Don't</a></li>
+      <li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+      <li class="vf-list__item"><a href="#metrics" class="vf-link">Metrics &amp; tools</a></li>
+      <li class="vf-list__item"><a href="#further-reading" class="vf-link">Further reading</a></li>
+    </ul>
+  </nav>
+
+  {# ── Overview ── #}
+  <h2 id="overview">Overview</h2>
+  <p>
+    A rendering strategy defines <strong>where and when a web page is generated</strong>: in the browser, on the server, or ahead of time as static files.
+    This choice directly determines:
+  </p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">How fast users see useful content</li>
+    <li class="vf-list__item">How much data they consume</li>
+    <li class="vf-list__item">How much CPU and memory their device must use</li>
+    <li class="vf-list__item">Whether the page works at all on slow or unstable networks</li>
+  </ul>
+  <p>For LRO, the goal is simple:</p>
+  <blockquote class="vf-blockquote">
+    <p><strong>Show meaningful content as early as possible, using the least data and processing.</strong></p>
+  </blockquote>
+
+
+  {# ── Why this matters for LRO? ── #}
+  <h2 id="why-lro">Why this matters for LRO?</h2>
+
+  <h4>Impact on Low-Resource Users</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Large JavaScript bundles are slow on 2G networks</li>
+    <li class="vf-list__item">Hydration (when JavaScript activates static HTML into an interactive page) consumes CPU and memory</li>
+    <li class="vf-list__item">Weak devices struggle with JS-heavy pages</li>
+    <li class="vf-list__item">Blank screens feel like broken experiences</li>
+  </ul>
+  <p>Rendering choices determine whether users can access content at all.</p>
+
+  <h4>LRO Design Principles</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Show text first</li>
+    <li class="vf-list__item">Avoid blank screens</li>
+    <li class="vf-list__item">Treat JavaScript as optional</li>
+    <li class="vf-list__item">Ensure core content works without JS</li>
+    <li class="vf-list__item">Design for low-end devices by default</li>
+  </ul>
+
+  <h4>LRO-Friendly Pattern</h4>
+  <p>
+    <strong>Load in layers:</strong> HTML → CSS → images → advanced features (if conditions allow)<br/>
+    <strong>Avoid:</strong> Loading large JavaScript before showing content
+  </p>
+
+  <h4>Example (HTML-first)</h4>
+  <pre class="vf-code-example__pre"><code>&lt;!-- Load HTML content first, then call relevant javascript files --&gt;
+&lt;main&gt;
+  &lt;h1&gt;Protein Summary&lt;/h1&gt;
+  &lt;p&gt;This protein is involved in DNA repair...&lt;/p&gt;
+&lt;/main&gt;
+&lt;script defer src="enhancements.js"&gt;&lt;/script&gt;</code></pre>
+
+
+  {# ── Implementation guidance ── #}
+  <h2 id="implementation">Implementation guidance - Core Rendering Strategies</h2>
+
+  {# ── 1. CSR ── #}
+  <h3>1. Client-Side Rendering (CSR)</h3>
+  <p>
+    Client-side rendering (CSR) means rendering pages directly in the browser, typically using JavaScript to generate and update UI dynamically. All logic, data fetching, templating, and routing are handled on the client instead of on the server.
+  </p>
+  <p>
+    Client-side rendering increases data transfer and processing on the user's device, making it harder to maintain fast performance, especially in resource-constrained environments. As applications grow, JavaScript payloads tend to increase, often due to additional libraries, polyfills, and third-party code. These must usually be processed before content renders, further impacting performance.
+  </p>
+
+  <h4>How it works</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Minimal HTML shell with a root element</li>
+    <li class="vf-list__item">Browser downloads and executes JavaScript bundle</li>
+    <li class="vf-list__item">JavaScript renders all content dynamically</li>
+  </ul>
+  <pre class="vf-code-example__pre"><code>&lt;!-- The HTML below renders the root element where the application will be mounted --&gt;
+&lt;div id="root"&gt;&lt;/div&gt;
+&lt;script src="/bundle.js"&gt;&lt;/script&gt;</code></pre>
+
+  <h4>User Impact</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Slow first load (must download + execute JS before content appears)</li>
+    <li class="vf-list__item">Blank screen or loading state until rendering completes</li>
+  </ul>
+
+  <h4>Pros</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Rich interactivity</li>
+    <li class="vf-list__item">Simpler backend (serves static assets)</li>
+  </ul>
+
+  <h4>Cons (LRO Impact)</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Large JavaScript bundles (high data cost on 2G/3G)</li>
+    <li class="vf-list__item">High CPU and battery usage</li>
+    <li class="vf-list__item">Slow first meaningful content</li>
+    <li class="vf-list__item">Fragile on low-end devices and poor networks</li>
+    <li class="vf-list__item">High data transfer and processing overhead</li>
+  </ul>
+
+  <h4>Failure Mode</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">If JavaScript fails → blank page</li>
+  </ul>
+
+  <h4>Use When</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Authenticated dashboards</li>
+    <li class="vf-list__item">Internal tools</li>
+    <li class="vf-list__item">Controlled / known hardware environments</li>
+  </ul>
+
+  <h4>LRO Guidance</h4>
+  <p>Avoid CSR as the default for public or informational pages, especially in low-resource environments.</p>
+
+
+  {# ── 2. SSR ── #}
+  <h3>2. Server-Side Rendering (SSR)</h3>
+  <p>
+    Server-side rendering (SSR) generates full HTML on the server and delivers ready-to-render content to the browser. By handling data fetching and templating server-side, it reduces client-side processing and JavaScript overhead, enabling faster content display and improved responsiveness.
+  </p>
+
+  <h4>How it works</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">The server generates a fully rendered HTML page for each request.</li>
+    <li class="vf-list__item">The browser immediately displays the content without waiting for JavaScript.</li>
+    <li class="vf-list__item">JavaScript loads afterward to enable interactivity through hydration.</li>
+  </ul>
+  <pre class="vf-code-example__pre"><code>&lt;!-- Root container where server-rendered HTML is injected --&gt;
+&lt;div id="root"&gt;
+
+  &lt;!-- Pre-rendered content sent from the server --&gt;
+  &lt;h2&gt;Stay Updated&lt;/h2&gt;
+
+  &lt;!-- Form is already usable before JavaScript loads --&gt;
+  &lt;form&gt;
+    &lt;!-- Email input field --&gt;
+    &lt;input type="email" placeholder="Enter your email" /&gt;
+
+    &lt;!-- Submit button --&gt;
+    &lt;button&gt;Subscribe&lt;/button&gt;
+  &lt;/form&gt;
+
+&lt;/div&gt;
+
+&lt;!-- JavaScript bundle loads after initial render --&gt;
+&lt;!-- Enables interactivity (hydration) such as form handling, validation, etc. --&gt;
+&lt;script src="/bundle.js"&gt;&lt;/script&gt;</code></pre>
+
+  <h4>User Impact</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Content appears quickly on first load</li>
+    <li class="vf-list__item">Interaction is delayed until JavaScript loads and hydrates</li>
+  </ul>
+
+  <h4>Pros</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Fast initial content rendering</li>
+    <li class="vf-list__item">Works without JavaScript (basic functionality)</li>
+    <li class="vf-list__item">Lower CPU usage on client devices</li>
+    <li class="vf-list__item">More resilient than CSR</li>
+    <li class="vf-list__item">Better for accessibility and search (SEO-friendly)</li>
+    <li class="vf-list__item">Separates content vs interactivity (critical concept)</li>
+  </ul>
+
+  <h4>Cons</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Increased server load</li>
+    <li class="vf-list__item">Still requires hydration JS</li>
+    <li class="vf-list__item">Can fail under intermittent connectivity</li>
+  </ul>
+
+  <h4>Failure mode</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">If JavaScript fails → content remains usable (non-interactive)</li>
+  </ul>
+
+  <h4>Use when</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Content-heavy pages</li>
+    <li class="vf-list__item">Search results</li>
+    <li class="vf-list__item">Public datasets / records</li>
+    <li class="vf-list__item">Scientific summaries</li>
+  </ul>
+
+  <h4>LRO guidance</h4>
+  <p>Acceptable, but minimise hydration costs and use caching aggressively.</p>
+
+
+  {# ── 3. SSG ── #}
+  <h3>3. Static Site Generation (SSG)</h3>
+  <p>
+    Static Site Generation (SSG) pre-builds pages into static HTML during a build process using data from local files or external sources (e.g. CMS). These files are served directly to users without runtime processing.
+  </p>
+
+  <h4>How it works</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Pages are generated at build time (not per request)</li>
+    <li class="vf-list__item">Output is static HTML, CSS, and minimal JavaScript</li>
+    <li class="vf-list__item">Delivered via CDN with no server-side rendering</li>
+  </ul>
+
+  <h4>User Impact</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Instant content load</li>
+    <li class="vf-list__item">Works reliably on slow or unstable networks</li>
+    <li class="vf-list__item">Minimal device processing required</li>
+  </ul>
+
+  <h4>Why it's ideal for LRO</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Fastest possible load times</li>
+    <li class="vf-list__item">Very small payload</li>
+    <li class="vf-list__item">Works on very slow networks</li>
+    <li class="vf-list__item">Highly cacheable</li>
+    <li class="vf-list__item">No runtime rendering cost</li>
+  </ul>
+
+  <h4>Pros</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Speed: Since the content is pre-built, page load times are extremely fast.</li>
+    <li class="vf-list__item">Minimal data transfer</li>
+    <li class="vf-list__item">Lowest CPU usage</li>
+    <li class="vf-list__item">Very reliable</li>
+    <li class="vf-list__item">Easily deployable via CDN</li>
+    <li class="vf-list__item">Best for content that changes infrequently</li>
+  </ul>
+
+  <h4>Cons</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Not suitable for highly dynamic data</li>
+    <li class="vf-list__item">Requires rebuilds for updates</li>
+    <li class="vf-list__item">Limited Flexibility: Content updates require rebuilding the entire site.</li>
+  </ul>
+
+  <h4>Failure mode</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Highly robust; content remains available even if backend systems are unavailable.</li>
+  </ul>
+
+  <h4>Use when</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Documentation</li>
+    <li class="vf-list__item">Content driven services</li>
+    <li class="vf-list__item">Help pages and reference datasets</li>
+  </ul>
+
+  <h4>LRO guidance</h4>
+  <p>Recommended baseline approach for LRO. Use SSG wherever possible, and layer interactivity progressively only where needed.</p>
+
+
+  {# ── 4. ISR ── #}
+  <h3>4. Incremental Static Regeneration (ISR)</h3>
+  <p>
+    ISR extends Static Site Generation (SSG) by allowing pages to be updated in the background after deployment, enabling static performance with fresher data.
+  </p>
+
+  <h4>How it works</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Combines static performance with periodic updates</li>
+    <li class="vf-list__item">Pages are regenerated in the background while serving existing content</li>
+    <li class="vf-list__item">Suitable for content that changes occasionally</li>
+  </ul>
+
+  <h4>Pros</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Static performance with updated data</li>
+    <li class="vf-list__item">Low JavaScript overhead</li>
+    <li class="vf-list__item">Strong caching</li>
+  </ul>
+
+  <h4>Cons</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">More architectural complexity</li>
+    <li class="vf-list__item">Edge cases during regeneration</li>
+  </ul>
+
+  <h4>LRO guidance</h4>
+  <p>Well-suited for content that changes occasionally, while retaining the benefits of static delivery.</p>
+
+
+  {# ── 5. Progressive Enhancement ── #}
+  <h3>5. Progressive Enhancement</h3>
+  <p>Building frontends that work without JavaScript, then enhancing with interactive features.</p>
+
+
+  {# ── Summary ── #}
+  <h2 id="summary">Summary</h2>
+
+  <h3>Key Trade-offs</h3>
+  <table class="vf-table vf-table--striped">
+    <thead class="vf-table__header">
+      <tr class="vf-table__row">
+        <th class="vf-table__heading" scope="col">Strategy</th>
+        <th class="vf-table__heading" scope="col">Data Usage</th>
+        <th class="vf-table__heading" scope="col">CPU Usage</th>
+        <th class="vf-table__heading" scope="col">First Meaningful Content</th>
+        <th class="vf-table__heading" scope="col">Reliability</th>
+        <th class="vf-table__heading" scope="col">LRO Suitability</th>
+      </tr>
+    </thead>
+    <tbody class="vf-table__body">
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">CSR</td>
+        <td class="vf-table__cell">High</td>
+        <td class="vf-table__cell">High</td>
+        <td class="vf-table__cell">Slow (blank screen)</td>
+        <td class="vf-table__cell">Poor</td>
+        <td class="vf-table__cell">🔴</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">SSR</td>
+        <td class="vf-table__cell">Medium</td>
+        <td class="vf-table__cell">Low–Medium</td>
+        <td class="vf-table__cell">Medium</td>
+        <td class="vf-table__cell">Medium</td>
+        <td class="vf-table__cell">🟡</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">SSG / ISR</td>
+        <td class="vf-table__cell">Low</td>
+        <td class="vf-table__cell">Very Low</td>
+        <td class="vf-table__cell">Fast</td>
+        <td class="vf-table__cell">High</td>
+        <td class="vf-table__cell">🟢</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Progressive</td>
+        <td class="vf-table__cell">Very Low</td>
+        <td class="vf-table__cell">Very Low</td>
+        <td class="vf-table__cell">Fastest</td>
+        <td class="vf-table__cell">High</td>
+        <td class="vf-table__cell">🟢</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Decision Guidance</h3>
+  <p>Ask these questions:</p>
+  <ol class="vf-list vf-list--ordered">
+    <li class="vf-list__item">Is this page mostly informational? → SSG / ISR</li>
+    <li class="vf-list__item">Need for fast content on slow networks? → SSG or SSR</li>
+    <li class="vf-list__item">Low-end devices? → Avoid CSR</li>
+    <li class="vf-list__item">Does failure matter (offline, unstable scenarios)? → Static + cached HTML</li>
+  </ol>
+
+  <h3>Clear LRO Recommendations (Policy Style)</h3>
+
+  <h4>Best for LRO</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Static Site Generation (SSG)</li>
+    <li class="vf-list__item">Incremental Static Regeneration (ISR)</li>
+    <li class="vf-list__item">Progressive rendering</li>
+  </ul>
+
+  <h4>Acceptable</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">SSR with minimal hydration</li>
+    <li class="vf-list__item">Hybrid with strict route rules</li>
+  </ul>
+
+  <h4>Avoid</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">CSR as default</li>
+    <li class="vf-list__item">SPA-only architectures for content pages</li>
+  </ul>
+
+  <h3>Key Message for Developers</h3>
+  <p>
+    Rendering strategy is not just a framework choice.<br/>
+    <strong>It is an inclusion decision.</strong>
+  </p>
+  <p>For LRO:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Prefer static and server rendering</li>
+    <li class="vf-list__item">Add JavaScript only when needed</li>
+    <li class="vf-list__item">Design for failure</li>
+    <li class="vf-list__item">Make content accessible first</li>
+  </ul>
+
+  <h3>Further reading</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Rehydration combines server-side and client-side rendering</li>
+    <li class="vf-list__item">Server-side rendering versus static rendering</li>
+  </ul>
+
+
+  {# ── Do's / Don't ── #}
+  <h2 id="dos-dont">Do's / Don't</h2>
+
+  <h4>Do's</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Serve HTML first</li>
+    <li class="vf-list__item">Defer non-critical JS</li>
+    <li class="vf-list__item">Lazy-load interactivity</li>
+    <li class="vf-list__item">Test under 2G and CPU throttling</li>
+  </ul>
+
+  <h4>Don't</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Block content behind JavaScript</li>
+    <li class="vf-list__item">Ship large hydration bundles by default</li>
+    <li class="vf-list__item">Use SPA-only architecture for content pages</li>
+  </ul>
+
+
+  {# ── Checklist ── #}
+  <h2 id="checklist">Checklist</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">☐ Core content visible without JavaScript</li>
+    <li class="vf-list__item">☐ No blank screen on slow networks</li>
+    <li class="vf-list__item">☐ Page usable on low-end device</li>
+    <li class="vf-list__item">☐ Interactive parts optional</li>
+    <li class="vf-list__item">☐ Tested with throttling (2G + low CPU)</li>
+    <li class="vf-list__item">☐ Bundle size budget enforced</li>
+    <li class="vf-list__item">☐ Rendering strategy reviewed in LRO design</li>
+  </ul>
+
+
+  {# ── Metrics & tools ── #}
+  <h2 id="metrics">Metrics &amp; tools</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Time to First Text (TTFT)</li>
+    <li class="vf-list__item">First Contentful Paint (FCP)</li>
+    <li class="vf-list__item">Total Blocking Time (TBT)</li>
+    <li class="vf-list__item">JS bundle size</li>
+    <li class="vf-list__item">Page weight</li>
+    <li class="vf-list__item">CPU execution time</li>
+  </ul>
+
+
+  {# ── Further reading ── #}
+  <h2 id="further-reading">Further reading</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="https://larsbarkman.com/blog/web-frontend-rendering-strategies/" target="_blank" rel="noopener noreferrer">Lars Barkman. Web Frontend Rendering Strategies</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Frameworks_libraries/Introduction#static_site_generators" target="_blank" rel="noopener noreferrer">MDN Web Docs. Introduction to Static Site Generators</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://dev.to/anthonybanion/understanding-web-rendering-strategies-2j56" target="_blank" rel="noopener noreferrer">Anthony Banion. Understanding Web Rendering Strategies</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/articles/rendering-on-the-web" target="_blank" rel="noopener noreferrer">web.dev (Google). Rendering on the Web</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://majordigital.com/articles/maximise-website-performance-with-the-right-rendering-strategies" target="_blank" rel="noopener noreferrer">Major Digital. Maximise Website Performance with the Right Rendering Strategies</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.toptal.com/developers/web/website-performance-critical-rendering-path" target="_blank" rel="noopener noreferrer">Toptal Engineering Blog. Website Performance and the Critical Rendering Path</a></li>
+  </ul>
+
+</article>

@@ -1,21 +1,26 @@
-const path = require("path");
-const gulp  = require('gulp');
-const browserSync = require('browser-sync').create();
-var   fractalBuildMode;
+import path from "path";
+import gulp from "gulp";
+import _browserSync from "browser-sync";
+import { createRequire } from "module";
+import vfCoreRollup from "./node_modules/@visual-framework/vf-core/gulp-tasks/_gulp_rollup.mjs";
+import buildSearchIndex from "./src/pages/scripts/gulp-build-search-index.js";
 
-// -----------------------------------------------------------------------------
-// Configuration
-// -----------------------------------------------------------------------------
-
-// Pull in optional configuration from the package.json file, a la:
+const require = createRequire(import.meta.url);
 const {
   componentPath,
   componentDirectories,
   buildDestionation,
 } = require("@visual-framework/vf-config");
 
+const browserSync = _browserSync.create();
+var   fractalBuildMode;
+
+// -----------------------------------------------------------------------------
+// Configuration
+// -----------------------------------------------------------------------------
+
 // Tasks to build/run vf-core component system
-require("./node_modules/@visual-framework/vf-core/gulp-tasks/_gulp_rollup.js")(
+vfCoreRollup(
   gulp,
   path,
   componentPath,
@@ -29,6 +34,7 @@ require("./node_modules/@visual-framework/vf-extensions/gulp-tasks/_gulp_rollup.
   componentDirectories,
   buildDestionation
 );
+buildSearchIndex(gulp, path, buildDestionation);
 
 // Watch folders for changes
 gulp.task("watch", function() {
@@ -39,7 +45,7 @@ gulp.task("watch", function() {
 
 // Copy pages to the build directory
 gulp.task('pages', function(){
-  return gulp.src('./src/pages/**/*')
+  return gulp.src('./src/pages/**/*', { encoding: false })
     .pipe(gulp.dest(buildDestionation));
 
 });
@@ -69,7 +75,8 @@ gulp.task('build', gulp.series(
   "fractal:build",
   "fractal",
   "eleventy:init",
-  "eleventy:build"
+  "eleventy:build",
+  "vf-build-search-index"
 ));
 
 // Build and watch things during dev
@@ -80,5 +87,6 @@ gulp.task('dev', gulp.series(
   "fractal",
   "eleventy:init",
   "eleventy:develop",
+  "vf-build-search-index",
   gulp.parallel("watch", "vf-watch")
 ));

@@ -1,0 +1,401 @@
+---
+title: Design patterns
+layout: layouts/topic.njk
+templateEngineOverride: njk
+---
+
+<article class="vf-content">
+
+	<nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+		<ul class="vf-list">
+			<li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+			<li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO</a></li>
+			<li class="vf-list__item"><a href="#common-problems" class="vf-link">Common problems</a></li>
+			<li class="vf-list__item"><a href="#design-principles" class="vf-link">Design principles involved</a></li>
+			<li class="vf-list__item"><a href="#strategy-options" class="vf-link">Strategy options</a></li>
+			<li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation guidance</a></li>
+			<li class="vf-list__item"><a href="#code-example" class="vf-link">Code example (lazy loading images)</a></li>
+			<li class="vf-list__item"><a href="#examples" class="vf-link">Real-world examples</a></li>
+			<li class="vf-list__item"><a href="#dos-donts" class="vf-link">Do / Don't</a></li>
+			<li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist (quick review)</a></li>
+			<li class="vf-list__item"><a href="#metrics-tools" class="vf-link">Metrics and tools</a></li>
+			<li class="vf-list__item"><a href="#related-topics" class="vf-link">Related LRO topics</a></li>
+			<li class="vf-list__item"><a href="#key-takeaways" class="vf-link">Key takeaways</a></li>
+		</ul>
+	</nav>
+
+	<h2 id="overview">Overview</h2>
+	<p>
+		Design patterns in the context of Low Resource Optimisation (LRO) refer to commonly used interface and
+		architectural approaches that minimise resource consumption while maintaining usability.
+	</p>
+	<p>
+		Modern web systems often rely on complex JavaScript frameworks, high-resolution media, and interactive
+		components. These elements increase page weight, network requests, and rendering complexity. Users with
+		slow connections, unstable networks, or limited device capability may experience delayed page loads, broken
+		functionality, or excessive data usage.
+	</p>
+	<p>
+		Low-resource design patterns address these issues by structuring pages so that essential content loads first,
+		heavy resources load progressively, and optional features remain accessible only when needed.
+	</p>
+	<p>
+		Patterns such as lazy loading, static entry pages, simplified navigation, and fallback modes ensure that
+		applications remain usable even under constrained conditions.
+	</p>
+	<p>
+		Within the LRO framework, design patterns serve as practical implementation strategies that developers and
+		designers can apply consistently across systems.
+	</p>
+
+	<h3>Key idea in the LRO context</h3>
+	<p>
+		In low-resource environments, the most effective systems prioritise delivering value quickly while reducing
+		unnecessary computation and network requests.
+	</p>
+	<p>Design patterns in LRO aim to ensure that:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Essential information loads immediately</li>
+		<li class="vf-list__item">Heavy resources are delayed or optional</li>
+		<li class="vf-list__item">Interfaces remain usable without advanced scripts</li>
+		<li class="vf-list__item">Systems degrade gracefully under poor connectivity</li>
+		<li class="vf-list__item">Interaction patterns remain predictable and lightweight</li>
+	</ul>
+	<p>
+		Applying these patterns improves performance, accessibility, and reliability across diverse environments.
+	</p>
+
+	<h2 id="why-lro">Why this matters for LRO</h2>
+	<h3>User impact</h3>
+	<p>
+		Users in constrained environments often encounter difficulties accessing heavy web applications.
+	</p>
+	<p>Common challenges include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Slow internet connections: Large pages take significant time to load</li>
+		<li class="vf-list__item">High-latency networks: Interactive features respond slowly</li>
+		<li class="vf-list__item">Limited data plans: Heavy media consumes excessive data</li>
+		<li class="vf-list__item">Low-end devices: Complex interfaces cause performance issues</li>
+	</ul>
+	<p>
+		Applying efficient design patterns ensures that these users can still access essential information and
+		complete tasks.
+	</p>
+
+	<h3>Risks if ignored</h3>
+	<p>
+		Without efficient design patterns, digital systems may exhibit several problems.
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Delayed content visibility: Users must wait for large scripts or assets</li>
+		<li class="vf-list__item">Excessive network usage: Unnecessary downloads increase bandwidth consumption</li>
+		<li class="vf-list__item">Interaction failures: Heavy client-side scripts fail on slower devices</li>
+		<li class="vf-list__item">Reduced accessibility: Users abandon services due to poor performance</li>
+	</ul>
+	<p>
+		Low-resource design patterns mitigate these risks by prioritising efficiency and resilience.
+	</p>
+
+	<h2 id="common-problems">Common problems</h2>
+	<h3>Heavy page architecture</h3>
+	<p>
+		Many web applications load large numbers of resources before displaying content.
+	</p>
+	<p>Common causes include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Large JavaScript bundles: Frameworks and libraries increase page size</li>
+		<li class="vf-list__item">High-resolution media: Images and videos require large downloads</li>
+		<li class="vf-list__item">Multiple third-party integrations: Analytics and plugins add network requests</li>
+		<li class="vf-list__item">Inefficient layout rendering: Complex design structures slow rendering</li>
+	</ul>
+	<p>
+		These issues significantly impact performance on slower networks.
+	</p>
+
+	<h3>Inefficient interaction models</h3>
+	<p>
+		Certain interaction patterns unnecessarily increase resource usage.
+	</p>
+	<p>Examples include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Infinite scroll with heavy datasets: Loads large volumes of data</li>
+		<li class="vf-list__item">Auto-playing media: Consumes bandwidth without user interaction</li>
+		<li class="vf-list__item">Complex animations: Increase rendering and processing cost</li>
+	</ul>
+	<p>
+		Design patterns that reduce these inefficiencies are essential for low-resource optimisation.
+	</p>
+
+	<h2 id="design-principles">Design principles involved</h2>
+	<p>
+		Effective low-resource design patterns rely on several core principles.
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><strong>Progressive delivery</strong><br>Content should appear as soon as possible</li>
+		<li class="vf-list__item"><strong>Minimal resource usage</strong><br>Only necessary assets should be loaded</li>
+		<li class="vf-list__item"><strong>User-controlled interaction</strong><br>Users should decide when heavy features activate</li>
+		<li class="vf-list__item"><strong>Predictable navigation</strong><br>Interfaces should be simple and consistent</li>
+		<li class="vf-list__item"><strong>Graceful fallback</strong><br>Systems should remain functional without advanced features</li>
+	</ul>
+	<p>
+		These principles ensure that digital systems remain usable across diverse environments.
+	</p>
+
+	<h2 id="strategy-options">Strategy options</h2>
+	<h3>Summary-first pages</h3>
+	<p>
+		Summary-first pages present key information at the top of the page before detailed content loads.
+	</p>
+	<p>
+		This pattern ensures that users quickly understand the main message without waiting for the entire page to load.
+	</p>
+	<p>Typical structure includes:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Title and summary section</li>
+		<li class="vf-list__item">Key highlights or bullet points</li>
+		<li class="vf-list__item">Expandable sections for detailed information</li>
+	</ul>
+	<p>
+		This pattern is especially useful for research reports, articles, and dashboards.
+	</p>
+	<p>Benefits</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Faster information access</li>
+		<li class="vf-list__item">Reduced initial page load</li>
+		<li class="vf-list__item">Improved readability</li>
+	</ul>
+
+	<h3>Lazy visualisation</h3>
+	<p>
+		Lazy visualisation delays the loading of heavy charts, maps, or visual elements until the user requests them.
+	</p>
+	<p>
+		Visualisations often require large datasets and rendering libraries. Loading them only when necessary reduces
+		initial page weight.
+	</p>
+	<p>Example behaviour</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Charts load when users scroll to them</li>
+		<li class="vf-list__item">Maps load after user interaction</li>
+		<li class="vf-list__item">Visual dashboards load modules incrementally</li>
+	</ul>
+	<p>
+		Lazy loading is widely used to improve performance by deferring the loading of non-critical resources.
+		<a class="vf-link" href="https://www.cloudflare.com/learning/performance/lazy-loading/" target="_blank" rel="noopener noreferrer">Cloudflare</a>
+	</p>
+
+	<h3>Lightweight headers</h3>
+	<p>
+		Headers appear on every page and are frequently rendered first. Heavy headers significantly affect page load time.
+	</p>
+	<p>Efficient header design includes:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Minimal images or graphics</li>
+		<li class="vf-list__item">Simple navigation menus</li>
+		<li class="vf-list__item">Avoidance of large scripts</li>
+	</ul>
+	<p>
+		Lightweight headers ensure that navigation becomes available quickly.
+	</p>
+	<p>Benefits</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Faster rendering</li>
+		<li class="vf-list__item">Reduced repeated downloads</li>
+		<li class="vf-list__item">Improved usability</li>
+	</ul>
+
+	<h3>Static entry pages</h3>
+	<p>
+		Static entry pages deliver pre-rendered content that loads quickly without server processing.
+	</p>
+	<p>
+		Static websites contain fixed HTML files that can be served directly from servers or content delivery networks.
+	</p>
+	<p>Advantages include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Faster loading times</li>
+		<li class="vf-list__item">Reduced server processing</li>
+		<li class="vf-list__item">Lower bandwidth consumption</li>
+	</ul>
+	<p>
+		Static entry pages are particularly useful as landing pages or informational pages.
+	</p>
+
+	<h3>Fallback modes</h3>
+	<p>
+		Fallback modes ensure that systems continue functioning when advanced features fail.
+	</p>
+	<p>Examples include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Script fallback: Content remains accessible when JavaScript fails</li>
+		<li class="vf-list__item">Image fallback: Alternative text or placeholders displayed</li>
+		<li class="vf-list__item">Feature fallback: Simplified versions of complex components</li>
+	</ul>
+	<p>
+		Fallback modes improve resilience in unstable environments.
+	</p>
+
+	<h3>Simplified navigation patterns</h3>
+	<p>
+		Navigation usability strongly affects page efficiency.
+	</p>
+	<p>Effective navigation patterns include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Clear hierarchical menus</li>
+		<li class="vf-list__item">Limited navigation depth</li>
+		<li class="vf-list__item">Predictable link structures</li>
+	</ul>
+	<p>
+		Good navigation usability reduces unnecessary page loads and improves discoverability.
+		<a class="vf-link" href="https://usabilitygeek.com/navigation-usability-essentials/" target="_blank" rel="noopener noreferrer">Usability Geek</a>
+	</p>
+
+	<h3>Progressive content loading</h3>
+	<p>
+		Progressive loading ensures that essential content appears before secondary elements.
+	</p>
+	<p>Examples include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Text content loads before images</li>
+		<li class="vf-list__item">Core scripts load before enhancements</li>
+		<li class="vf-list__item">Media loads only after page interaction</li>
+	</ul>
+	<p>
+		This pattern improves perceived performance.
+	</p>
+
+	<h3>Localisation-aware design</h3>
+	<p>
+		Localisation affects page performance because translated content may require additional assets and fonts.
+	</p>
+	<p>Optimised localisation strategies include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Using efficient font loading</li>
+		<li class="vf-list__item">Minimising region-specific resources</li>
+		<li class="vf-list__item">Serving localised content through content delivery networks</li>
+	</ul>
+	<p>
+		These strategies reduce delays for international users.
+	</p>
+
+	<h3>Sustainable and low-impact design</h3>
+	<p>
+		Sustainable design focuses on reducing the environmental impact of web systems.
+	</p>
+	<p>Strategies include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Minimising page weight</li>
+		<li class="vf-list__item">Reducing server requests</li>
+		<li class="vf-list__item">Using efficient caching</li>
+	</ul>
+	<p>
+		Reducing data transfer not only improves performance but also lowers energy consumption.
+	</p>
+
+	<h2 id="implementation">Implementation guidance</h2>
+	<h3>Identify heavy components</h3>
+	<p>
+		Audit pages to determine which components consume the most resources.
+	</p>
+	<p>Examples include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Media assets</li>
+		<li class="vf-list__item">Large scripts</li>
+		<li class="vf-list__item">Interactive visualisations</li>
+	</ul>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Prioritise critical content</li>
+		<li class="vf-list__item">Ensure essential information loads first</li>
+		<li class="vf-list__item">Apply progressive loading patterns</li>
+		<li class="vf-list__item">Load optional resources only when required</li>
+		<li class="vf-list__item">Provide fallback mechanisms</li>
+		<li class="vf-list__item">Ensure features continue functioning under limited connectivity</li>
+		<li class="vf-list__item">Test under constrained conditions</li>
+		<li class="vf-list__item">Simulate slow network environments to verify usability</li>
+	</ul>
+
+	<h2 id="code-example">Code example (lazy loading images)</h2>
+	<p>
+		Example of lazy loading to delay non-critical image downloads.
+	</p>
+	<pre class="vf-code-example__pre"><code>&lt;img src="image.jpg" loading="lazy" alt="Example image"&gt;</code></pre>
+	<p>
+		Lazy loading ensures that images are downloaded only when users scroll to them.
+	</p>
+
+	<h2 id="examples">Real-world examples</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Wikipedia - Wikipedia pages prioritise text content and simple layouts, enabling fast loading even on slow networks.</li>
+		<li class="vf-list__item">BBC News - BBC websites provide simplified mobile versions that reduce page weight and prioritise content.</li>
+		<li class="vf-list__item">Static documentation websites - Many technical documentation platforms use static site generators to deliver content quickly.</li>
+	</ul>
+
+	<h2 id="dos-donts">Do / Don't</h2>
+	<h4>Do</h4>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Use summary-first layouts</li>
+		<li class="vf-list__item">Load heavy visualisations lazily</li>
+		<li class="vf-list__item">Design lightweight navigation and headers</li>
+		<li class="vf-list__item">Provide fallback mechanisms</li>
+		<li class="vf-list__item">Use static pages where possible</li>
+	</ul>
+
+	<h4>Don't</h4>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Load heavy media automatically</li>
+		<li class="vf-list__item">Depend entirely on large JavaScript frameworks</li>
+		<li class="vf-list__item">Render complex visualisations immediately</li>
+		<li class="vf-list__item">Overload navigation structures</li>
+		<li class="vf-list__item">Ignore performance impacts of layout design</li>
+	</ul>
+
+	<h2 id="checklist">Checklist (quick review)</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">[ ] Summary content visible immediately</li>
+		<li class="vf-list__item">[ ] Heavy visualisations loaded on demand</li>
+		<li class="vf-list__item">[ ] Headers and navigation lightweight</li>
+		<li class="vf-list__item">[ ] Static entry pages implemented where possible</li>
+		<li class="vf-list__item">[ ] Fallback modes available for critical features</li>
+		<li class="vf-list__item">[ ] Navigation structure is simple and predictable</li>
+	</ul>
+
+	<h2 id="metrics-tools">Metrics and tools</h2>
+	<h3>Key metrics</h3>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Page weight</li>
+		<li class="vf-list__item">Time to first contentful paint</li>
+		<li class="vf-list__item">Number of network requests</li>
+		<li class="vf-list__item">Script execution time</li>
+		<li class="vf-list__item">User interaction latency</li>
+	</ul>
+	<h3>Useful tools</h3>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Google Lighthouse</li>
+		<li class="vf-list__item">WebPageTest</li>
+		<li class="vf-list__item">PageSpeed Insights</li>
+	</ul>
+
+	<h2 id="related-topics">Related LRO topics</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Page and interaction design principles</li>
+		<li class="vf-list__item">Data transparency and user control</li>
+		<li class="vf-list__item">Progressive enhancement</li>
+		<li class="vf-list__item">Graceful degradation</li>
+		<li class="vf-list__item">Network optimisation strategies</li>
+	</ul>
+
+	<h2 id="key-takeaways">Key takeaways</h2>
+	<p>
+		Design patterns provide practical methods for implementing low-resource optimisation strategies.
+	</p>
+	<p>
+		By structuring pages around summary-first layouts, lazy loading, lightweight navigation, static entry points,
+		and fallback modes, developers can ensure that applications remain accessible and efficient across a wide range
+		of network conditions.
+	</p>
+	<p>
+		Applying these patterns improves performance, reduces bandwidth usage, and ensures that digital systems remain
+		usable even in constrained environments.
+	</p>
+
+</article>

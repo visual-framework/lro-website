@@ -1,0 +1,228 @@
+---
+title: Page & interaction design principles
+layout: layouts/topic.njk
+templateEngineOverride: njk
+---
+
+<article class="vf-content">
+
+	<nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+		<ul class="vf-list">
+			<li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+			<li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO</a></li>
+			<li class="vf-list__item"><a href="#common-problems" class="vf-link">Common problems</a></li>
+			<li class="vf-list__item"><a href="#design-principles" class="vf-link">Design principles</a></li>
+			<li class="vf-list__item"><a href="#strategies" class="vf-link">Simplified design strategies</a></li>
+			<li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation guidance</a></li>
+			<li class="vf-list__item"><a href="#examples" class="vf-link">Real-world examples</a></li>
+			<li class="vf-list__item"><a href="#dos-donts" class="vf-link">Do / Don't</a></li>
+			<li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+			<li class="vf-list__item"><a href="#metrics-tools" class="vf-link">Metrics and tools</a></li>
+			<li class="vf-list__item"><a href="#related-topics" class="vf-link">Related topics</a></li>
+			<li class="vf-list__item"><a href="#key-takeaways" class="vf-link">Key takeaways</a></li>
+			<li class="vf-list__item"><a href="#further-reading" class="vf-link">Further reading</a></li>
+		</ul>
+	</nav>
+
+	<h2 id="overview">Overview</h2>
+	<p>
+		Page and interaction design ensure users can access content and complete tasks even on older devices and on slow or unreliable networks.
+	</p>
+	<p>
+		Many modern pages are heavy due to large images, videos, scripts, fonts, and animations. These increase load times and can break or slow down interactions in low-resource environments. Designing for low bandwidth ensures core content loads quickly and remains usable in all conditions.
+	</p>
+  <h3>Key idea in the LRO context</h3>
+	<p>
+		Within the LRO framework, page design should prioritise the delivery of essential information and core interactions before loading optional enhancements.
+	<p>
+  Pages should:
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Load quickly with minimal resources</li>
+		<li class="vf-list__item">Deliver content progressively</li>
+		<li class="vf-list__item">Provide alternative lightweight views</li>
+		<li class="vf-list__item">Avoid unnecessary downloads</li>
+		<li class="vf-list__item">Allow tasks to complete even when unstable connectivity</li>
+	</ul>
+
+	<h2 id="why-lro">Why this matters for LRO</h2>
+	<p>
+		Many users face constraints such as:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Slow networks → long load times, download failures</li>
+		<li class="vf-list__item">Mobile data limitations → large pages consume significant portions of data plans</li>
+		<li class="vf-list__item">Low-end devices → slow rendering due to limited CPU/memory</li>
+		<li class="vf-list__item">Unstable connections → interrupted interactions and broken submissions</li>
+	</ul>
+
+	<h2 id="common-problems">Common problems</h2>
+  <p>Modern pages are often heavy due to design choices, including:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Large media assets (high-resolution images and videos)</li>
+		<li class="vf-list__item">Multiple external scripts (tracking, ads, analytics)</li>
+		<li class="vf-list__item">Heavy JavaScript frameworks and custom web fonts</li>
+		<li class="vf-list__item">Complex layouts and animations</li>
+		<li class="vf-list__item">Larger datasets involving interactive visualisations</li>
+	</ul>
+	<p>
+		Ignoring these factors leads to risks like user abandonment due to excessive loading times, incomplete content delivery, broken interactions (forms and buttons may fail), and reduced accessibility.
+	</p>
+	<p>
+		For organisations delivering public services or research information, these issues significantly reduce accessibility and reach.
+	</p>
+
+	<h2 id="design-principles">Design principles involved</h2>
+  <p>Effective page and interaction design for low-resource environments relies on several principles.</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Content first design - Essential information should load before decorative elements</li>
+		<li class="vf-list__item">Simplicity - Interfaces should use minimal visual complexity</li>
+		<li class="vf-list__item">Efficiency - Only necessary resources should be downloaded</li>
+		<li class="vf-list__item">Progressive enhancement - Core functionality should work without advanced technologies</li>
+		<li class="vf-list__item">User control - Users should be able to choose lightweight alternatives</li>
+		<li class="vf-list__item">Scalable interaction design - Interfaces should remain usable on slower devices and networks</li>
+	</ul>
+
+	<h2 id="strategies">Simplified design strategies</h2>
+
+	<h3>Content Loading and Structure</h3>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><strong>Prioritise Critical Content:</strong> Ensure essential information loads quickly, using minimal resources.</li>
+		<li class="vf-list__item"><strong>Progressive Loading:</strong> Deliver content progressively, loading additional content only when scrolled, required or visible (e.g., text-first rendering and lazy loading of images).</li>
+		<li class="vf-list__item"><strong>Lightweight Alternatives:</strong> Provide simplified versions of pages or features (often called "lite" modes) that remove non-essential features, reduce image quality, and minimise animation and background scripts. Eg, Facebook Lite
+    </li>
+		<li class="vf-list__item"><strong>Data Management:</strong> Break large documents or datasets into smaller segments using pagination, content segmentation, image compression, or expandable sections.
+    </li>
+	</ul>
+
+	<h3>Interactions and Navigation</h3>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><strong>Optimise Workflows:</strong> Improve forms and submission workflows with autosave functionality, step-by-step forms, and minimal validation scripts. Support offline submission to prevent data loss during unstable connections.</li>
+		<li class="vf-list__item"><strong>Search Efficiency:</strong> Minimise network requests for search pages through efficient queries, optimised autocomplete, loading results in smaller batches with pagination and reduced client-side computation with server-side search processing.</li>
+		<li class="vf-list__item"><strong>Simplified Navigation:</strong> Maintain clear hierarchies, minimal menu structures, consistent navigation patterns and limited interactive elements to reduce cognitive load and interaction delays.
+    </li>
+		<li class="vf-list__item"><strong>Export Options:</strong> Offer lightweight export formats, such as CSV, TXT, or Plain HTML, instead of large spreadsheet or document formats. Offer compressed files (Zip format), low-resolution images and HTML reports as alternatives to PDF documents.
+    </li>
+	</ul>
+
+	<h3>Sustainable and low-impact design</h3>
+  <p>
+    Low-resource design also supports sustainable web practices by reducing energy use across networks and data centres.
+  </p>
+  <p>
+    Reducing unnecessary data transfer lowers environmental impact while improving performance.
+  </p>
+  Key strategies:
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Reduce page size – remove unnecessary scripts and assets</li>
+		<li class="vf-list__item">Efficient caching – reuse frequently accessed resources locally</li>
+		<li class="vf-list__item">Minimal design – avoid heavy visuals and animations</li>
+	</ul>
+  <p>
+    This improves both user experience and environmental sustainability.
+  </p>
+
+	<h2 id="implementation">Implementation guidance</h2>
+	<ol class="vf-list vf-list--ordered">
+		<li class="vf-list__item">Audit page weight
+			<ol class="vf-list vf-list--ordered" type="a">
+				<li class="vf-list__item">Identify what makes pages heavy:
+					<ul class="vf-list vf-list--unordered">
+						<li class="vf-list__item">Large images and media</li>
+						<li class="vf-list__item">Third-party scripts</li>
+						<li class="vf-list__item">Unused CSS/JavaScript</li>
+					</ul>
+				</li>
+			</ol>
+		</li>
+		<li class="vf-list__item">Prioritise critical content – Ensure essential information loads first.</li>
+		<li class="vf-list__item">Provide lightweight alternatives – Offer simplified versions of complex pages.</li>
+		<li class="vf-list__item">Use progressive loading – Load additional content only when required</li>
+		<li class="vf-list__item">Optimise interaction design – Ensure that user actions, such as searching or submitting forms, require minimal resources.</li>
+	</ol>
+
+	<h3>Example (Lazy Loading)</h3>
+	<p>
+		Lazy loading delays the download of images until they are visible on the screen, reducing unnecessary network usage.
+	</p>
+	<pre class="vf-code-example__pre"><code>&lt;img src="image.jpg" loading="lazy" alt="Example image"&gt;</code></pre>
+	<p>Images load only when visible, reducing initial page weight.</p>
+
+	<h2 id="examples">Real-world examples</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Google Search – text-first, minimal assets for fast results</li>
+		<li class="vf-list__item">Wikipedia – lightweight, text-focused pages</li>
+		<li class="vf-list__item">Facebook Lite – reduced features for low-bandwidth users</li>
+	</ul>
+
+	<h2 id="dos-donts">Do / Don't</h2>
+
+	<h4>Do</h4>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Design pages that prioritise essential content</li>
+		<li class="vf-list__item">Provide lightweight versions of heavy features</li>
+		<li class="vf-list__item">Break large datasets into smaller chunks</li>
+		<li class="vf-list__item">Optimise forms and submission workflows</li>
+		<li class="vf-list__item">Reduce unnecessary scripts and assets</li>
+	</ul>
+
+	<h4>Don't</h4>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Automatically load large media files</li>
+		<li class="vf-list__item">Use complex animations that require heavy resources</li>
+		<li class="vf-list__item">Load large datasets all at once</li>
+		<li class="vf-list__item">Depend entirely on heavy JavaScript frameworks</li>
+		<li class="vf-list__item">Ignore performance in interaction design</li>
+	</ul>
+
+	<h2 id="checklist">Checklist (quick review)</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Pages load essential content quickly</li>
+		<li class="vf-list__item">Heavy assets are compressed or optional</li>
+		<li class="vf-list__item">Search and form interactions work on slow networks</li>
+		<li class="vf-list__item">Large datasets are chunked or paginated</li>
+		<li class="vf-list__item">Lightweight export formats are available</li>
+		<li class="vf-list__item">Navigation remains simple and efficient</li>
+	</ul>
+
+	<h2 id="metrics-tools">Metrics and tools</h2>
+	<p>Metrics:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Page weight</li>
+		<li class="vf-list__item">FCP (First Contentful Paint)</li>
+		<li class="vf-list__item">Network requests</li>
+		<li class="vf-list__item">Data transfer size</li>
+		<li class="vf-list__item">Interaction response time</li>
+	</ul>
+	<p>Tools:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Lighthouse</li>
+		<li class="vf-list__item">WebPageTest</li>
+		<li class="vf-list__item">PageSpeed Insights</li>
+	</ul>
+
+	<h2 id="related-topics">Related topics</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Progressive enhancement</li>
+		<li class="vf-list__item">Graceful degradation</li>
+		<li class="vf-list__item">Data transparency and user control</li>
+		<li class="vf-list__item">Adaptive resource loading</li>
+		<li class="vf-list__item">Network optimisation strategies</li>
+	</ul>
+
+	<h2 id="key-takeaways">Key takeaways</h2>
+	<p>
+		Efficient page and interaction design ensures fast, reliable access to content in low-resource environments by reducing unnecessary complexity and prioritising essential functionality. These practices improve accessibility, reduce data consumption, and enhance the user experience worldwide.
+	</p>
+
+	<h2 id="further-reading">Further reading</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><a class="vf-link" href="https://nm.usembassy.gov/key-recommendations-for-designing-web-pages-for-low-bandwidth/" target="_blank" rel="noopener noreferrer">New Media &amp; Development Comm. » Key Recommendations for Designing Web Pages for Low Bandwidth</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.websiteplanet.com/blog/small-is-beautiful/" target="_blank" rel="noopener noreferrer">When it comes to websites... small is beautiful</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://uxplanet.org/how-to-optimize-ux-for-low-bandwidth-and-poor-connectivity-users-7a552c1e0e7a" target="_blank" rel="noopener noreferrer">How to Optimize UX for Low Bandwidth and Poor Connectivity Users</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://medium.com/@ititans/designing-for-low-bandwidth-users-optimizing-websites-for-all" target="_blank" rel="noopener noreferrer">Designing for Low-Bandwidth Users: Optimizing Websites for All | by ITitans | Best Software Development Company in USA | Medium</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://dev.to/building-for-low-bandwidth-environments" target="_blank" rel="noopener noreferrer">Building for Low-Bandwidth Environments: How to Optimize Your Web Experience for Slower Internet Speeds - DEV Community</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://nm.usembassy.gov/development-organizations-and-web-design-for-low-bandwidth/" target="_blank" rel="noopener noreferrer">New Media &amp; Development Comm. » Development Organizations and Web Design for Low Bandwidth</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.orbitmedia.com/blog/web-design-principles/" target="_blank" rel="noopener noreferrer">19 Web Design Principles for User-Centric Sites</a></li>
+	</ul>
+
+</article>
