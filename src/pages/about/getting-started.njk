@@ -1,0 +1,231 @@
+---
+title: Getting started
+layout: layouts/topic.njk
+templateEngineOverride: njk
+---
+
+<article class="vf-content">
+
+	<h2 id="contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400">Contents</h2>
+
+	<nav class="toc vf-search-client-side--no-index"aria-label="On this page">
+		<ul class="vf-list">
+			<li class="vf-list__item"><a href="#choose-your-starting-point" class="vf-link">Choose your starting point</a></li>
+			<li class="vf-list__item"><a href="#fail-first" class="vf-link">Start with what tends to fail first</a></li>
+			<li class="vf-list__item"><a href="#product-lifecycle" class="vf-link">Product lifecycle perspective</a></li>
+			<li class="vf-list__item"><a href="#positioning-and-measurement" class="vf-link">Positioning and measurement</a></li>
+			<li class="vf-list__item"><a href="#user-context" class="vf-link">User context and perspectives</a></li>
+			<li class="vf-list__item"><a href="#apply-user-research" class="vf-link">Applying user research to your service</a></li>
+		</ul>
+	</nav>
+	<p>This section helps service teams choose where to begin and explore the framework.</p>
+	<h2 id="choose-your-starting-point" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Choose your starting point based on the question you have</h2>
+	<table class="vf-table vf-table--striped">
+		<thead class="vf-table__header">
+			<tr class="vf-table__row">
+				<th class="vf-table__heading" scope="col">Question</th>
+				<th class="vf-table__heading" scope="col">Go to</th>
+				<th class="vf-table__heading" scope="col">What you'll find there</th>
+			</tr>
+		</thead>
+		<tbody class="vf-table__body">
+			<tr class="vf-table__row">
+				<td class="vf-table__cell">"What should we do?"</td>
+				<td class="vf-table__cell">Optimisation Principles</td>
+				<td class="vf-table__cell">Default behaviours and trade-offs</td>
+			</tr>
+			<tr class="vf-table__row">
+				<td class="vf-table__cell">"How do we build it?"</td>
+				<td class="vf-table__cell">Architecture and Engineering</td>
+				<td class="vf-table__cell">Implementation patterns and technical choices</td>
+			</tr>
+			<tr class="vf-table__row">
+				<td class="vf-table__cell">"How do we prove it's working?"</td>
+				<td class="vf-table__cell">Measurement and Testing</td>
+				<td class="vf-table__cell">Metrics, test profiles, and repeatable checks</td>
+			</tr>
+			<tr class="vf-table__row">
+				<td class="vf-table__cell">"How do we adopt this consistently across teams?"</td>
+				<td class="vf-table__cell">Adoption and Governance</td>
+				<td class="vf-table__cell">Workflow integration, ownership, and guardrails</td>
+			</tr>
+			<tr class="vf-table__row">
+				<td class="vf-table__cell">"Has anyone solved something similar?"</td>
+				<td class="vf-table__cell">Case Studies and Resources</td>
+				<td class="vf-table__cell">Examples, tools, and decision shortcuts</td>
+			</tr>
+		</tbody>
+	</table>
+	<br/>
+	<p><strong>Explore by area of interest</strong></p>
+	<p>Choose the lens that fits your work and follow the most relevant guidance:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><strong>Design &amp; content:</strong> start with principles and any patterns that affect interaction cost, readability, and media.</li>
+		<li class="vf-list__item"><strong>Engineering:</strong> start with architecture decisions, dependency policy, and delivery strategy.</li>
+		<li class="vf-list__item"><strong>Platform:</strong> start with governance, hosting constraints, caching/CDN strategy, and operational checks.</li>
+	</ul>
+
+	<p><strong>Start with what tends to fail first in low-resource conditions</strong></p>
+	<p>If you know what's going wrong, start here to find the most relevant fixes and checks.</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><strong>Slow starts:</strong> long time to first usable screen (heavy bundles, blocking scripts/styles)</li>
+		<li class="vf-list__item"><strong>Interaction lag:</strong> taps/clicks feel delayed (main-thread work, big DOM, expensive components)</li>
+		<li class="vf-list__item"><strong>Fragile journeys:</strong> flows fail when the network drops or changes (timeouts, lost form state)</li>
+		<li class="vf-list__item"><strong>Hidden bandwidth drains:</strong> background polling, auto-refresh, chatty APIs, large responses</li>
+		<li class="vf-list__item"><strong>Media bottlenecks:</strong> oversized images/video, unoptimised downloads, font overhead</li>
+	</ul>
+
+	<p><strong>Explore from the product lifecycle perspective</strong></p>
+	<p>
+		LRO throughout the product lifecycle, from discovery through delivery and operations.
+	</p>
+	<p>
+		It supports different team entry points (e.g., discovery, delivery, operations) while keeping decisions aligned
+		through shared principles, measurement practices, and governance.
+	</p>
+	<ol class="vf-list vf-list--ordered">
+		<li class="vf-list__item">
+			<strong>Discovery &amp; definition</strong>
+			<ol class="vf-list vf-list--ordered">
+				<li class="vf-list__item">Use About to align on user constraints, scope, and <strong>targets and signals of progress</strong>.</li>
+				<li class="vf-list__item">Use Optimisation Principles to establish the baseline requirements (e.g., graceful degradation, budgets).</li>
+			</ol>
+		</li>
+		<li class="vf-list__item">
+			<strong>Design &amp; content</strong>
+			<ol class="vf-list vf-list--ordered">
+				<li class="vf-list__item">Use Optimisation Principles to select patterns that minimise interaction and <strong>decision overhead</strong>.</li>
+				<li class="vf-list__item">Use Case Studies and Resources to choose proven approaches for <strong>lean content and media patterns under constrained connections</strong>.</li>
+			</ol>
+		</li>
+		<li class="vf-list__item">
+			<strong>Build &amp; integration</strong>
+			<ol class="vf-list vf-list--ordered">
+				<li class="vf-list__item">Use Architecture and Engineering to guide implementation choices (dependencies, rendering, caching, API efficiency).</li>
+			</ol>
+		</li>
+		<li class="vf-list__item">
+			<strong>Test &amp; release</strong>
+			<ol class="vf-list vf-list--ordered">
+				<li class="vf-list__item">Use Measurement and Testing to run repeatable checks (profiles, thresholds, regression gates).</li>
+			</ol>
+		</li>
+		<li class="vf-list__item">
+			<strong>Operate &amp; improve</strong>
+			<ol class="vf-list vf-list--ordered">
+				<li class="vf-list__item">Use Adoption &amp; Governance to prevent improvements from slipping in day-to-day delivery (ownership, exception process, review cadence).</li>
+				<li class="vf-list__item">Document what you learn and turn it into updates in Case Studies and Resources, so guidance stays current and teams can reuse and learn from it.</li>
+			</ol>
+		</li>
+	</ol>
+	<p>
+		Now that you have identified where to start, the next section helps you position LRO as a measurable objective
+		and understand user context so you can prioritise the right work and measure results.
+	</p>
+
+	<h2 id="positioning-and-measurement" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Positioning and measurement</h2>
+	<p>
+		Establish low-resource optimisation as a measurable service objective at an organisational and service level.
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Define clear goals for constrained environments</li>
+		<li class="vf-list__item">Prioritise high-impact workflows (such as download, submit, and retrieve results)</li>
+		<li class="vf-list__item">Incorporate low-resource metrics into performance monitoring and reporting</li>
+	</ul>
+	<p>Success should be demonstrated through:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Improved global access performance</li>
+		<li class="vf-list__item">Measurable reductions in inequity in service usability</li>
+	</ul>
+
+	<h2 id="user-context" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">User context and perspectives</h2>
+	<p>
+		Understanding who uses EMBL-EBI services from low-resource environments is essential for designing effective
+		optimisations. This section provides practical guidance for any service team to approach LRO through a
+		user-centred lens.
+	</p>
+
+	<h3>Approaches to understanding your users</h3>
+	<p>
+		The goal of these approaches is to build a comprehensive understanding of how users in low-resource
+		environments interact with your service, enabling you to make informed decisions about where to focus
+		optimisation efforts. The outcome is a clear picture of user needs, pain points, and usage patterns that will
+		guide targeted improvements with measurable impact.
+	</p>
+
+	<h4>Data-Driven user analysis</h4>
+	<p>
+		Leverage quantitative data and analytics tools to build a clear picture of your current user base and their
+		experience:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><strong>Geographic analysis:</strong> Review your service analytics to identify traffic patterns from LMIC regions.</li>
+		<li class="vf-list__item"><strong>Performance metrics by region:</strong> Compare load times, completion rates, and bounce rates across different geographic locations to identify pain points.</li>
+		<li class="vf-list__item"><strong>Usage patterns:</strong> Analyse which features are used (or abandoned) by users.</li>
+		<li class="vf-list__item"><strong>Support ticket analysis:</strong> Review help requests from LMIC users to identify recurring issues.</li>
+	</ul>
+	<p>
+		Beyond these core approaches, teams can employ a range of complementary research methods to deepen their
+		understanding of user needs. Additional methods, such as A/B testing results, session recordings, and heatmap
+		analysis, can also provide valuable insights to inform data-driven user analysis.
+	</p>
+
+	<h4>Direct User Engagement</h4>
+	<p>
+		Complement quantitative data with direct feedback from users in low-resource environments:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><strong>User interviews:</strong> Conduct interviews with target users in LMIC areas to understand their workflows, challenges, and workarounds.</li>
+		<li class="vf-list__item"><strong>Survey integration:</strong> Use lightweight feedback surveys (optimised for low bandwidth) to validate assumptions and capture direct user opinions.</li>
+		<li class="vf-list__item"><strong>Beta testing network:</strong> Collaborate with users from target regions to test features and optimisations.</li>
+		<li class="vf-list__item"><strong>Collaboration with institutions:</strong> Partner with universities and research centres in LMIC regions to gather contextual insights.</li>
+	</ul>
+	<p>
+		<strong>Note:</strong> Combining quantitative data with qualitative feedback provides actionable insights into performance barriers and usability challenges, enabling teams to prioritise improvements that deliver measurable impact for users.
+	</p>
+
+	<h2 id="apply-user-research" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Applying user research to your service</h2>
+	<p>
+		Follow these steps to make evidence-based decisions that directly address user needs in low-resource
+		environments.
+	</p>
+
+	<h4>Step 1: Establish your baseline understanding</h4>
+	<p>
+		Analyse your current user data to identify representation and usage patterns. This establishes what you know and
+		what you don't yet know about your users.
+	</p>
+
+	<h4>Step 2: Define representative user scenarios</h4>
+	<p>
+		Create concrete user scenarios that reflect the diverse conditions under which your service is accessed.
+		These scenarios should be grounded in real data where possible and validated through user research.
+	</p>
+
+	<h4>Step 3: Map user journeys against real-world constraints</h4>
+	<p>
+		Walk through your core workflows and pinpoint where constraints create barriers. Focus on the journeys that
+		matter most to your users and their impact.
+	</p>
+
+	<h4>Step 4: Validate assumptions through testing</h4>
+	<p>
+		Test your service under realistic low-resource conditions. Validate assumptions through user testing with actual
+		users wherever possible. Document both quantitative performance data and qualitative user feedback to build a
+		complete picture.
+	</p>
+
+	<h4>Step 5: Establish ongoing measurement and iteration</h4>
+	<p>
+		Define success metrics that reflect user experience, not just technical performance. Build feedback mechanisms
+		directly into your service and establish a regular cadence for reviewing and acting on data.
+	</p>
+
+	<p>
+		<strong>Expected Outcome:</strong> An evidence-based understanding of how users in low-resource environments
+		experience your service, including specific pain points and opportunities for improvement. This enables teams to
+		prioritise optimisation efforts based on actual user needs and establish a sustainable process for continuous
+		learning and improvement.
+	</p>
+
+</article>

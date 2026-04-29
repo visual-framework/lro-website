@@ -1,0 +1,193 @@
+---
+title: Core Content First
+layout: layouts/topic.njk
+templateEngineOverride: njk
+---
+
+<article class="vf-content">
+
+  <h2 id="contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400">Contents</h2>
+
+	<nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+		<ul class="vf-list">
+			<li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+			<li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO?</a></li>
+			<li class="vf-list__item"><a href="#core-vs-enhanced" class="vf-link">Core vs Enhanced Content</a></li>
+			<li class="vf-list__item"><a href="#implementation" class="vf-link">Implementing the content-first strategy</a></li>
+			<li class="vf-list__item"><a href="#dos-donts" class="vf-link">Do / Don't</a></li>
+			<li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+			<li class="vf-list__item"><a href="#further-reading" class="vf-link">Further reading</a></li>
+		</ul>
+	</nav>
+
+	<h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Overview</h2>
+	<p>
+		Core Content First ensures critical information loads and renders before secondary features. This approach prioritises essential content, text, headings, and navigation, so users can access meaningful information immediately, even on slow networks or devices.
+	</p>
+	<p>
+		In low-resource environments, network latency and limited bandwidth can delay the execution of complex frontend components. When critical information depends on large JavaScript bundles or media assets, users may face blank screens. By prioritising core content, pages remain functional even when enhanced features load slowly or fail to load.
+	</p>
+	<h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Why does this matter for LRO?</h2>
+	<p>Users on slow or unstable networks often experience delays when loading content, especially when pages rely on heavy JavaScript or large assets.</p>
+	<p>Prioritising core content ensures:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><strong>Immediate access to key information</strong></li>
+		<li class="vf-list__item"><strong>Usability, even if JavaScript fails</strong></li>
+		<li class="vf-list__item"><strong>Lower data usage for bandwidth-constrained users</strong></li>
+		<li class="vf-list__item"><strong>Better perceived performance</strong></li>
+	</ul>
+	<p>Delivering HTML first allows users to read and interact with content while enhancements load progressively.</p>
+
+	<h2 id="core-vs-enhanced" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Core vs Enhanced Content</h2>
+	<p>
+		A useful way to design pages for low-resource environments is to distinguish between <strong>core content</strong> and <strong>enhanced content</strong>.
+	</p>
+	<p>
+		Core content provides the essential information users require to accomplish their goals, i.e. clear headings that orient them, concise summaries that answer their questions, intuitive navigation that guides their journey, and actionable buttons that enable key tasks.
+	</p>
+	<p>
+		<strong>Enhanced content</strong> enriches the experience but remains secondary. For example, interactive visualisations, dynamic filters, animations, and rich media add value once foundational information is accessible.
+	</p>
+	<p>
+		The loading sequence matters; core content must render first, with enhanced features appearing progressively. This approach respects bandwidth constraints while maintaining engagement.
+	</p>
+
+	<h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Implementing the content-first strategy</h2>
+
+	<h3>Prioritising HTML Delivery</h3>
+	<p>
+	HTML should be delivered and rendered first so users can see content immediately, even before other resources load.		</p>
+	<p>Best practices:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Keep the initial HTML lightweight</li>
+		<li class="vf-list__item">Include key text (headings, summaries, navigation)</li>
+		<li class="vf-list__item">Do not rely on JavaScript for primary content</li>
+		<li class="vf-list__item">Avoid script-block rendering</li>
+	</ul>
+	<p>Example:</p>
+	<pre class="vf-code-example__pre"><code>
+&lt;main&gt;
+&lt;h1&gt;Protein Dataset Overview&lt;/h1&gt;
+&lt;p&gt;This page summarises the key properties of the dataset.&lt;/p&gt;
+&lt;nav&gt;
+&lt;a href="#summary"&gt;Summary&lt;/a&gt;
+&lt;a href="#features"&gt;Features&lt;/a&gt;
+&lt;/nav&gt;
+&lt;/main&gt;
+	</code></pre>
+	<p>Users see meaningful content as soon as the HTML loads.</p>
+
+	<h3>Defer JavaScript</h3>
+	<p>
+		JavaScript can delay page rendering if it blocks HTML parsing. Defer or load non-critical scripts asynchronously to prevent this.
+	</p>
+	<p>Example:</p>
+	<pre class="vf-code-example__pre"><code>&lt;script src="app.js" defer&gt;&lt;/script&gt;</code></pre>
+	<p>Using <code>defer</code> allows the browser to continue parsing HTML while the script loads in the background.</p>
+	<p>Best practices:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Lazy-load non-essential scripts</li>
+		<li class="vf-list__item">Split JavaScript into smaller bundles</li>
+		<li class="vf-list__item">Avoid heavy frameworks where possible</li>
+		<li class="vf-list__item">Load interactivity only when needed</li>
+	</ul>
+
+	<h3>Skeleton UI Patterns</h3>
+	<p>
+		Skeleton UI shows placeholders while content loads, improving perceived performance and avoiding layout shifts. Instead of blank screens or spinners, it displays the structure of the content.
+	</p>
+	<strong>Benefits:</strong>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Signals that content is loading</li>
+		<li class="vf-list__item">Keeps layout stable</li>
+		<li class="vf-list__item">Reduces perceived wait time</li>
+	</ul>
+	<p>Best used for dynamic content, such as data or visualisations.</p>
+	<p>Example CSS skeleton pattern:</p>
+	<pre class="vf-code-example__pre"><code>.skeleton {
+  background-color: #e0e0e0;
+height: 16px;
+border-radius: 4px;
+animation: shimmer 1.5s infinite;
+}</code></pre>
+
+	<h3>Text-First / HTML-First Rendering</h3>
+	<p>
+		Text is the fastest content to load. Prioritising it ensures users can read and navigate page information,
+		even on slow networks.
+	</p>
+	<strong>Prioritise:</strong>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Headings and summaries</li>
+		<li class="vf-list__item">Key information</li>
+		<li class="vf-list__item">Navigation</li>
+		<li class="vf-list__item">Basic page structure</li>
+	</ul>
+	<strong>Load order:</strong>
+	<ol class="vf-list vf-list--ordered">
+		<li class="vf-list__item">HTML + text</li>
+		<li class="vf-list__item">Basic CSS</li>
+		<li class="vf-list__item">Images/media</li>
+		<li class="vf-list__item">JavaScript</li>
+	</ol>
+	<p>
+		This ensures the page remains useful while enhancements load.
+	</p>
+	<p>Text is typically the smallest and fastest-loading resource. A text-first strategy ensures users can read content immediately without waiting for images, fonts, or scripts to load.</p>
+	<p>Text-first rendering prioritises:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Headings and summaries</li>
+		<li class="vf-list__item">Key dataset information</li>
+		<li class="vf-list__item">Navigation links</li>
+		<li class="vf-list__item">Basic page structure</li>
+	</ul>
+	<p>
+		Visual elements such as charts or large images should load after the initial content.
+	</p>
+	<p>Example page loading order:</p>
+	<ol class="vf-list vf-list--ordered">
+		<li class="vf-list__item">HTML structure and text</li>
+		<li class="vf-list__item">Basic CSS styling</li>
+		<li class="vf-list__item">Images and media</li>
+		<li class="vf-list__item">Interactive scripts</li>
+	</ol>
+	<p>
+		This staged approach ensures that the page remains useful even during slow loading conditions.
+	</p>
+
+	<h2 id="dos-donts" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Do / Don't</h2>
+	<h4>Do</h4>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Show meaningful text in initial HTML</li>
+		<li class="vf-list__item">Load features progressively</li>
+		<li class="vf-list__item">Use skeletons for dynamic content</li>
+		<li class="vf-list__item">Defer or lazy-load scripts</li>
+	</ul>
+
+	<h4>Don't</h4>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Show blank screens</li>
+		<li class="vf-list__item">Inject core content via JavaScript</li>
+		<li class="vf-list__item">Load large assets before text</li>
+		<li class="vf-list__item">Rely entirely on JS frameworks</li>
+	</ul>
+
+	<h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Checklist</h2>
+	<p>Developer implementing this strategy should verify the following:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Core page content appears without JavaScript</li>
+		<li class="vf-list__item">Important headings and summaries are included in the initial HTML</li>
+		<li class="vf-list__item">JavaScript is deferred or loaded asynchronously</li>
+		<li class="vf-list__item">Interactive features load after core content</li>
+		<li class="vf-list__item">Skeleton placeholders are used where appropriate</li>
+		<li class="vf-list__item">Pages remain usable when JavaScript is unavailable</li>
+	</ul>
+
+	<h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Further reading</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><a class="vf-link" href="https://alistapart.com/article/priority-guides-a-content-first-alternative-to-wireframes/" target="_blank" rel="noopener noreferrer">Priority Guides: A Content-First Alternative to Wireframes - A List Apart</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.amigostudios.co/blog/core-web-vitals-optimization-belfast-businesses" target="_blank" rel="noopener noreferrer">Core Web Vitals Optimisation Guide for Belfast Businesses 2025</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.redcmarketing.com/best-practices-for-optimising-core-web-vitals-in-2026/" target="_blank" rel="noopener noreferrer">Best practices for optimising Core Web Vitals in 2026 | Red C Marketing</a></li>
+	</ul>
+
+</article>

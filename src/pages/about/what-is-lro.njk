@@ -1,0 +1,161 @@
+---
+title: What is Low Resource Optimisation (LRO)?
+layout: layouts/topic.njk
+templateEngineOverride: njk
+---
+
+<article class="vf-content">
+
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400">Contents</h2>
+
+	<nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+		<ul class="vf-list">
+			<li class="vf-list__item"><a href="#what-does-low-resource-mean" class="vf-link">What does low resource mean?</a></li>
+			<li class="vf-list__item"><a href="#common-low-resource-scenarios" class="vf-link">Common low-resource scenarios</a></li>
+			<li class="vf-list__item"><a href="#key-characteristics" class="vf-link">Key Characteristics (in the context of web services)</a></li>
+			<li class="vf-list__item"><a href="#scope" class="vf-link">Scope of this framework</a></li>
+			<li class="vf-list__item"><a href="#beyond-web" class="vf-link">Beyond Web: Broader EMBL-EBI services context</a></li>
+			<li class="vf-list__item"><a href="#core-focus-areas" class="vf-link">Core focus areas of the LRO framework</a></li>
+			<li class="vf-list__item"><a href="#out-of-scope" class="vf-link">Out of scope of this framework</a></li>
+		</ul>
+	</nav>
+
+	<h2 id="what-does-low-resource-mean" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">What does low resource mean?</h2>
+	<p><i>
+		In the context of web services, low-resource refers to conditions in which performance and accessibility are constrained by factors such as limited network speed, high latency, restricted data availability, or limited device and browser capabilities.
+	</i></p>
+	<p><i>
+		Websites designed for these environments must prioritise lightweight delivery, fast rendering, and resilient access, ensuring usability even under degraded conditions.
+	</i></p>
+
+	<h3 id="common-low-resource-scenarios">Common low-resource scenarios</h3>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">
+			A <i>low-bandwidth area</i> is a state or environment with limited internet speed and connectivity, resulting in slower data transmission and a less seamless user experience when browsing websites or using online services.
+		</li>
+		<li class="vf-list__item">
+			<i>A high-latency network</i> is one in which the network round-trip time exceeds 200ms, common in satellite connections or remote regions, causing delays in page interactions and real-time features even with adequate bandwidth.
+		</li>
+		<li class="vf-list__item">
+			<i>Constrained device resources</i> refers to the limited performance capabilities of older or low-end devices with limited RAM (≤1GB), low-speed processors, and outdated browsers, resulting in slow JavaScript execution, frequent browser freezes, and the inability to render complex interfaces.
+		</li>
+		<li class="vf-list__item">
+			<i>Unstable connectivity</i> describes networks with frequent disconnections or variable quality, preventing reliable file transfers, multi-step workflows, and real-time collaboration features.
+		</li>
+	</ul>
+
+	<h3 id="key-characteristics">Key Characteristics (in the context of web services)</h3>
+	<p>
+		A <strong>low-resource environment</strong> is characterised by a combination of infrastructural, economic, technological, and socio-cultural factors that collectively limit the performance, accessibility, and usability of web services.
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><strong>Limited or underdeveloped infrastructure</strong>, leading to unreliable power availability, inconsistent network connectivity and limited communication facilities, restricting reliable access to web services.</li>
+		<li class="vf-list__item"><strong>Insufficient funding for technology and infrastructure development</strong>, combined with individual affordability challenges, limits access to modern devices, stable internet connections, and paid digital services.</li>
+		<li class="vf-list__item"><strong>Lack of access to advanced equipment</strong>, updated software, and adequate computing power results in slower device performance and reduced compatibility with modern web technologies.</li>
+		<li class="vf-list__item"><strong>Remote or hard-to-reach locations</strong> often face high costs and logistical challenges in establishing and maintaining network infrastructure, resulting in reduced bandwidth and unreliable connectivity.</li>
+		<li class="vf-list__item"><strong>Low digital literacy levels and linguistic diversity</strong> can hinder the effective use of web applications, reducing inclusivity and user engagement.</li>
+	</ul>
+	<p>
+		These factors collectively contribute to significant performance and usability challenges in web environments, such as:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Limited compatibility on low-spec or older devices</li>
+		<li class="vf-list__item">Slow loading times or incomplete rendering due to heavy assets or complex design elements</li>
+		<li class="vf-list__item">Limited or outdated compute infrastructure (hardware, software, and tooling), with downstream processing capacity typically being the main bottleneck</li>
+		<li class="vf-list__item">Reduced usability and degraded user experience, particularly when web services are not optimised for low bandwidth, intermittent connectivity, or offline access.</li>
+	</ul>
+
+	<h2 id="scope" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Scope of this framework</h2>
+	<p>
+		This framework focuses on <strong>web-based optimisation</strong>, providing practical and actionable guidance to improve
+		usability, performance, and accessibility across EMBL-EBI's public services.
+	</p>
+
+	<h3 id="beyond-web">Beyond Web: Broader EMBL-EBI services context</h3>
+	<p>
+		EMBL-EBI services operate within a distributed data services ecosystem, where users interact through multiple
+		channels, including:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Interactive web interfaces and browsers</li>
+		<li class="vf-list__item">Bulk data access and downloads</li>
+		<li class="vf-list__item">Programmatic APIs and workflow integrations</li>
+		<li class="vf-list__item">Job submission systems</li>
+		<li class="vf-list__item">Data submission pipelines</li>
+	</ul>
+	<p>
+		Low-resource constraints can affect the full service lifecycle:
+	</p>
+	<p>
+		Discover → Access → Compute → Submit → Retrieve → Reuse
+	</p>
+	<p>
+		Users may experience different levels of potential constraint across these touchpoints. For example, successful
+		discovery in a website may be feasible, while downloading large datasets or performing data-intensive analysis
+		remains challenging.
+	</p>
+	<p>
+		This framing ensures a clearer, actionable focus on web-based optimisation while remaining consistent with the
+		broader multi-dimensional nature of low-resource environments.
+	</p>
+
+	<h2 id="core-focus-areas" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Core focus areas of the LRO framework</h2>
+	<ol class="vf-list vf-list--ordered">
+		<li class="vf-list__item">
+			Performance optimisation
+			<ul class="vf-list vf-list--unordered">
+				<li class="vf-list__item">Prioritise lightweight service design to reduce load times on slow or unstable connections.</li>
+				<li class="vf-list__item">Use techniques such as lazy loading, minified code, API-aware summarisation, compressed images, and caching strategies to improve responsiveness.</li>
+				<li class="vf-list__item">Limit use of heavy scripts, animations, or third-party integrations that can increase latency.</li>
+			</ul>
+		</li>
+		<li class="vf-list__item">
+			Adaptive and Responsive Design
+			<ul class="vf-list vf-list--unordered">
+				<li class="vf-list__item">Ensure the website works seamlessly across <strong>low-end devices</strong>, smaller screens, and varied browsers.</li>
+				<li class="vf-list__item">Adopt a <strong>minimalist design</strong> by reducing interfaces and simplifying complex layouts to focus on clarity for key tasks and usability.</li>
+				<li class="vf-list__item">Design for <strong>graceful degradation</strong>, whereby essential features remain functional even if advanced elements fail to load.</li>
+				<li class="vf-list__item">Test <strong>progressive enhancement</strong> to ensure core experiences remain robust.</li>
+			</ul>
+		</li>
+		<li class="vf-list__item">
+			Accessibility and Usability
+			<ul class="vf-list vf-list--unordered">
+				<li class="vf-list__item">Follow <strong>WCAG accessibility standards</strong> to support users with different literacy levels, languages, and abilities.</li>
+				<li class="vf-list__item"><strong>Simplify navigation</strong>, use a clear visual hierarchy, and offer <strong>multilingual support</strong> for diverse user groups.</li>
+				<li class="vf-list__item">Minimise dependency on high-speed profile sync or real-time updates to ensure usability in low-latency environments.</li>
+			</ul>
+		</li>
+		<li class="vf-list__item">
+			Offline and low-connectivity support
+			<ul class="vf-list vf-list--unordered">
+				<li class="vf-list__item">Implement <strong>service workers</strong> or <strong>offline caching</strong> so users can access key content even when disconnected.</li>
+				<li class="vf-list__item">Provide clear feedback for users when connectivity is low or limited (e.g. content not available offline messages).</li>
+			</ul>
+		</li>
+		<li class="vf-list__item">
+			Content and data efficiency
+			<ul class="vf-list vf-list--unordered">
+				<li class="vf-list__item">Prioritise <strong>text-based information</strong> and <strong>structured content</strong> over rich media when feasible.</li>
+				<li class="vf-list__item">Minimise data consumption by using <strong>content delivery networks (CDNs)</strong> and <strong>regionally cached assets</strong> to reduce latency.</li>
+				<li class="vf-list__item">Optimise media delivery by using adaptive image formats and streaming that adjusts to available bandwidth.</li>
+			</ul>
+		</li>
+	</ol>
+
+	<h2 id="out-of-scope" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Out of scope of this framework</h2>
+	<p>
+		To keep the LRO remit focused, practical, and measurable, the following areas are out of scope for LRO:
+		service-level optimisation. These are important contextual factors, but cannot be directly solved through
+		EMBL-EBI service design or delivery:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><strong>Local infrastructure limitations:</strong> Addressing national infrastructure gaps and electricity supply, not local broadband provision, or institutional network capacity.</li>
+		<li class="vf-list__item"><strong>Provision of compute infrastructure:</strong> Providing support for institutions to operate environments.</li>
+		<li class="vf-list__item"><strong>Full feature parity on all devices:</strong> Guaranteeing complete desktop-equivalent service on low-end functionality can set unrealistic expectations.</li>
+		<li class="vf-list__item"><strong>Intrinsic data scale and complexity:</strong> Eliminating or substantially reducing the inherent size, complexity, or transfer requirements of genomics and bioinformatics datasets.</li>
+		<li class="vf-list__item"><strong>Local bioinformatics capability development:</strong> Providing for training, skills development, or in-country bioinformatics capacity building.</li>
+		<li class="vf-list__item"><strong>Wider economic and systemic barriers:</strong> Addressing global funding disparities, access to paid tools, or broader economic constraints affecting participation in life sciences.</li>
+	</ul>
+
+</article>

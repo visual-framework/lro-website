@@ -1,0 +1,208 @@
+---
+title: Data Transparency & User Control
+layout: layouts/topic.njk
+templateEngineOverride: njk
+---
+
+<article class="vf-content">
+
+	{# <details class="vf-details">
+  <summary class="vf-details--summary">Table of contents</summary> #}
+	<h2>Contents</h2>
+	<nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+		<ul class="vf-list">
+			<li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+			<li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO</a></li>
+			<li class="vf-list__item"><a href="#key-principles" class="vf-link">Key principles</a></li>
+			<li class="vf-list__item"><a href="#what-users-see" class="vf-link">What users should see</a></li>
+			<li class="vf-list__item"><a href="#what-users-control" class="vf-link">What users should control</a></li>
+			<li class="vf-list__item"><a href="#ui-patterns" class="vf-link">UI patterns in constrained environments</a></li>
+			<li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation guidance</a></li>
+			<li class="vf-list__item"><a href="#pitfalls" class="vf-link">Common pitfalls</a></li>
+			<li class="vf-list__item"><a href="#dos-donts" class="vf-link">Do / Don't</a></li>
+			<li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+			<li class="vf-list__item"><a href="#metrics-tools" class="vf-link">Metrics & tools</a></li>
+			<li class="vf-list__item"><a href="#read-more" class="vf-link">Read more</a></li>
+			<li class="vf-list__item"><a href="#related-topics" class="vf-link">Related topics</a></li>
+		</ul>
+	</nav>
+{# </details> #}
+
+	<h2 id="overview">Overview</h2>
+	<p>
+		Data Transparency &amp; User Control ensures users can clearly understand how much data a feature consumes,
+		what trade-offs are involved, and how to adjust behavior based on their constraints.
+	</p>
+	<p>
+		In low-resource contexts, hidden background usage can quickly break trust. Transparent usage information and
+		simple controls make digital services more predictable, usable, and fair.
+	</p>
+
+	<h2 id="why-lro">Why this matters for LRO</h2>
+	<p>
+		For users on costly, unstable, or low-bandwidth networks, uncontrolled data usage can block access to essential
+		services. This principle helps teams design for practical realities by ensuring:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Lower risk of unexpected data costs</li>
+		<li class="vf-list__item">Better continuity when network quality drops</li>
+		<li class="vf-list__item">Improved user trust through clear communication</li>
+		<li class="vf-list__item">Reduced abandonment in high-friction journeys</li>
+	</ul>
+
+	<h2 id="key-principles">Key principles</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><strong>Be explicit:</strong> show when actions may consume significant data.</li>
+		<li class="vf-list__item"><strong>Expose trade-offs:</strong> quality, speed, and data cost should be understandable.</li>
+		<li class="vf-list__item"><strong>Give control:</strong> let users choose low-data, balanced, or high-quality modes.</li>
+		<li class="vf-list__item"><strong>Remember preferences:</strong> persist user choices safely across sessions.</li>
+		<li class="vf-list__item"><strong>Fail safely:</strong> default to low-data behavior under uncertainty.</li>
+	</ul>
+
+	<h2 id="what-users-see">What users should see</h2>
+	<p>
+		Users should receive clear signals about data-impacting actions before they commit.
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Estimated download size for heavy resources</li>
+		<li class="vf-list__item">Whether media auto-plays, streams, or preloads</li>
+		<li class="vf-list__item">When background sync or polling is active</li>
+		<li class="vf-list__item">Current mode label, such as Low Data Mode</li>
+	</ul>
+
+	<h2 id="what-users-control">What users should control</h2>
+	<p>
+		Controls should be visible, simple, and reversible.
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Media quality selection (low, standard, high)</li>
+		<li class="vf-list__item">Autoplay and preload behavior</li>
+		<li class="vf-list__item">Background refresh frequency</li>
+		<li class="vf-list__item">Image loading preference for metered connections</li>
+	</ul>
+	<pre class="vf-code-example__pre"><code>&lt;button data-mode="low"&gt;Low data&lt;/button&gt;
+&lt;button data-mode="balanced"&gt;Balanced&lt;/button&gt;
+&lt;button data-mode="high"&gt;High quality&lt;/button&gt;</code></pre>
+
+	<h2 id="ui-patterns">UI patterns in constrained environments</h2>
+	<h3>Prompt at decision points</h3>
+	<p>
+		Ask for consent before large transfers, such as video playback or archive downloads.
+	</p>
+	<h3>Progressive reveal of heavy assets</h3>
+	<p>
+		Load text summaries first, then offer an explicit "load full media" action.
+	</p>
+	<h3>Preference-first defaults</h3>
+	<p>
+		If connection quality is unknown, start in low-data mode and allow opt-in upgrades.
+	</p>
+
+	<h2 id="implementation">Implementation guidance</h2>
+	<h3>1. Detect likely constraints</h3>
+	<pre class="vf-code-example__pre"><code>const prefersReducedData = window.matchMedia('(prefers-reduced-data: reduce)').matches;
+const conn = navigator.connection;
+const isConstrained = prefersReducedData || (conn && ['slow-2g', '2g', '3g'].includes(conn.effectiveType));</code></pre>
+
+	<h3>2. Apply low-data defaults</h3>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Defer non-critical scripts and images</li>
+		<li class="vf-list__item">Disable autoplay by default</li>
+		<li class="vf-list__item">Serve compressed or lower-resolution assets first</li>
+	</ul>
+
+	<h3>3. Persist explicit user choice</h3>
+	<pre class="vf-code-example__pre"><code>function setDataMode(mode) {
+	localStorage.setItem('dataMode', mode);
+	document.documentElement.dataset.dataMode = mode;
+}</code></pre>
+
+	<h3>4. Communicate active mode</h3>
+	<p>
+		Add a compact status indicator so users always know whether low-data behavior is active.
+	</p>
+
+	<h2 id="pitfalls">Common pitfalls</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Hiding controls deep in settings pages</li>
+		<li class="vf-list__item">Using technical language instead of user-centered wording</li>
+		<li class="vf-list__item">Ignoring user preference after app restart</li>
+		<li class="vf-list__item">Loading heavy third-party scripts regardless of selected mode</li>
+		<li class="vf-list__item">Providing control but not measurable feedback</li>
+	</ul>
+
+	<h2 id="dos-donts">Do / Don't</h2>
+	<h4>Do</h4>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Label data-heavy actions before execution</li>
+		<li class="vf-list__item">Offer obvious low-data controls near content</li>
+		<li class="vf-list__item">Persist mode selection and respect it consistently</li>
+		<li class="vf-list__item">Test degraded behavior on constrained networks</li>
+	</ul>
+
+	<h4>Don't</h4>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Assume all users can afford high-quality defaults</li>
+		<li class="vf-list__item">Auto-load large media without warning</li>
+		<li class="vf-list__item">Reset user preference silently</li>
+		<li class="vf-list__item">Tie essential tasks to high-bandwidth features</li>
+	</ul>
+
+	<h2 id="checklist">Checklist</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Large actions include clear data-impact messaging</li>
+		<li class="vf-list__item">Low-data mode is easy to discover and toggle</li>
+		<li class="vf-list__item">User preference is persisted and applied globally</li>
+		<li class="vf-list__item">Heavy assets can be deferred or replaced with summaries</li>
+		<li class="vf-list__item">Behavior remains usable under slow-2g/2g/3g simulations</li>
+	</ul>
+
+	<h2 id="metrics-tools">Metrics &amp; tools</h2>
+	<p>
+		Track these outcomes to verify impact in production:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Average transferred bytes per session</li>
+		<li class="vf-list__item">Completion rate by connection profile</li>
+		<li class="vf-list__item">Opt-in rate for low-data mode</li>
+		<li class="vf-list__item">Bounce rate for data-heavy journeys</li>
+	</ul>
+	<p>
+		Useful tools include Chrome Lighthouse, WebPageTest, and Network Information API diagnostics.
+	</p>
+
+	<h2 id="read-more">Read more</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><a class="vf-link" href="https://web.dev/learn/performance/resource-hints/" target="_blank" rel="noopener noreferrer">Assist the browser with resource hints</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.w3.org/TR/mwabp/" target="_blank" rel="noopener noreferrer">W3C: Mobile Web Application Best Practices</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://polypane.app/blog/the-css-prefers-reduced-data-media-query/" target="_blank" rel="noopener noreferrer">Creating websites with prefers-reduced-data</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.donnywals.com/supporting-low-data-mode-in-your-app/" target="_blank" rel="noopener noreferrer">Supporting Low Data Mode in your app</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API" target="_blank" rel="noopener noreferrer">MDN: Network Information API</a></li>
+	</ul>
+
+	<h2 id="related-topics">Related topics</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Progressive Enhancement</li>
+		<li class="vf-list__item">Graceful Degradation</li>
+		<li class="vf-list__item">Adaptive Loading Strategies</li>
+		<li class="vf-list__item">Network Performance Optimisation</li>
+		<li class="vf-list__item">Resource Prioritisation</li>
+		<li class="vf-list__item">Caching Strategies</li>
+	</ul>
+
+	<h2>Key takeaways</h2>
+	<p>
+		Data Transparency &amp; User Control ensures that users understand and control how much data their applications consume.
+	</p>
+	<p>
+		Key outcomes include:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Improved accessibility for low-bandwidth users</li>
+		<li class="vf-list__item">Reduced unexpected data usage</li>
+		<li class="vf-list__item">Better performance under constrained conditions</li>
+		<li class="vf-list__item">Increased user trust and satisfaction</li>
+		<li class="vf-list__item">More efficient resource utilisation</li>
+	</ul>
+
+</article>

@@ -1,0 +1,415 @@
+---
+title: Anti-patterns
+layout: layouts/topic.njk
+templateEngineOverride: njk
+---
+
+<article class="vf-content">
+
+	<nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+		<ul class="vf-list">
+			<li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+			<li class="vf-list__item"><a href="#why-low-resource-users" class="vf-link">Why this matters for low-resource users</a></li>
+			<li class="vf-list__item"><a href="#common-problems" class="vf-link">Common problems</a></li>
+			<li class="vf-list__item"><a href="#design-principles" class="vf-link">Design principles involved</a></li>
+			<li class="vf-list__item"><a href="#strategy-options" class="vf-link">Strategy options</a></li>
+			<li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation guidance</a></li>
+			<li class="vf-list__item"><a href="#examples" class="vf-link">Real-world examples</a></li>
+			<li class="vf-list__item"><a href="#dos-donts" class="vf-link">Do / Don't</a></li>
+			<li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist (quick review)</a></li>
+			<li class="vf-list__item"><a href="#metrics-tools" class="vf-link">Metrics and tools</a></li>
+			<li class="vf-list__item"><a href="#related-topics" class="vf-link">Related topics</a></li>
+			<li class="vf-list__item"><a href="#key-takeaways" class="vf-link">Key takeaways</a></li>
+			<li class="vf-list__item"><a href="#further-reading" class="vf-link">Further reading</a></li>
+		</ul>
+	</nav>
+
+	<h2 id="overview">Overview</h2>
+	<p>
+		Anti-patterns refer to commonly used approaches in software design and web development that appear effective but
+		create significant performance and scalability problems when systems operate under constrained conditions.
+	</p>
+	<p>
+		In modern digital systems, designers and developers often prioritise visual sophistication, complex interactions,
+		and heavy client-side frameworks. While these features may improve perceived modernity or functionality, they
+		frequently increase computational load, bandwidth consumption, and latency.
+	</p>
+	<p>
+		In low-resource environments such as slow internet connections, unstable networks, limited device capabilities,
+		or expensive mobile data plans, these practices can significantly degrade usability.
+	</p>
+	<p>
+		Anti-patterns in the context of Low Resource Optimisation (LRO) represent design choices that lead to excessive
+		resource consumption, inefficient data transfer, and poor interaction performance.
+	</p>
+	<p>
+		Understanding and avoiding these anti-patterns is essential for building systems that remain accessible and
+		efficient across diverse network and device conditions.
+	</p>
+
+	<h3>Key idea in the LRO context</h3>
+	<p>
+		Within the LRO framework, anti-patterns highlight practices that developers should avoid when designing for
+		constrained environments.
+	</p>
+	<p>These patterns often lead to:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Excessive network traffic</li>
+		<li class="vf-list__item">Long loading times</li>
+		<li class="vf-list__item">High memory consumption</li>
+		<li class="vf-list__item">Poor accessibility on slower devices</li>
+		<li class="vf-list__item">Unpredictable interaction behaviour</li>
+	</ul>
+	<p>
+		By identifying these problematic approaches, developers can replace them with more efficient design strategies
+		that prioritise resilience and performance.
+	</p>
+
+	<h2 id="why-low-resource-users">Why this matters for low-resource users</h2>
+	<h3>User impact</h3>
+	<p>
+		Users in low-resource environments face significant challenges when interacting with heavy web applications.
+	</p>
+	<p>Examples include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Slow connections - Large pages take excessive time to load</li>
+		<li class="vf-list__item">Unstable networks - Dynamic applications may fail to initialise</li>
+		<li class="vf-list__item">Low-end devices - Heavy scripts consume memory and processing power</li>
+		<li class="vf-list__item">Limited data plans - High data usage results in increased costs</li>
+		<li class="vf-list__item">Anti-patterns intensify these issues by unnecessarily increasing resource demands.</li>
+	</ul>
+
+	<h3>Risks if ignored</h3>
+	<p>
+		When systems rely heavily on inefficient design patterns, several consequences may occur.
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Reduced accessibility: Users cannot access essential information</li>
+		<li class="vf-list__item">High abandonment rates: Users leave pages before content loads</li>
+		<li class="vf-list__item">Frequent interaction failures: Scripts and APIs fail under unstable connections</li>
+		<li class="vf-list__item">Poor scalability: Systems struggle to handle increased usage</li>
+	</ul>
+	<p>Avoiding anti-patterns improves both performance and reliability.</p>
+
+	<h2 id="common-problems">Common problems</h2>
+	<h3>Overly complex architectures</h3>
+	<p>
+		Many modern applications rely on complex client-side architectures that require significant resources to operate.
+	</p>
+	<p>Examples include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Large JavaScript bundles - Framework-heavy applications increase page weight</li>
+		<li class="vf-list__item">Multiple asynchronous dependencies - Numerous external requests slow down page rendering</li>
+		<li class="vf-list__item">Unnecessary real-time updates - Continuous API polling consumes bandwidth</li>
+	</ul>
+
+	<h3>Inefficient data delivery</h3>
+	<p>
+		Poor data management patterns may overload networks or devices.
+	</p>
+	<p>Examples include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Large unfiltered API responses - Entire datasets sent to clients unnecessarily</li>
+		<li class="vf-list__item">Repeated network requests - Inefficient query handling</li>
+		<li class="vf-list__item">Excessive data synchronisation - Continuous background updates</li>
+	</ul>
+	<p>
+		These inefficiencies significantly reduce performance in constrained environments.
+	</p>
+
+	<h2 id="design-principles">Design principles involved</h2>
+	<p>
+		Understanding anti-patterns helps reinforce several key design principles.
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><strong>Resource efficiency</strong><br>Systems should minimise unnecessary data transfer</li>
+		<li class="vf-list__item"><strong>Progressive enhancement</strong><br>Applications should function without heavy frameworks</li>
+		<li class="vf-list__item"><strong>Scalability</strong><br>Systems must remain responsive under varying loads</li>
+		<li class="vf-list__item"><strong>User-centric performance</strong><br>Interfaces should prioritise accessibility and speed</li>
+	</ul>
+	<p>
+		Avoiding anti-patterns ensures these principles are upheld.
+	</p>
+
+	<h2 id="strategy-options">Strategy options</h2>
+	<h3>SPA-only architectures</h3>
+	<p>
+		Single Page Applications (SPAs) rely heavily on client-side JavaScript to dynamically render content.
+	</p>
+	<p>
+		While SPAs provide fluid user experiences, they often require large JavaScript bundles and complex
+		initialisation processes.
+	</p>
+	<p>
+		In low-resource environments, this architecture can cause significant delays before content appears.
+	</p>
+	<p>Common issues include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Large initial script downloads</li>
+		<li class="vf-list__item">Delayed first contentful paint</li>
+		<li class="vf-list__item">Heavy client-side processing</li>
+	</ul>
+	<p>
+		Hybrid approaches, such as server-rendered pages or progressive web apps, can reduce these problems.
+	</p>
+
+	<h3>Heavy 3D by default</h3>
+	<p>
+		Modern design trends increasingly incorporate 3D graphics, WebGL animations, and immersive visual
+		experiences.
+	</p>
+	<p>
+		While visually impressive, these features significantly increase computational and bandwidth requirements.
+	</p>
+	<p>Common issues include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Large asset downloads</li>
+		<li class="vf-list__item">High GPU usage</li>
+		<li class="vf-list__item">Increased memory consumption</li>
+	</ul>
+	<p>
+		3D features should be optional rather than enabled by default, particularly for users with limited device
+		capability.
+	</p>
+
+	<h3>Infinite scrolling</h3>
+	<p>
+		Infinite scrolling automatically loads additional content as users scroll down a page.
+	</p>
+	<p>
+		While convenient in some contexts, it can create performance and usability issues.
+	</p>
+	<p>Problems include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Continuous data loading</li>
+		<li class="vf-list__item">Difficulty navigating large datasets</li>
+		<li class="vf-list__item">Increased memory usage</li>
+	</ul>
+	<p>
+		Pagination often provides a more efficient alternative for managing large collections of data.
+	</p>
+
+	<h3>No pagination</h3>
+	<p>
+		Displaying large datasets without pagination can overwhelm both users and devices.
+	</p>
+	<p>Problems include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Large API responses</li>
+		<li class="vf-list__item">Slow page rendering</li>
+		<li class="vf-list__item">High memory consumption</li>
+	</ul>
+	<p>
+		Pagination divides data into smaller segments that load more efficiently.
+	</p>
+
+	<h3>Unbounded API calls</h3>
+	<p>
+		Applications sometimes make excessive API requests without proper control mechanisms.
+	</p>
+	<p>Examples include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Repeated polling for updates</li>
+		<li class="vf-list__item">Multiple redundant requests</li>
+		<li class="vf-list__item">Unfiltered data queries</li>
+	</ul>
+	<p>
+		These practices significantly increase network traffic and server load.
+	</p>
+	<p>Solutions include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Request batching</li>
+		<li class="vf-list__item">Caching strategies</li>
+		<li class="vf-list__item">Rate limiting</li>
+	</ul>
+	<p>
+		Efficient API design ensures that only necessary data is transferred.
+	</p>
+	<p>Example of controlling excessive API requests.</p>
+	<pre class="vf-code-example__pre"><code>let lastRequest = 0;
+
+function fetchData() {
+	const now = Date.now();
+	if (now - lastRequest &gt; 5000) {
+		fetch('/api/data');
+		lastRequest = now;
+	}
+}</code></pre>
+	<p>
+		This simple mechanism prevents unnecessary repeated requests.
+	</p>
+
+	<h3>Overuse of real-time updates</h3>
+	<p>
+		Real-time data synchronisation can be valuable in certain applications, but may lead to unnecessary resource
+		consumption.
+	</p>
+	<p>Examples include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Continuous server polling</li>
+		<li class="vf-list__item">Real-time updates for non-critical information</li>
+	</ul>
+	<p>
+		Reducing update frequency or switching to event-based updates can improve efficiency.
+	</p>
+
+	<h3>Heavy UI animations</h3>
+	<p>
+		Complex animations increase both processing load and rendering time.
+	</p>
+	<p>Common problems include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Increased CPU usage</li>
+		<li class="vf-list__item">Reduced frame rates on slower devices</li>
+	</ul>
+	<p>
+		Minimal animations or static alternatives often provide better performance.
+	</p>
+
+	<h3>Excessive third-party dependencies</h3>
+	<p>
+		Many websites include multiple external services such as analytics, advertising networks, or social media
+		widgets.
+	</p>
+	<p>Problems include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Additional network requests</li>
+		<li class="vf-list__item">Increased page weight</li>
+		<li class="vf-list__item">Dependency failures</li>
+	</ul>
+	<p>
+		Minimising third-party integrations improves reliability and performance.
+	</p>
+
+	<h3>Large unoptimised database queries</h3>
+	<p>
+		Poor query design can result in excessive data being transferred.
+	</p>
+	<p>Examples include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Fetching entire tables instead of filtered data</li>
+		<li class="vf-list__item">Inefficient query structures</li>
+	</ul>
+	<p>
+		Optimised queries reduce both server load and network traffic.
+	</p>
+
+	<h2 id="implementation">Implementation guidance</h2>
+	<h3>Audit system architecture</h3>
+	<p>
+		Identify areas where resource usage is unnecessarily high.
+	</p>
+	<p>Examples include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Large script bundles</li>
+		<li class="vf-list__item">Excessive API calls</li>
+		<li class="vf-list__item">Heavy visual assets</li>
+	</ul>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Replace inefficient patterns</li>
+		<li class="vf-list__item">Introduce efficient alternatives such as pagination, caching, and lazy loading</li>
+		<li class="vf-list__item">Implement performance monitoring</li>
+		<li class="vf-list__item">Track metrics such as network requests and resource consumption</li>
+		<li class="vf-list__item">Test under constrained conditions</li>
+		<li class="vf-list__item">Simulate slow network environments to evaluate system behaviour</li>
+	</ul>
+
+	<h2 id="examples">Real-world examples</h2>
+	<h3>Heavy single-page applications</h3>
+	<p>
+		Many modern websites rely entirely on large JavaScript frameworks, which delays content rendering on slower
+		devices.
+	</p>
+	<h3>Social media infinite scroll</h3>
+	<p>
+		Infinite scrolling feeds continuously load content, consuming large amounts of data and memory.
+	</p>
+	<h3>Large analytics dashboards</h3>
+	<p>
+		Dashboards often load massive datasets without pagination, significantly slowing performance.
+	</p>
+
+	<h2 id="dos-donts">Do / Don't</h2>
+	<h4>Do</h4>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Use pagination for large datasets</li>
+		<li class="vf-list__item">Limit API requests</li>
+		<li class="vf-list__item">Optimise database queries</li>
+		<li class="vf-list__item">Use progressive loading strategies</li>
+		<li class="vf-list__item">Provide fallback modes for advanced features</li>
+	</ul>
+
+	<h4>Don't</h4>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Depend entirely on large SPA frameworks</li>
+		<li class="vf-list__item">Enable heavy 3D graphics by default</li>
+		<li class="vf-list__item">Load unlimited data through infinite scrolling</li>
+		<li class="vf-list__item">Fetch unnecessary API data</li>
+		<li class="vf-list__item">Overload pages with third-party scripts</li>
+	</ul>
+
+	<h2 id="checklist">Checklist (quick review)</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">[ ] SPA architecture balanced with server rendering</li>
+		<li class="vf-list__item">[ ] Large datasets paginated</li>
+		<li class="vf-list__item">[ ] API calls limited and optimised</li>
+		<li class="vf-list__item">[ ] Heavy graphics optional rather than default</li>
+		<li class="vf-list__item">[ ] Third-party dependencies minimised</li>
+		<li class="vf-list__item">[ ] Animations lightweight and optional</li>
+	</ul>
+
+	<h2 id="metrics-tools">Metrics and tools</h2>
+	<h3>Key metrics</h3>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Total page weight</li>
+		<li class="vf-list__item">Number of API requests</li>
+		<li class="vf-list__item">Script execution time</li>
+		<li class="vf-list__item">Memory usage</li>
+		<li class="vf-list__item">User interaction latency</li>
+	</ul>
+	<h3>Useful tools</h3>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Google Lighthouse</li>
+		<li class="vf-list__item">WebPageTest</li>
+		<li class="vf-list__item">PageSpeed Insights</li>
+	</ul>
+
+	<h2 id="related-topics">Related topics</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Design patterns</li>
+		<li class="vf-list__item">Page and interaction design principles</li>
+		<li class="vf-list__item">Progressive enhancement</li>
+		<li class="vf-list__item">Graceful degradation</li>
+		<li class="vf-list__item">Network optimisation strategies</li>
+	</ul>
+
+	<h2 id="key-takeaways">Key takeaways</h2>
+	<p>
+		Anti-patterns highlight design approaches that significantly reduce system performance and accessibility in
+		low-resource environments.
+	</p>
+	<p>
+		By recognising practices such as SPA-only architectures, heavy 3D rendering, infinite scrolling, and unbounded
+		API calls, developers can avoid inefficient implementations and adopt more resource-efficient alternatives.
+	</p>
+	<p>
+		Avoiding these anti-patterns ensures that digital systems remain accessible, performant, and scalable across
+		diverse network conditions.
+	</p>
+
+	<h2 id="further-reading">Further reading</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><a class="vf-link" href="https://www.researchgate.net/publication/387172651_Patterns_for_Software_Systems_in_Low-Resource_Environments" target="_blank" rel="noopener noreferrer">(PDF) Patterns for Software Systems in Low-Resource Environments</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.ikangai.com/pwa-vs-spa-key-differences-is-one-better-than-the-other/" target="_blank" rel="noopener noreferrer">PWA vs SPA: Key Differences | Is One Better Than The Other?</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.sciencedirect.com/science/article/pii/S0950584922000073" target="_blank" rel="noopener noreferrer">Motivations, benefits, and issues for adopting Micro-Frontends: A Multivocal Literature Review - ScienceDirect</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://lobehub.com/market/items/3d-web-experience" target="_blank" rel="noopener noreferrer">3d-web-experience | Skills Marketplace · LobeHub</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.simplilearn.com/latest-web-design-trends-article" target="_blank" rel="noopener noreferrer">Latest Web Design Trends (2026): Make Your Site Unforgettable</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.quora.com/From-a-performance-perspective-would-you-recommend-using-infinite-scrolling-or-pagination" target="_blank" rel="noopener noreferrer">From a performance perspective would you recommend using infinite scrolling or pagination? - Quora</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.onething.design/post/pagination-vs-infinite-scroll-which-is-better" target="_blank" rel="noopener noreferrer">Pagination vs. Infinite Scroll : Which is Better? - Onething Design</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.smashingmagazine.com/2024/02/ui-patterns-fail-scale/" target="_blank" rel="noopener noreferrer">UI Patterns That Fail at Scale (And Why They Keep Getting Used)</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://medium.com/dotnet-new/mastering-linq-tips-and-tricks-for-faster-more-scalable-queries-18dc5fe720f4" target="_blank" rel="noopener noreferrer">Mastering LINQ: Tips and Tricks for Faster, More Scalable Queries | by Rob Hutton | dotnet new() | Medium</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://medium.com/@AnjuGupta/what-are-api-anti-patterns-apis-application-programming-interfaces-c885f776a740" target="_blank" rel="noopener noreferrer">What Are API Anti-Patterns?. APIs (Application Programming...) | by AnjuGupta | Medium</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.researchgate.net/publication/390248824_Balancing_Responsiveness_and_Resource_Efficiency_A_Comparative_Study_of_Caching_and_Pagination_Strategies_in_Web_Applications" target="_blank" rel="noopener noreferrer">(PDF) Balancing Responsiveness and Resource Efficiency: A Comparative Study of Caching and Pagination Strategies in Web Applications</a></li>
+	</ul>
+
+</article>

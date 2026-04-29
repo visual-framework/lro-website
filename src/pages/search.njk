@@ -1,0 +1,27 @@
+---
+title: Search
+subtitle: Search documentation and guidance.
+date: 2026-04-22 12:24:50
+layout: layouts/base.njk
+---
+<section class="vf-u-padding__top--800 vf-u-padding__bottom--400">
+  <div class="vf-stack vf-search-client-side--no-index">
+    <h1 class="vf-intro__heading">{{ title }}</h1>
+    {% if subtitle %}
+    <h2 class="vf-text vf-text-heading--2">{{ subtitle }}</h2>
+    {% endif %}
+  </div>
+</section>
+
+  <div class="vf-content | vf-stack">
+{% render '@vf-search-client-side--default', {
+  "search_client_prompt": "Enter a search query",
+  "search_client_autofocus": true,
+  "search_client_button": true,
+  "search_client_button_text": "Search",
+  "search_client_action": ('/search/' | url),
+  "search_client_script": ('/search_index.js' | url),
+  "search_client_results": true,
+  "search_client_id": "search_query"
+} %}
+  </div>

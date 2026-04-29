@@ -1,0 +1,328 @@
+---
+title: Progressive Enhancement
+layout: layouts/topic.njk
+templateEngineOverride: njk
+---
+
+<article class="vf-content">
+
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400">Contents</h2>
+
+	<nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+		<ul class="vf-list">
+			<li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+			<li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO</a></li>
+			<li class="vf-list__item"><a href="#core-principle" class="vf-link">Core principle</a></li>
+			<li class="vf-list__item"><a href="#key-principles" class="vf-link">Key design principles</a></li>
+			<li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation guidance</a></li>
+			<li class="vf-list__item"><a href="#dos-donts" class="vf-link">Do / Don't</a></li>
+			<li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+			<li class="vf-list__item"><a href="#metrics-tools" class="vf-link">Metrics & Tools</a></li>
+			<li class="vf-list__item"><a href="#benchmarks" class="vf-link">Benchmarks</a></li>
+			<li class="vf-list__item"><a href="#tools" class="vf-link">Tools</a></li>
+			<li class="vf-list__item"><a href="#related-topics" class="vf-link">Related Topics</a></li>
+			<li class="vf-list__item"><a href="#further-reading" class="vf-link">Further Reading</a></li>
+		</ul>
+	</nav>
+
+	<h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Overview</h2>
+	<p>
+		Progressive Enhancement (PE) is a strategy that delivers <strong>core content and functionality first</strong>, ensuring all users can access and use a site, regardless of device, browser, or network.
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Works reliably on slow networks and low-end devices</li>
+		<li class="vf-list__item">Keeps content accessible even if JavaScript fails</li>
+		<li class="vf-list__item">Improves resilience and usability for all users</li>
+	</ul>
+	<p>
+		In low-resource environments, this approach prevents feature failure from becoming service failure. Users can
+		still access content and complete essential tasks, even when JavaScript is limited, bandwidth is poor, or device
+		capability is constrained.
+	</p>
+
+	<h3>Core principle</h3>
+	<p>
+		Build for the simplest environment first that meets user needs, then enhance where possible.
+	</p>
+	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+		<img src="{{ '/images/content_images/LRO diagram 2.2a.avif' | url }}" alt="Aaron Walter's hierarchy of user needs" loading="lazy">
+		<figcaption class="vf-figure__caption">Aaron Walter's hierarchy of user needs</figcaption>
+	</figure>
+	<h3>Key Idea</h3>
+	<p>
+		Progressive Enhancement starts with the most basic experience and improves it for better devices and networks. It follows that you must build for constraints first, then enhance where possible.
+	</p>
+
+	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+	<img src="{{ '/images/content_images/LRO diagram 2.2b.avif' | url }}" alt="Aaron Walter's hierarchy of user needs" loading="lazy">
+		<figcaption class="vf-figure__caption"></figcaption>
+	</figure>
+	<p>
+		In LRO, this ensures applications:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Work on low-end devices</li>
+		<li class="vf-list__item">Load reliably on slow or unstable networks</li>
+		<li class="vf-list__item">Remain usable without JavaScript</li>
+		<li class="vf-list__item">Deliver content even if advanced features fail</li>
+	</ul>
+
+	<h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Why this matters for LRO</h2>
+	<p>
+		Many users operate in constrained environments. Progressive Enhancement ensures access for users with:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><strong>Slow networks</strong> → content loads immediately without waiting for large assets</li>
+		<li class="vf-list__item"><strong>Low-end devices</strong> → reduced CPU and memory usage</li>
+		<li class="vf-list__item"><strong>Limited data plans</strong> → smaller payloads reduce cost</li>
+		<li class="vf-list__item"><strong>Unstable connections</strong> → content remains accessible even if enhancements fail</li>
+	</ul>
+	<p>
+		Users can still:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Read content</li>
+		<li class="vf-list__item">Navigate pages</li>
+		<li class="vf-list__item">Submit forms</li>
+		<li class="vf-list__item">Access essential information</li>
+	</ul>
+
+	<h3>Risks if Ignored</h3>
+	<p>
+		Without Progressive Enhancement:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Blank screens while JavaScript loads</li>
+		<li class="vf-list__item">Broken functionality when scripts fail</li>
+		<li class="vf-list__item">Large downloads that exceed data limits</li>
+		<li class="vf-list__item">Long delays before interaction</li>
+		<li class="vf-list__item">Complete inaccessibility and broken applications in extreme cases</li>
+	</ul>
+	<h3>Why this happens in an LRO context</h3>
+	<p>
+		These issues are amplified because:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Slow networks delay asset loading</li>
+		<li class="vf-list__item">Low-end devices struggle with large JavaScript execution</li>
+		<li class="vf-list__item">Unstable connections interrupt downloads</li>
+		<li class="vf-list__item">Older browsers may not support the required APIs</li>
+	</ul>
+
+	<h2 id="key-principles" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Key design principles</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Content-first design - Core information must always be accessible</li>
+		<li class="vf-list__item">Progressive enhancement - Enhancements should build on a reliable base</li>
+		<li class="vf-list__item">Graceful degradation - Features should fail without breaking the entire experience</li>
+		<li class="vf-list__item">Reliability Over Richness - A simple working experience is better than a complex, broken one</li>
+		<li class="vf-list__item">Minimal data usage - Avoid unnecessary downloads</li>
+		<li class="vf-list__item">Device-agnostic implementation - Do not assume specific hardware or browser capabilities</li>
+		<li class="vf-list__item">Separation of structure (HTML), style (CSS), and behaviour (Javascript)</li>
+	</ul>
+
+	<h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Implementation guidance</h2>
+	<p>Use an HTML-first architecture with progressive CSS and JavaScript enhancement. Essential content should always be available before styling or interactivity loads.</p>
+	<h3>HTML</h3>
+	<p>
+		Start with server-rendered HTML that contains the page’s core content and functionality. HTML loads quickly, requires little processing, and works across all browsers, making it the most reliable foundation in low-resource environments.
+	</p>
+	<p>Ensure that:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Key content exists directly in the HTML</li>
+		<li class="vf-list__item">Navigation links and forms work without JavaScript</li>
+		<li class="vf-list__item">Semantic, accessible elements are used</li>
+	</ul>
+	<p>Avoid:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Rendering content only through JavaScript</li>
+		<li class="vf-list__item">Empty &lt;div id="root"&gt; pages</li>
+		<li class="vf-list__item">Missing semantic markup</li>
+	</ul>
+	<pre class="vf-code-example__pre"><code>
+&lt;main&gt;
+&lt;h1&gt;Training Summary&lt;/h1&gt;
+&lt;p&gt;This content loads instantly without JavaScript.&lt;/p&gt;
+&lt;/main&gt;
+	</code></pre>
+	<p>
+		This form remains functional even if JavaScript does not load.
+	</p>
+
+	<h3>CSS</h3>
+	<p>
+		Use CSS to enhance layout and appearance, not to provide core functionality. Content should remain accessible even if CSS fails to load.
+	</p>
+	<p>Use:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Modern CSS features progressively</li>
+		<li class="vf-list__item">Simple fallbacks for older browsers</li>
+		<li class="vf-list__item">Lightweight styling systems</li>
+	</ul>
+	<p>Avoid:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Layouts that depend entirely on large CSS frameworks</li>
+		<li class="vf-list__item">Heavy CSS resets</li>
+		<li class="vf-list__item">Browser-specific hacks</li>
+	</ul>
+	<p>Fallback example:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Modern browser → grid layout</li>
+		<li class="vf-list__item">Older browser → simple stacked layout</li>
+	</ul>
+
+	<h3>JavaScript</h3>
+	<p>
+		Add JavaScript only once the core page is already working. Interactivity should enhance the experience, not be required for the page to function.
+	</p>
+	<p>
+		JavaScript can fail due to disabled scripts, slow downloads, parsing errors, or browser incompatibility, so users must still be able to access essential core content and actions.
+	</p>
+	<p>Ensure that:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Functionality works without JavaScript</li>
+		<li class="vf-list__item">Feature detection is used before advanced behaviour runs</li>
+		<li class="vf-list__item">Scripts load after the main content</li>
+		<li class="vf-list__item">Heavy features are loaded only when needed</li>
+	</ul>
+	<p>Avoid:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Rendering the entire site in JavaScript</li>
+		<li class="vf-list__item">Large dependency chains</li>
+		<li class="vf-list__item">Unhandled errors that break the page</li>
+	</ul>
+	<p>Example:</p>
+	<pre class="vf-code-example__pre"><code>
+&lt;button id="submit"&gt;Submit&lt;/button&gt;
+&lt;script&gt;
+		if ('fetch' in window) {
+			// Enhanced behaviour
+		}
+&lt;/script&gt;
+	</code></pre>
+	<p>Build-time improvements:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Reduce JavaScript bundle size</li>
+		<li class="vf-list__item">Remove unnecessary dependencies</li>
+		<li class="vf-list__item">Use modern CSS features progressively</li>
+	</ul>
+	<p>Runtime behaviour:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Load enhancements after essential content</li>
+		<li class="vf-list__item">Conditionally load advanced features</li>
+		<li class="vf-list__item">Use feature detection before execution</li>
+	</ul>
+	<p>Fallback strategies</p>
+	<p>Provide simple alternatives for advanced features, for example:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">System fonts before web fonts</li>
+		<li class="vf-list__item">Standard forms before AJAX forms</li>
+		<li class="vf-list__item">Basic layouts before CSS Grid layouts</li>
+	</ul>
+	<p>Key guidance</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Never block content behind JavaScript</li>
+		<li class="vf-list__item">Always deliver essential content through HTML</li>
+		<li class="vf-list__item">Load enhancements only when supported and needed</li>
+	</ul>
+	<p>Use this approach when building public websites, supporting a wide range of devices, targeting global audiences, or meeting accessibility requirements.</p>
+	<p>Basic example</p>
+	<p>Minimal progressive enhancement pattern.</p>
+	<pre class="vf-code-example__pre"><code>
+&lt;main&gt;
+&lt;h1&gt;Latest Updates&lt;/h1&gt;
+&lt;p&gt;Content loads immediately.&lt;/p&gt;
+&lt;/main&gt;
+&lt;script defer src="enhancements.js"&lt;&lt;/script&lt;
+	</code></pre>
+	<p>This ensures the content loads first, while enhancements load later.</p>
+	<p>Advanced example</p>
+	<p>Feature detection example.</p>
+	<pre class="vf-code-example__pre"><code>
+&lt;main&gt;
+&lt;h1&gt;Latest Updates&lt;/h1&gt;
+&lt;p&gt;Content loads immediately.&lt;/p&gt;
+&lt;/main&gt;
+&lt;script defer src="enhancements.js"&lt;&lt;/script&lt;
+	</code></pre>
+	<p>Enhanced functionality is only enabled if supported.</p>
+
+	<h2 id="dos-donts" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Do / Don't</h2>
+
+	<h4>Do</h4>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Deliver core content via HTML</li>
+		<li class="vf-list__item">Ensure functionality works without JavaScript</li>
+		<li class="vf-list__item">Load enhancements progressively</li>
+		<li class="vf-list__item">Use feature detection</li>
+		<li class="vf-list__item">Test under slow network conditions</li>
+	</ul>
+
+	<h4>Don't</h4>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Depend entirely on client-side rendering</li>
+		<li class="vf-list__item">Ship large JavaScript bundles unnecessarily</li>
+		<li class="vf-list__item">Hide content while assets load</li>
+		<li class="vf-list__item">Assume browsers are modern</li>
+		<li class="vf-list__item">Break functionality when scripts fail</li>
+	</ul>
+
+	<h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Checklist</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Core content loads without JavaScript</li>
+		<li class="vf-list__item">Works on slow network profiles</li>
+		<li class="vf-list__item">Page weight minimised</li>
+		<li class="vf-list__item">Essential tasks work without enhancements</li>
+		<li class="vf-list__item">Failure scenarios handled gracefully</li>
+		<li class="vf-list__item">Tested with CSS and JavaScript disabled</li>
+	</ul>
+
+	<h2 id="metrics-tools" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Metrics & Tools</h2>
+	<p>These metrics are used to evaluate performance and resilience in low-resource environments:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><strong>Page Weight -</strong> Total size of HTML, CSS, JavaScript, images, and other assets loaded for the initial view.</li>
+		<li class="vf-list__item"><strong>First Contentful Paint (FCP) -</strong> Time until the first meaningful content appears on screen.</li>
+		<li class="vf-list__item"><strong>Time to Interactive (TTI) -</strong> Time until the page becomes fully interactive and responsive to user input.</li>
+		<li class="vf-list__item"><strong>JavaScript Execution Time -</strong> Time spent parsing and executing JavaScript, especially during initial load.</li>
+		<li class="vf-list__item"><strong>Script Error Rate -</strong> Frequency of runtime errors that impact functionality or user experience.</li>
+	</ul>
+
+	<h2 id="benchmarks" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Benchmarks</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Initial page weight: <strong>under 300 KB<</strong>/li>
+		<li class="vf-list__item">Core content visible: <strong>within 3 seconds on slow networks</strong></li>
+		<li class="vf-list__item">JavaScript execution: <strong>kept minimal during initial load</strong></li>
+		<li class="vf-list__item">Interactive readiness: <strong>progressive, not blocked by scripts</strong></li>
+	</ul>
+
+	<h2 id="tools" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Tools</h2>
+	<p>These tools support measurement, simulation, and validation:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><strong>Lighthouse - </strong>performance, accessibility, and best practice auditing</li>
+		<li class="vf-list__item"><strong>WebPageTest - </strong> real-world network and device simulation</li>
+		<li class="vf-list__item"><strong>Chrome DevTools - </strong> performance profiling and debugging</li>
+		<li class="vf-list__item"><strong>Network Throttling - </strong> simulation of slow/unstable connections</li>
+		<li class="vf-list__item"><strong>Synthetic Testing Profiles - </strong> automated testing under controlled device/network conditions</li>
+	</ul>
+
+	<h2 id="related-topics" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Related Topics</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Rendering Strategies</li>
+		<li class="vf-list__item">JavaScript Strategy</li>
+		<li class="vf-list__item">Network Optimisation</li>
+		<li class="vf-list__item">Caching Strategies</li>
+		<li class="vf-list__item">Error Handling</li>
+		<li class="vf-list__item">Accessibility</li>
+		<li class="vf-list__item">Offline Support (PWA)</li>
+	</ul>
+
+	<h2 id="read-more" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Further Reading</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><a class="vf-link" href="https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement" target="_blank" rel="noopener noreferrer">Progressive enhancement - Glossary | MDN</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.quirksmode.org/blog/archives/2021/02/progressive_enh_1.html" target="_blank" rel="noopener noreferrer">Progressive Enhancement reading list 2021 - QuirksBlog</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.freecodecamp.org/news/what-is-progressive-enhancement-and-why-it-matters-e80c7aaf834a/" target="_blank" rel="noopener noreferrer">What is Progressive Enhancement, and why it matters</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://archive.hankchizljaw.com/wrote/the-power-of-progressive-enhancement/" target="_blank" rel="noopener noreferrer">The power of progressive enhancement - Andy Bell</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.browserlondon.com/blog/2017/03/14/performance-benefits-progressive-enhancement/" target="_blank" rel="noopener noreferrer">The performance benefits of progressive enhancement - Browser London</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.bbc.co.uk/accessibility/forproducts/guides/html/progressive-enhancement/" target="_blank" rel="noopener noreferrer">Progressive enhancement</a></li>
+	</ul>
+
+</article>
