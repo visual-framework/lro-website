@@ -6,181 +6,441 @@ templateEngineOverride: njk
 
 <article class="vf-content">
 
-	{# <details class="vf-details">
-  <summary class="vf-details--summary">Table of contents</summary> #}
-	<h2>Contents</h2>
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400">Contents</h2>
 	<nav class="toc vf-search-client-side--no-index" aria-label="On this page">
 		<ul class="vf-list">
 			<li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+			<li class="vf-list__item"><a href="#key-idea" class="vf-link">Key idea in an LRO context</a></li>
 			<li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO</a></li>
-			<li class="vf-list__item"><a href="#key-principles" class="vf-link">Key principles</a></li>
-			<li class="vf-list__item"><a href="#what-users-see" class="vf-link">What users should see</a></li>
-			<li class="vf-list__item"><a href="#what-users-control" class="vf-link">What users should control</a></li>
-			<li class="vf-list__item"><a href="#ui-patterns" class="vf-link">UI patterns in constrained environments</a></li>
-			<li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation guidance</a></li>
-			<li class="vf-list__item"><a href="#pitfalls" class="vf-link">Common pitfalls</a></li>
+			<li class="vf-list__item"><a href="#common-problems" class="vf-link">Common Problems</a></li>
+			<li class="vf-list__item"><a href="#design-principles" class="vf-link">Design Principles Involved</a></li>
+			<li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation Guidance</a></li>
+			<li class="vf-list__item"><a href="#real-world-examples" class="vf-link">Real-World Examples</a></li>
 			<li class="vf-list__item"><a href="#dos-donts" class="vf-link">Do / Don't</a></li>
-			<li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
-			<li class="vf-list__item"><a href="#metrics-tools" class="vf-link">Metrics & tools</a></li>
-			<li class="vf-list__item"><a href="#read-more" class="vf-link">Read more</a></li>
-			<li class="vf-list__item"><a href="#related-topics" class="vf-link">Related topics</a></li>
+			<li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist (quick review)</a></li>
+			<li class="vf-list__item"><a href="#metrics-tools" class="vf-link">Metrics &amp; Tools</a></li>
+			<li class="vf-list__item"><a href="#related-topics" class="vf-link">Related Topics</a></li>
+			<li class="vf-list__item"><a href="#key-takeaways" class="vf-link">Key Takeaways</a></li>
+			<li class="vf-list__item"><a href="#read-more" class="vf-link">Further reading</a></li>
 		</ul>
 	</nav>
-{# </details> #}
 
-	<h2 id="overview">Overview</h2>
+	<h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Overview</h2>
 	<p>
-		Data Transparency &amp; User Control ensures users can clearly understand how much data a feature consumes,
-		what trade-offs are involved, and how to adjust behavior based on their constraints.
+		Data Transparency &amp; User Control is a design approach where applications clearly inform users how much data will be used, when large downloads will occur, and what options exist to reduce bandwidth consumption.
 	</p>
 	<p>
-		In low-resource contexts, hidden background usage can quickly break trust. Transparent usage information and
-		simple controls make digital services more predictable, usable, and fair.
+		Modern websites often load large images, scripts, fonts, analytics tools, and third-party resources. While these improve functionality and design, they also increase data usage.
 	</p>
-
-	<h2 id="why-lro">Why this matters for LRO</h2>
 	<p>
-		For users on costly, unstable, or low-bandwidth networks, uncontrolled data usage can block access to essential
-		services. This principle helps teams design for practical realities by ensuring:
+		For users in low-resource environments such as slow networks, expensive data plans, or unstable connections this can significantly reduce usability and accessibility.
+	</p>
+	<p>
+		This principle ensures users understand:
 	</p>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Lower risk of unexpected data costs</li>
-		<li class="vf-list__item">Better continuity when network quality drops</li>
-		<li class="vf-list__item">Improved user trust through clear communication</li>
-		<li class="vf-list__item">Reduced abandonment in high-friction journeys</li>
+		<li class="vf-list__item">How much data an action will use</li>
+		<li class="vf-list__item">Which features require large downloads</li>
+		<li class="vf-list__item">How to reduce data usage</li>
 	</ul>
-
-	<h2 id="key-principles">Key principles</h2>
-	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item"><strong>Be explicit:</strong> show when actions may consume significant data.</li>
-		<li class="vf-list__item"><strong>Expose trade-offs:</strong> quality, speed, and data cost should be understandable.</li>
-		<li class="vf-list__item"><strong>Give control:</strong> let users choose low-data, balanced, or high-quality modes.</li>
-		<li class="vf-list__item"><strong>Remember preferences:</strong> persist user choices safely across sessions.</li>
-		<li class="vf-list__item"><strong>Fail safely:</strong> default to low-data behavior under uncertainty.</li>
-	</ul>
-
-	<h2 id="what-users-see">What users should see</h2>
 	<p>
-		Users should receive clear signals about data-impacting actions before they commit.
+		Instead of forcing high-bandwidth experiences, systems should offer lighter alternatives.
+	</p>
+
+	<h2 id="key-idea" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Key idea in an LRO context</h2>
+	<p>
+		Data Transparency &amp; User Control ensure systems:
 	</p>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Estimated download size for heavy resources</li>
-		<li class="vf-list__item">Whether media auto-plays, streams, or preloads</li>
-		<li class="vf-list__item">When background sync or polling is active</li>
-		<li class="vf-list__item">Current mode label, such as Low Data Mode</li>
+		<li class="vf-list__item">Clearly communicate data costs to users</li>
+		<li class="vf-list__item">Provide settings to reduce bandwidth usage</li>
+		<li class="vf-list__item">Allow users to opt out of heavy features</li>
+		<li class="vf-list__item">Warn users before large downloads</li>
+		<li class="vf-list__item">Adapt behaviour based on network conditions</li>
 	</ul>
-
-	<h2 id="what-users-control">What users should control</h2>
 	<p>
-		Controls should be visible, simple, and reversible.
+		This reduces unexpected data consumption and builds user trust.
+	</p>
+
+	<h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Why this matters for LRO</h2>
+	<h3>User Impact</h3>
+	<p>
+		Many users worldwide rely on limited network resources.
+	</p>
+	<p>
+		Examples include:
 	</p>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Media quality selection (low, standard, high)</li>
-		<li class="vf-list__item">Autoplay and preload behavior</li>
-		<li class="vf-list__item">Background refresh frequency</li>
-		<li class="vf-list__item">Image loading preference for metered connections</li>
+		<li class="vf-list__item">Mobile Data Users</li>
+		<li class="vf-list__item">Data plans may be expensive or capped</li>
+		<li class="vf-list__item">Large downloads can consume significant portions of a monthly allowance</li>
+		<li class="vf-list__item">Low Bandwidth Regions</li>
+		<li class="vf-list__item">Network infrastructure may limit download speeds</li>
+		<li class="vf-list__item">Heavy content may take a long time to load</li>
+		<li class="vf-list__item">Intermittent Connectivity</li>
+		<li class="vf-list__item">Network conditions may fluctuate</li>
+		<li class="vf-list__item">Large downloads may fail or restart</li>
+		<li class="vf-list__item">Older Devices</li>
+		<li class="vf-list__item">Hardware limitations increase loading times</li>
+		<li class="vf-list__item">Heavy applications consume additional resources</li>
 	</ul>
-	<pre class="vf-code-example__pre"><code>&lt;button data-mode="low"&gt;Low data&lt;/button&gt;
-&lt;button data-mode="balanced"&gt;Balanced&lt;/button&gt;
-&lt;button data-mode="high"&gt;High quality&lt;/button&gt;</code></pre>
-
-	<h2 id="ui-patterns">UI patterns in constrained environments</h2>
-	<h3>Prompt at decision points</h3>
 	<p>
-		Ask for consent before large transfers, such as video playback or archive downloads.
-	</p>
-	<h3>Progressive reveal of heavy assets</h3>
-	<p>
-		Load text summaries first, then offer an explicit "load full media" action.
-	</p>
-	<h3>Preference-first defaults</h3>
-	<p>
-		If connection quality is unknown, start in low-data mode and allow opt-in upgrades.
+		Providing transparency and control allows users to decide how much data they are willing to use.
 	</p>
 
-	<h2 id="implementation">Implementation guidance</h2>
-	<h3>1. Detect likely constraints</h3>
-	<pre class="vf-code-example__pre"><code>const prefersReducedData = window.matchMedia('(prefers-reduced-data: reduce)').matches;
-const conn = navigator.connection;
-const isConstrained = prefersReducedData || (conn && ['slow-2g', '2g', '3g'].includes(conn.effectiveType));</code></pre>
-
-	<h3>2. Apply low-data defaults</h3>
+	<h3>Risks If Ignored</h3>
+	<p>
+		When systems lack transparency or user control, several problems arise.
+	</p>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Defer non-critical scripts and images</li>
-		<li class="vf-list__item">Disable autoplay by default</li>
-		<li class="vf-list__item">Serve compressed or lower-resolution assets first</li>
+		<li class="vf-list__item">Unexpected data consumption: Users may unknowingly download large resources</li>
+		<li class="vf-list__item">Poor accessibility: Heavy pages may become unusable on slow networks</li>
+		<li class="vf-list__item">User frustration: Applications appear slow or broken</li>
+		<li class="vf-list__item">Excessive resource usage: Large scripts and media consume unnecessary bandwidth</li>
+		<li class="vf-list__item">Loss of trust: Users may abandon platforms that consume too much data without warning</li>
+	</ul>
+	<p>
+		Low-resource users are particularly affected when systems assume unlimited connectivity.
+	</p>
+
+	<h2 id="common-problems" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Common Problems</h2>
+	<h3>Typical Issues Seen</h3>
+	<p>
+		Many modern web systems prioritise features over efficiency, resulting in large data transfers.
+	</p>
+	<p>
+		Common problems include:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Large Media Files - High-resolution images or videos automatically loaded</li>
+		<li class="vf-list__item">Heavy JavaScript Frameworks - Large libraries downloaded even for simple tasks</li>
+		<li class="vf-list__item">Multiple Third-Party Requests - Ads, trackers, analytics, and external scripts</li>
+		<li class="vf-list__item">Unnecessary Prefetching - Resources downloaded that the user never uses</li>
+		<li class="vf-list__item">Hidden Download Costs - Users unaware of file sizes before downloading</li>
 	</ul>
 
-	<h3>3. Persist explicit user choice</h3>
-	<pre class="vf-code-example__pre"><code>function setDataMode(mode) {
-	localStorage.setItem('dataMode', mode);
-	document.documentElement.dataset.dataMode = mode;
+	<h3>Resource Hint Misuse</h3>
+	<p>
+		Resource hints, such as preload and prefetch, can improve performance but may also increase unnecessary data usage if implemented incorrectly.
+	</p>
+	<p>
+		For example:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Preload forces high-priority downloads of required resources</li>
+		<li class="vf-list__item">Prefetch downloads resources likely to be needed later</li>
+		<li class="vf-list__item">Preconnect establishes early network connections to speed up resource loading</li>
+	</ul>
+	<p>
+		While these techniques improve performance, they should be used carefully to avoid wasting bandwidth.
+	</p>
+
+	<h2 id="design-principles" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Design Principles Involved</h2>
+	<p>
+		Several core design principles support Data Transparency &amp; User Control.
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">User Empowerment - Users should control how much data they consume</li>
+		<li class="vf-list__item">Transparency - Systems should clearly communicate data costs</li>
+		<li class="vf-list__item">Efficiency - Only necessary resources should be downloaded</li>
+		<li class="vf-list__item">Adaptability - Applications should adjust behaviour based on network conditions</li>
+		<li class="vf-list__item">Progressive Disclosure - Advanced features should only load when needed</li>
+		<li class="vf-list__item">Respect For User Preferences - Systems should honour low-data settings</li>
+	</ul>
+	<p>
+		These principles ensure that applications remain accessible to users with limited connectivity.
+	</p>
+
+	<h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Implementation Guidance</h2>
+	<h3>Show Estimated Download Size</h3>
+	<p>
+		Providing file size information allows users to make informed decisions before downloading content.
+	</p>
+	<p>
+		Examples include:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">File size displayed next to download links</li>
+		<li class="vf-list__item">Dataset size shown before data export</li>
+		<li class="vf-list__item">Media size indicated before streaming or downloading</li>
+	</ul>
+	<p>
+		Example: Download Dataset (45 MB)
+	</p>
+	<p>
+		Displaying estimated file size is particularly useful for users with limited data plans.
+	</p>
+
+	<h3>Best Practices</h3>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Show file size next to download buttons</li>
+		<li class="vf-list__item">Use clear units such as KB, MB, or GB</li>
+		<li class="vf-list__item">Display estimated size before initiating download</li>
+	</ul>
+
+	<h3>Low-Data Mode Toggle</h3>
+	<p>
+		Low-data mode allows users to enable a reduced bandwidth experience. When activated, the application limits non-essential resources such as large images, videos, or animations.
+	</p>
+	<p>
+		Example behaviours:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Load compressed images instead of full-resolution images</li>
+		<li class="vf-list__item">Disable auto-playing videos</li>
+		<li class="vf-list__item">Reduce API polling frequency</li>
+		<li class="vf-list__item">Avoid loading background analytics scripts</li>
+	</ul>
+	<p>
+		Low-data preferences can be detected through system signals such as prefers-reduced-data media queries, which indicate that a user prefers lightweight content. Please check browser compatibility for this feature before implementation, though.
+	</p>
+	<p>
+		Example code
+	</p>
+	<pre class="vf-code-example__pre"><code>@media (prefers-reduced-data: reduce) {
+  .video {
+        display: none;
+  }
 }</code></pre>
 
-	<h3>4. Communicate active mode</h3>
+	<h3>Opt-Out Of High-Bandwidth Features</h3>
 	<p>
-		Add a compact status indicator so users always know whether low-data behavior is active.
+		Users should be able to disable features that consume excessive data.
+	</p>
+	<p>
+		Examples include:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Video Auto-Play: Users can disable automatic video playback</li>
+		<li class="vf-list__item">High Resolution Media: Users choose between standard and high quality</li>
+		<li class="vf-list__item">Large Interactive Visualisations: Users opt out of loading complex datasets</li>
+		<li class="vf-list__item">Real-Time Updates: Users control update frequency and timing</li>
+	</ul>
+	<p>
+		Providing control over such features reduces unnecessary network usage.
 	</p>
 
-	<h2 id="pitfalls">Common pitfalls</h2>
+	<h3>Warnings For Large Datasets</h3>
+	<p>
+		Applications should warn users before loading or downloading large datasets.
+	</p>
+	<p>
+		Examples include:
+	</p>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Hiding controls deep in settings pages</li>
-		<li class="vf-list__item">Using technical language instead of user-centered wording</li>
-		<li class="vf-list__item">Ignoring user preference after app restart</li>
-		<li class="vf-list__item">Loading heavy third-party scripts regardless of selected mode</li>
-		<li class="vf-list__item">Providing control but not measurable feedback</li>
+		<li class="vf-list__item">Display confirmation dialogues before loading large reports</li>
+		<li class="vf-list__item">Provide estimated data size before exporting files</li>
+		<li class="vf-list__item">Warn users before loading heavy visualisations</li>
+	</ul>
+	<p>
+		Example
+	</p>
+	<pre class="vf-code-example__pre"><code>Loading this dataset will download approximately 120 MB of data. Continue?</code></pre>
+	<p>
+		This prevents accidental downloads that could impact network usage.
+	</p>
+
+	<h3>Feature Gating Strategies</h3>
+	<p>
+		Feature gating allows systems to enable advanced features only when certain conditions are met.
+	</p>
+	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+		<img src="{{ '/images/content_images/LRO diagram 2.4.b.avif' | url }}" alt="Aaron Walter's hierarchy of user needs" loading="lazy">
+		<figcaption class="vf-figure__caption"></figcaption>
+	</figure>
+	<p>
+		Conditions may include:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Network speed</li>
+		<li class="vf-list__item">Device capabilities</li>
+		<li class="vf-list__item">User preferences</li>
+		<li class="vf-list__item">Data saver settings</li>
+	</ul>
+	<p>
+		Examples
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">High-Bandwidth feature gating: Interactive maps only enabled on fast networks</li>
+		<li class="vf-list__item">Image Quality Adaptation: High-resolution images served only when bandwidth allows</li>
+		<li class="vf-list__item">Background Resource Limiting: Disable prefetching when data saver mode is enabled</li>
+	</ul>
+	<p>
+		This strategy ensures resources are allocated efficiently.
+	</p>
+
+	<h3>Adaptive Resource Loading</h3>
+	<p>
+		Applications can dynamically adjust resource loading behaviour based on network conditions.
+	</p>
+	<p>
+		Example of adapting behaviour based on user data preference:
+	</p>
+	<pre class="vf-code-example__pre"><code>if (navigator.connection && navigator.connection.saveData) {
+  disableHighResolutionImages();
+}</code></pre>
+	<p>
+		This ensures users who prefer reduced data usage receive lighter content.
+	</p>
+	<p>
+		Examples include:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Lazy Loading: Images loaded only when visible on screen</li>
+		<li class="vf-list__item">Conditional Loading: Scripts loaded only when needed</li>
+		<li class="vf-list__item">Resource Prioritisation: Critical assets loaded first</li>
+	</ul>
+	<p>
+		Resource hints such as preload, preconnect, and dns-prefetch help browsers prioritise critical resources and improve perceived performance.
+	</p>
+
+	<h3>Transparent Network Behaviour</h3>
+	<p>
+		Users should understand when the application is performing network-intensive tasks.
+	</p>
+	<p>
+		Examples include:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Progress indicators during large downloads</li>
+		<li class="vf-list__item">Notifications when syncing data</li>
+		<li class="vf-list__item">Indicators showing offline or online status</li>
+	</ul>
+	<p>
+		Transparent feedback improves user trust and reduces confusion.
+	</p>
+
+	<h3>Identify High-Bandwidth Features</h3>
+	<p>
+		Examples include:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Video streaming</li>
+		<li class="vf-list__item">Large datasets</li>
+		<li class="vf-list__item">High-resolution images</li>
+		<li class="vf-list__item">Real-time data updates</li>
 	</ul>
 
-	<h2 id="dos-donts">Do / Don't</h2>
+	<h3>Provide User Controls</h3>
+	<p>
+		Allow users to adjust:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Media quality</li>
+		<li class="vf-list__item">Data usage mode</li>
+		<li class="vf-list__item">Feature activation</li>
+	</ul>
+
+	<h3>Display Data Information</h3>
+	<p>
+		Provide visible information about:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Download size</li>
+		<li class="vf-list__item">Estimated loading time</li>
+		<li class="vf-list__item">Network usage impact</li>
+	</ul>
+
+	<h3>Respect System Preferences</h3>
+	<p>
+		Applications should respect operating system settings such as:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Data saver mode</li>
+		<li class="vf-list__item">Reduced data preferences</li>
+		<li class="vf-list__item">Network cost indicators</li>
+	</ul>
+
+	<h3>Monitor Network Conditions</h3>
+	<p>
+		Systems may dynamically adjust behaviour based on:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Connection speed</li>
+		<li class="vf-list__item">Latency</li>
+		<li class="vf-list__item">Device capabilities</li>
+	</ul>
+
+	<h2 id="real-world-examples" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Real-World Examples</h2>
+	<h3>YouTube Data Saver Mode</h3>
+	<p>
+		YouTube allows users to control video quality to reduce data consumption.
+	</p>
+	<p>
+		Options include:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">144p or 360p low bandwidth streaming</li>
+		<li class="vf-list__item">Manual resolution selection</li>
+	</ul>
+
+	<h3>Google Chrome Data Saver</h3>
+	<p>
+		Chrome previously introduced a data-saving mode that compressed pages before sending them to users.
+	</p>
+	<p>
+		This significantly reduced bandwidth usage on slow networks.
+	</p>
+
+	<h3>Facebook Lite</h3>
+	<p>
+		Facebook Lite provides a simplified interface designed for low-bandwidth environments.
+	</p>
+	<p>
+		Key characteristics include:
+	</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">Minimal images</li>
+		<li class="vf-list__item">Reduced animations</li>
+		<li class="vf-list__item">Lightweight interface</li>
+	</ul>
+
+	<h2 id="dos-donts" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Do / Don’t</h2>
 	<h4>Do</h4>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Label data-heavy actions before execution</li>
-		<li class="vf-list__item">Offer obvious low-data controls near content</li>
-		<li class="vf-list__item">Persist mode selection and respect it consistently</li>
-		<li class="vf-list__item">Test degraded behavior on constrained networks</li>
+		<li class="vf-list__item">Provide visible data usage information</li>
+		<li class="vf-list__item">Offer low-data modes</li>
+		<li class="vf-list__item">Warn users before large downloads</li>
+		<li class="vf-list__item">Allow opt-out of heavy features</li>
+		<li class="vf-list__item">Adapt behaviour based on network conditions</li>
 	</ul>
 
-	<h4>Don't</h4>
+	<h4>Don’t</h4>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Assume all users can afford high-quality defaults</li>
-		<li class="vf-list__item">Auto-load large media without warning</li>
-		<li class="vf-list__item">Reset user preference silently</li>
-		<li class="vf-list__item">Tie essential tasks to high-bandwidth features</li>
+		<li class="vf-list__item">Automatically download large assets without warning</li>
+		<li class="vf-list__item">Hide file sizes or dataset sizes</li>
+		<li class="vf-list__item">Force high-bandwidth features on all users</li>
+		<li class="vf-list__item">Ignore data saver preferences</li>
+		<li class="vf-list__item">Prefetch unnecessary resources</li>
 	</ul>
 
-	<h2 id="checklist">Checklist</h2>
+	<h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Checklist (Quick Review)</h2>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Large actions include clear data-impact messaging</li>
-		<li class="vf-list__item">Low-data mode is easy to discover and toggle</li>
-		<li class="vf-list__item">User preference is persisted and applied globally</li>
-		<li class="vf-list__item">Heavy assets can be deferred or replaced with summaries</li>
-		<li class="vf-list__item">Behavior remains usable under slow-2g/2g/3g simulations</li>
+		<li class="vf-list__item">Download sizes visible to users</li>
+		<li class="vf-list__item">Low-data mode available</li>
+		<li class="vf-list__item">High-bandwidth features optional</li>
+		<li class="vf-list__item">Large dataset warnings implemented</li>
+		<li class="vf-list__item">Adaptive resource loading enabled</li>
+		<li class="vf-list__item">Network preferences respected</li>
 	</ul>
 
-	<h2 id="metrics-tools">Metrics &amp; tools</h2>
-	<p>
-		Track these outcomes to verify impact in production:
-	</p>
+	<h2 id="metrics-tools" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Metrics &amp; Tools</h2>
+	<h3>Key Metrics</h3>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Average transferred bytes per session</li>
-		<li class="vf-list__item">Completion rate by connection profile</li>
-		<li class="vf-list__item">Opt-in rate for low-data mode</li>
-		<li class="vf-list__item">Bounce rate for data-heavy journeys</li>
+		<li class="vf-list__item">Average page weight</li>
+		<li class="vf-list__item">Total transferred data per session</li>
+		<li class="vf-list__item">Resource request count</li>
+		<li class="vf-list__item">Bandwidth usage per feature</li>
+		<li class="vf-list__item">User engagement under low bandwidth</li>
 	</ul>
-	<p>
-		Useful tools include Chrome Lighthouse, WebPageTest, and Network Information API diagnostics.
-	</p>
-
-	<h2 id="read-more">Read more</h2>
+	<h3>Useful Tools</h3>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item"><a class="vf-link" href="https://web.dev/learn/performance/resource-hints/" target="_blank" rel="noopener noreferrer">Assist the browser with resource hints</a></li>
-		<li class="vf-list__item"><a class="vf-link" href="https://www.w3.org/TR/mwabp/" target="_blank" rel="noopener noreferrer">W3C: Mobile Web Application Best Practices</a></li>
-		<li class="vf-list__item"><a class="vf-link" href="https://polypane.app/blog/the-css-prefers-reduced-data-media-query/" target="_blank" rel="noopener noreferrer">Creating websites with prefers-reduced-data</a></li>
-		<li class="vf-list__item"><a class="vf-link" href="https://www.donnywals.com/supporting-low-data-mode-in-your-app/" target="_blank" rel="noopener noreferrer">Supporting Low Data Mode in your app</a></li>
-		<li class="vf-list__item"><a class="vf-link" href="https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API" target="_blank" rel="noopener noreferrer">MDN: Network Information API</a></li>
+		<li class="vf-list__item">Chrome Lighthouse</li>
+		<li class="vf-list__item">WebPageTest</li>
+		<li class="vf-list__item">Network Information API</li>
 	</ul>
 
-	<h2 id="related-topics">Related topics</h2>
+	<h2 id="related-topics" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Related Topics</h2>
 	<ul class="vf-list vf-list--unordered">
 		<li class="vf-list__item">Progressive Enhancement</li>
 		<li class="vf-list__item">Graceful Degradation</li>
@@ -190,7 +450,7 @@ const isConstrained = prefersReducedData || (conn && ['slow-2g', '2g', '3g'].inc
 		<li class="vf-list__item">Caching Strategies</li>
 	</ul>
 
-	<h2>Key takeaways</h2>
+	<h2 id="key-takeaways" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Key Takeaways</h2>
 	<p>
 		Data Transparency &amp; User Control ensures that users understand and control how much data their applications consume.
 	</p>
@@ -203,6 +463,21 @@ const isConstrained = prefersReducedData || (conn && ['slow-2g', '2g', '3g'].inc
 		<li class="vf-list__item">Better performance under constrained conditions</li>
 		<li class="vf-list__item">Increased user trust and satisfaction</li>
 		<li class="vf-list__item">More efficient resource utilisation</li>
+	</ul>
+	<p>
+		By integrating transparency mechanisms and user-controlled settings, digital systems can remain usable and inclusive across diverse network environments.
+	</p>
+
+	<h2 id="read-more" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Further reading</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><a class="vf-link" href="https://web.dev/learn/performance/resource-hints" target="_blank" rel="noopener noreferrer">Assist the browser with resource hints | web.dev</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.columbia.edu/itc/sipa/nelson/newmediadev08/Key%20Recommendations%20for%20Designing%20Web%20Pages%20for%20Low%20Bandwidth.html" target="_blank" rel="noopener noreferrer">New Media &amp; Development Comm. » Key Recommendations for Designing Web Pages for Low Bandwidth</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://polypane.app/blog/creating-websites-with-prefers-reduced-data/" target="_blank" rel="noopener noreferrer">Creating websites with prefers-reduced-data | Polypane</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://ux.stackexchange.com/questions/34045/alternatives-to-showing-file-size-in-a-download" target="_blank" rel="noopener noreferrer">Alternatives to showing file size in a download? - User Experience Stack Exchange</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.donnywals.com/supporting-low-data-mode-in-your-app/" target="_blank" rel="noopener noreferrer">Supporting Low Data Mode in your app – Donny Wals</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://medium.com/@ititans_tech/designing-for-low-bandwidth-users-optimizing-websites-for-all-e2a78887e586" target="_blank" rel="noopener noreferrer">Designing for Low-Bandwidth Users: Optimizing Websites for All | by ITitans | Best Software Development Company in USA | Medium</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.reddit.com/r/javascript/comments/1dn6ijy/askjs_performance_optimization_tips_for_handling/" target="_blank" rel="noopener noreferrer">[AskJS] Performance Optimization Tips for Handling Large Datasets in a Spreadsheet Project? : r/javascript</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.linkedin.com/pulse/designing-low-bandwidth-environments-best-practices-solomon-kitumba-kusvf" target="_blank" rel="noopener noreferrer">Designing for Low-Bandwidth Environments: Best Practices</a></li>
 	</ul>
 
 </article>

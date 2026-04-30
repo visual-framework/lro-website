@@ -231,8 +231,8 @@ templateEngineOverride: njk
 function fetchData() {
 	const now = Date.now();
 	if (now - lastRequest &gt; 5000) {
-		fetch('/api/data');
 		lastRequest = now;
+		fetch('/api/data');
 	}
 }</code></pre>
 	<p>
@@ -350,12 +350,12 @@ function fetchData() {
 
 	<h2 id="checklist">Checklist (quick review)</h2>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">[ ] SPA architecture balanced with server rendering</li>
-		<li class="vf-list__item">[ ] Large datasets paginated</li>
-		<li class="vf-list__item">[ ] API calls limited and optimised</li>
-		<li class="vf-list__item">[ ] Heavy graphics optional rather than default</li>
-		<li class="vf-list__item">[ ] Third-party dependencies minimised</li>
-		<li class="vf-list__item">[ ] Animations lightweight and optional</li>
+		<li class="vf-list__item">SPA architecture balanced with server rendering</li>
+		<li class="vf-list__item">Large datasets paginated</li>
+		<li class="vf-list__item">API calls limited and optimised</li>
+		<li class="vf-list__item">Heavy graphics optional rather than default</li>
+		<li class="vf-list__item">Third-party dependencies minimised</li>
+		<li class="vf-list__item">Animations lightweight and optional</li>
 	</ul>
 
 	<h2 id="metrics-tools">Metrics and tools</h2>
@@ -399,17 +399,17 @@ function fetchData() {
 
 	<h2 id="further-reading">Further reading</h2>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item"><a class="vf-link" href="https://www.researchgate.net/publication/387172651_Patterns_for_Software_Systems_in_Low-Resource_Environments" target="_blank" rel="noopener noreferrer">(PDF) Patterns for Software Systems in Low-Resource Environments</a></li>
-		<li class="vf-list__item"><a class="vf-link" href="https://www.ikangai.com/pwa-vs-spa-key-differences-is-one-better-than-the-other/" target="_blank" rel="noopener noreferrer">PWA vs SPA: Key Differences | Is One Better Than The Other?</a></li>
-		<li class="vf-list__item"><a class="vf-link" href="https://www.sciencedirect.com/science/article/pii/S0950584922000073" target="_blank" rel="noopener noreferrer">Motivations, benefits, and issues for adopting Micro-Frontends: A Multivocal Literature Review - ScienceDirect</a></li>
-		<li class="vf-list__item"><a class="vf-link" href="https://lobehub.com/market/items/3d-web-experience" target="_blank" rel="noopener noreferrer">3d-web-experience | Skills Marketplace · LobeHub</a></li>
-		<li class="vf-list__item"><a class="vf-link" href="https://www.simplilearn.com/latest-web-design-trends-article" target="_blank" rel="noopener noreferrer">Latest Web Design Trends (2026): Make Your Site Unforgettable</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.researchgate.net/publication/387894661_Patterns_for_Software_Systems_in_Low-Resource_Environments" target="_blank" rel="noopener noreferrer">(PDF) Patterns for Software Systems in Low-Resource Environments</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.mobiloud.com/blog/pwa-vs-spa" target="_blank" rel="noopener noreferrer">PWA vs SPA: Key Differences | Is One Better Than The Other?</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.sciencedirect.com/science/article/pii/S0950584921000549" target="_blank" rel="noopener noreferrer">Motivations, benefits, and issues for adopting Micro-Frontends: A Multivocal Literature Review - ScienceDirect</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://lobehub.com/ru/skills/reikiplanet-daoskills-3d-web-experience" target="_blank" rel="noopener noreferrer">3d-web-experience | Skills Marketplace · LobeHub</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://zipwp.com/guides-and-tutorials/web-design-trends/" target="_blank" rel="noopener noreferrer">Latest Web Design Trends (2026): Make Your Site Unforgettable</a></li>
 		<li class="vf-list__item"><a class="vf-link" href="https://www.quora.com/From-a-performance-perspective-would-you-recommend-using-infinite-scrolling-or-pagination" target="_blank" rel="noopener noreferrer">From a performance perspective would you recommend using infinite scrolling or pagination? - Quora</a></li>
 		<li class="vf-list__item"><a class="vf-link" href="https://www.onething.design/post/pagination-vs-infinite-scroll-which-is-better" target="_blank" rel="noopener noreferrer">Pagination vs. Infinite Scroll : Which is Better? - Onething Design</a></li>
-		<li class="vf-list__item"><a class="vf-link" href="https://www.smashingmagazine.com/2024/02/ui-patterns-fail-scale/" target="_blank" rel="noopener noreferrer">UI Patterns That Fail at Scale (And Why They Keep Getting Used)</a></li>
-		<li class="vf-list__item"><a class="vf-link" href="https://medium.com/dotnet-new/mastering-linq-tips-and-tricks-for-faster-more-scalable-queries-18dc5fe720f4" target="_blank" rel="noopener noreferrer">Mastering LINQ: Tips and Tricks for Faster, More Scalable Queries | by Rob Hutton | dotnet new() | Medium</a></li>
-		<li class="vf-list__item"><a class="vf-link" href="https://medium.com/@AnjuGupta/what-are-api-anti-patterns-apis-application-programming-interfaces-c885f776a740" target="_blank" rel="noopener noreferrer">What Are API Anti-Patterns?. APIs (Application Programming...) | by AnjuGupta | Medium</a></li>
-		<li class="vf-list__item"><a class="vf-link" href="https://www.researchgate.net/publication/390248824_Balancing_Responsiveness_and_Resource_Efficiency_A_Comparative_Study_of_Caching_and_Pagination_Strategies_in_Web_Applications" target="_blank" rel="noopener noreferrer">(PDF) Balancing Responsiveness and Resource Efficiency: A Comparative Study of Caching and Pagination Strategies in Web Applications</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.altersquare.io/ui-patterns-fail-scale-why-they-keep-getting-used/" target="_blank" rel="noopener noreferrer">UI Patterns That Fail at Scale (And Why They Keep Getting Used)</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://medium.com/dotnet-new/mastering-linq-tips-and-tricks-for-faster-more-scalable-queries-2eea98dad6da" target="_blank" rel="noopener noreferrer">Mastering LINQ: Tips and Tricks for Faster, More Scalable Queries | by Rob Hutton | dotnet new() | Medium</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://medium.com/@anujguptaninja/what-are-api-anti-patterns-d76544280e87" target="_blank" rel="noopener noreferrer">What Are API Anti-Patterns?. APIs (Application Programming...) | by AnujGupta | Medium</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.researchgate.net/publication/395837150_Balancing_Responsiveness_and_Resource_Efficiency_A_Comparative_Study_of_Caching_and_Pagination_Strategies_in_Web_Applications" target="_blank" rel="noopener noreferrer">(PDF) Balancing Responsiveness and Resource Efficiency: A Comparative Study of Caching and Pagination Strategies in Web Applications</a></li>
 	</ul>
 
 </article>

@@ -63,8 +63,8 @@ Deployment is automated by `.gitlab-ci.yml`:
 
 | Environment | URL                                              | Deploy trigger          |
 | ----------- | ------------------------------------------------ | ----------------------- |
-| Production  | [http://wwwdev.ebi.ac.uk/web-optimisation-framework](http://wwwdev.ebi.ac.uk/web-optimisation-framework) | Using Tags [YYYYMMDDHHMM] pushed on `master` |
-| Development | [http://www.ebi.ac.uk/web-optimisation-framework](http://www.ebi.ac.uk/web-optimisation-framework) | All commits to `master` |
+| Production  | [http://www.ebi.ac.uk/web-optimisation-framework/](http://www.ebi.ac.uk/web-optimisation-framework/) | Using Tags [YYYYMMDDHHMM] pushed on `master` |
+| Development | [http://wwwdev.ebi.ac.uk/web-optimisation-framework/](http://wwwdev.ebi.ac.uk/web-optimisation-framework/) | All commits to `master` |
 
 The site runs on a Kubernetes cluster under the ebiwd static set.
 

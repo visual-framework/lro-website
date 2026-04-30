@@ -74,7 +74,7 @@ meta:
   <p class="vf-summary__text">Explore how optimising for low-resource environments translates into measurable improvements in access, usability, and equity.</p>
 </article>
 
-<article class="vf-summary vf-summary--has-image vf-u-margin--400">
+<article class="vf-summary vf-summary--has-image vf-u-margin--400 vf-u-margin__left--0">
   <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 3rem; height: 3rem; border-radius: 50%; background-color: #1a7340; flex-shrink: 0;">
     <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="60" height="60" rx="30" fill="#007B53"/>
@@ -100,7 +100,7 @@ meta:
   </h3>
   <p class="vf-summary__text">Translate LRO principles into lightweight design decisions that keep your service performant under constrained conditions.</p>
 </article>
-<article class="vf-summary vf-summary--has-image vf-u-margin--400">
+<article class="vf-summary vf-summary--has-image vf-u-margin--400 vf-u-margin__left--0">
   <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 3rem; height: 3rem; border-radius: 50%; background-color: #1a7340; flex-shrink: 0;">
     <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="60" height="60" rx="30" fill="#007B53"/>
@@ -116,7 +116,7 @@ meta:
   </h3>
   <p class="vf-summary__text">Analyse your baseline, identify bottlenecks, and apply targeted optimisations to improve how your service performs.</p>
 </article>
-<article class="vf-summary vf-summary--has-image">
+<article class="vf-summary vf-summary--has-image vf-u-margin--400 vf-u-margin__left--0">
   <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 3rem; height: 3rem; border-radius: 50%; background-color: #212322; flex-shrink: 0;">
     <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="64" height="64" rx="32" fill="#007B53"/>
@@ -143,99 +143,41 @@ meta:
   <p class="vf-summary__text">Integrate LRO into design reviews, pull request checks, CI/CD pipelines, and governance cycles.</p>
 </article>
 </section>
-{# </div> #}
-
-{# <div class="vf-grid vf-grid__col-2">
-        
-        <div class="vf-flag vf-flag--middle vf-flag--400">
-          <div class="vf-flag__media">
-            <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 3rem; height: 3rem; border-radius: 50%; background-color: #1a7340; flex-shrink: 0;">
-              <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="60" height="60" rx="30" fill="#007B53"/>
-              <path d="M21.4744 14.0335C21.5561 14.0306 21.6379 14.0281 21.7197 14.0259C22.9042 13.9953 24.2311 14.0256 25.4279 14.0258L32.8029 14.0257L36.5821 14.0234C37.9799 14.0194 39.9984 13.6781 39.9534 15.7417C39.9302 16.8098 40.0351 17.933 39.8833 18.9889C39.8189 19.4371 39.264 19.9021 38.8273 19.9725C37.8698 20.0812 36.8547 20.0214 35.8837 20.0289C35.9043 21.4073 36.1502 23.0418 36.3186 24.4154C36.4357 25.3709 36.4807 26.4077 36.5834 27.3805C36.9306 27.5927 37.3099 27.7704 37.6649 27.9794C38.3401 28.3833 38.9708 28.8573 39.5466 29.3935C40.9921 30.7284 41.8592 32.2917 41.9722 34.2868C41.9981 34.7429 41.8831 35.1744 41.5596 35.509C41.3596 35.7161 41.0834 35.9009 40.8004 35.9744C37.8817 36.0717 34.8992 35.9684 31.9817 36.0166L31.9814 39.4868L31.9895 41.4111C31.9909 41.7511 32.0204 42.1198 31.9668 42.4562C31.9413 42.6157 31.8892 42.7707 31.8256 42.9189C31.6607 43.3027 30.5228 45.601 30.3459 45.8095C30.2553 45.9162 30.1436 45.9931 30.0001 45.9995C29.9046 46.0038 29.8167 45.9815 29.7464 45.9132C29.4397 45.6149 28.1244 42.9904 28.0422 42.5426C27.9434 42.0038 28.0141 41.0377 28.0151 40.4538L28.0165 36.0061C27.6871 36.0343 26.9542 36.0114 26.5887 36.0111L23.6959 36.0102L20.8989 36.0131C20.0015 36.0136 18.8865 36.1942 18.3073 35.4157C17.9234 34.8998 18.0122 34.0791 18.1005 33.488C18.434 31.2546 20.0897 29.4722 21.89 28.243C22.3707 27.9153 22.9161 27.6978 23.3698 27.3598C23.511 26.6725 23.5475 26.0006 23.6071 25.3026L23.8347 22.673C23.9139 21.7739 24.0854 20.9139 24.1404 20.0275C23.3314 20.0225 21.1907 20.196 20.5868 19.7319C20.2206 19.4504 20.0646 18.9689 20.0107 18.5266C19.9464 17.9993 19.9492 15.836 20.0496 15.3191C20.1016 15.0514 20.2036 14.7872 20.3748 14.5726C20.6475 14.2308 21.0526 14.0808 21.4744 14.0335Z" fill="white"/>
-              </svg>
-
-            </span>
-          </div>
-          <div class="vf-flag__body">
-            <p class="vf-text vf-text-body--2" style="margin:0;"><a href="{{ '/principles/' | url }}" class="vf-link" style="font-weight: 600;">Prioritise core content delivery [2.1]</a></p>
-            <p class="vf-text vf-text-body--3">Deliver meaningful text and navigation first, so users can read and interact with your page even when scripts or assets are slow to load.</p>
-          </div>
-        </div>
-        <div class="vf-flag vf-flag--middle vf-flag--400">
-          <div class="vf-flag__media">
-            <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 3rem; height: 3rem; border-radius: 50%; background-color: #1a7340; flex-shrink: 0;">
-              <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="60" height="60" rx="30" fill="#007B53"/>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M39.81 16.3929C40.4697 16.3928 41.2023 16.3451 41.8344 16.5277C42.6763 16.7483 43.5062 17.6892 43.5864 18.5696C43.6623 19.4034 43.6276 20.3958 43.6264 21.2493L43.6254 26.3646L43.6264 31.8636C43.6264 32.7633 43.6437 33.6762 43.602 34.5745C43.55 34.8979 43.426 35.273 43.2573 35.5472C42.765 36.3468 42.0859 36.6721 41.1928 36.7952C39.5188 36.8478 37.6608 36.8123 35.9721 36.8118L26.7749 36.8109H21.5092C20.5896 36.8109 19.6285 36.8437 18.7172 36.7747C17.6419 36.7106 16.5517 35.6918 16.475 34.6048C16.4011 33.5566 16.4352 32.4013 16.435 31.3362L16.434 25.6624V21.1732C16.4342 20.3304 16.3963 19.4145 16.4868 18.5814C16.6249 17.3114 17.6601 16.5122 18.8999 16.4056C19.2257 16.3764 19.8288 16.3924 20.1674 16.3929L22.4829 16.3958H29.9184L37.434 16.3948L39.81 16.3929ZM36.6616 19.8089H30.5483L23.6069 19.8099C22.3764 19.8101 21.0669 19.789 19.8403 19.8177L19.8344 29.2952C19.8346 30.5934 19.8724 32.1111 19.8315 33.3939H40.2094C40.2119 28.9049 40.2685 24.2983 40.2075 19.8236C39.055 19.7879 37.8189 19.8091 36.6616 19.8089Z" fill="white"/>
-              <path d="M33.4972 38.5233C33.9473 38.466 34.7818 38.4884 35.2566 38.4882L38.3193 38.4878L43.3741 38.4885C44.1156 38.4887 46.2135 38.4065 46.8279 38.634C47.1148 38.8918 46.9477 40.4155 46.984 40.8393C47.0229 41.296 46.8836 41.8791 46.6792 42.2902C46.651 42.3349 46.6217 42.379 46.5916 42.4224C45.7324 43.6755 44.7611 43.5941 43.3914 43.5909L41.4022 43.5868L34.0204 43.5867L21.6675 43.5883L17.6717 43.5896C16.5863 43.5897 15.0454 43.7669 14.1386 43.1473C12.9031 42.3031 12.98 40.8624 13.0154 39.5362C13.0367 38.7419 13.0111 38.5841 13.8307 38.4988C16.2953 38.4297 19.025 38.489 21.5082 38.4895L24.5808 38.4878C25.1047 38.4873 25.8622 38.466 26.3668 38.5069C26.7695 38.7152 26.7794 39.9271 27.7585 40.0898C28.4433 40.2008 29.2052 40.205 29.9081 40.1775C31.6264 40.1105 32.9862 40.6371 33.4972 38.5233Z" fill="white"/>
-              </svg>
-            </span>
-          </div>
-          <div class="vf-flag__body">
-            <p class="vf-text vf-text-body--2" style="margin:0;"><a href="{{ '/principles/' | url }}" class="vf-link" style="font-weight: 600;">Apply performance-aware design principles [2.5]</a></p>
-            <p class="vf-text vf-text-body--3">Translate LRO principles into lightweight design decisions that keep your service performant under constrained conditions.</p>
-          </div>
-        </div>
-        <div class="vf-flag vf-flag--middle vf-flag--400">
-          <div class="vf-flag__media">
-            <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 3rem; height: 3rem; border-radius: 50%; background-color: #1a7340; flex-shrink: 0;">
-              <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="60" height="60" rx="30" fill="#007B53"/>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M38.355 14.0186C38.8924 13.9721 39.376 14.1171 39.7603 14.5069C41.6644 16.4371 43.599 18.3349 45.4996 20.2686C46.1687 20.9495 46.1626 21.723 45.5093 22.42C44.9372 23.0303 44.3354 23.6152 43.7437 24.2071L40.3179 27.6231L32.9488 34.9913L26.1627 41.7794C24.9227 43.0226 23.6838 44.2801 22.4293 45.5089C22.1924 45.7408 21.9536 45.8682 21.649 45.9854C20.8519 46.03 20.5584 45.8027 20.0035 45.2579C19.7562 45.0151 19.507 44.761 19.2623 44.5147L17.2994 42.5401L15.3658 40.6134C14.934 40.1836 14.1652 39.556 14.0377 38.9708C13.9452 38.5513 14.0247 38.1114 14.2584 37.7511C14.4558 37.4487 15.9843 35.9665 16.3287 35.6231L20.9371 31.0157L35.5826 16.3702C36.2175 15.7345 36.8479 15.0883 37.4927 14.463C37.7713 14.1928 37.9859 14.0982 38.355 14.0186ZM38.5699 18.2686C38.3959 18.5229 37.6451 19.2273 37.3873 19.4825L34.4322 22.4239C34.1157 22.7391 33.2077 23.6032 32.983 23.9239L34.9703 25.918C35.2983 26.2467 35.7364 26.7115 36.0796 27.0098C36.3627 26.5984 37.1844 25.8388 37.5806 25.4444L40.2076 22.8106C40.6298 22.3896 41.2961 21.7687 41.6695 21.3438C40.9342 20.6201 40.203 19.8923 39.4752 19.1612C39.1946 18.8806 38.8313 18.5491 38.5699 18.2686Z" fill="white"/>
-              <path d="M22.8544 16.2567C22.9275 16.2563 23.0821 16.2515 23.1302 16.2947C23.3979 16.5353 23.9331 17.6339 24.0017 17.9289C25.1842 18.096 26.8985 17.9683 25.2128 19.4085C25.0232 19.5705 24.8399 19.7424 24.6649 19.9202C25 21.5553 25.4336 22.6674 23.375 21.3399C23.2963 21.2891 23.152 21.2246 23.0623 21.182C22.5793 21.096 20.6926 22.967 21.0523 21.1601C21.1361 20.7391 21.206 20.3139 21.281 19.891C19.967 18.7259 19.1654 18.1542 21.5249 17.9971C21.6281 17.9902 21.7903 17.9553 21.8986 17.936C22.0581 17.5564 22.5717 16.5034 22.8544 16.2567Z" fill="white"/>
-              <path d="M16.9367 14.9575C17.2854 15.1297 17.3029 15.6269 17.6971 16.0654C18.0369 16.1843 18.8529 16.236 18.9396 16.5796C18.8757 16.8935 18.3601 17.2626 18.103 17.4339C18.1356 17.7337 18.3462 18.5887 18.1383 18.7824C17.8564 18.8385 17.2307 18.3828 16.9892 18.2545C16.6969 18.3945 16.0213 18.9269 15.7328 18.7362C15.6311 18.507 15.7995 17.7511 15.8457 17.4429C15.569 17.2218 14.9335 16.8119 15.075 16.4311C15.2847 16.2186 16.0169 16.1181 16.3311 16.0681C16.5277 15.7053 16.6561 15.2253 16.9367 14.9575Z" fill="white"/>
-              <path d="M42.9229 28.9219C43.1428 28.9629 43.5886 29.8862 43.6741 30.1199C44.0179 30.1775 44.8746 30.1141 44.9577 30.4911C44.8805 30.751 44.2904 31.2415 44.0604 31.4693C44.1374 31.7459 44.4541 32.561 44.1808 32.7391C43.9219 32.7633 43.383 32.4599 43.1149 32.3373C42.8124 32.1318 42.1052 32.8626 41.7857 32.764C41.5066 32.6779 41.8391 31.6812 41.7912 31.4491C41.6927 30.9715 40.8284 30.8587 41.0251 30.3222C41.1943 30.1756 42.0556 30.1428 42.3238 30.1159C42.4658 29.6269 42.6659 29.3552 42.9229 28.9219Z" fill="white"/>
-              <path d="M28.9011 14.9585C29.2586 15.1048 29.4258 15.6656 29.625 16.0546C29.9651 16.1536 30.6581 16.249 30.8892 16.4289C31.065 16.7735 30.3746 17.2336 30.1166 17.4484C30.1528 17.7901 30.3943 18.6153 30.0955 18.796C29.7985 18.8219 29.2787 18.4439 29.0505 18.2602C28.7331 18.3029 27.9741 18.9449 27.7529 18.788C27.6499 18.5234 27.8142 17.7412 27.8576 17.4257C27.5741 17.244 26.9598 16.8414 27.0554 16.4641C27.237 16.249 28.044 16.114 28.369 16.0368C28.5052 15.7513 28.7359 15.1691 28.9011 14.9585Z" fill="white"/>
-              </svg>
-          </div>
-          <div class="vf-flag__body">
-            <p class="vf-text vf-text-body--2" style="margin:0;"><a href="{{ '/frontend/' | url }}" class="vf-link" style="font-weight: 600;">Optimise and apply fixes [3.1]</a></p>
-            <p class="vf-text vf-text-body--3">Analyse your baseline, identify bottlenecks, and apply targeted optimisations to improve how your service performs.</p>
-          </div>
-        </div>
-        <div class="vf-flag vf-flag--middle vf-flag--400">
-          <div class="vf-flag__media">
-            <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 3rem; height: 3rem; border-radius: 50%; background-color: #1a7340; flex-shrink: 0;">
-              <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="64" height="64" rx="32" fill="#007B53"/>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M36.8565 14.9529C38.7568 14.9522 40.6893 14.5697 40.4932 17.2009C40.3765 18.765 40.0078 19.1476 38.4131 19.2087L38.4122 26.2058C38.412 26.9514 38.3745 28.5636 38.4717 29.2498C38.5197 29.5884 39.5764 31.1374 39.8291 31.5554L44.1612 38.614C44.9368 39.8576 45.9806 41.2883 46.5401 42.6218C46.7092 43.0256 46.6404 43.8237 46.6612 44.279C46.724 45.6529 46.5019 46.7558 45.4893 47.7703C44.2314 49.0305 42.5808 49.0486 40.9131 49.0505L38.7862 49.0486L33.6338 49.0496H25.9454C24.1642 49.0496 22.0329 49.1589 20.3135 48.822C19.7354 48.7086 18.939 48.2395 18.5391 47.8093C17.3835 46.6275 17.3327 45.7345 17.3291 44.2019C17.3255 42.5991 17.5558 42.1084 18.4629 40.7615C18.7859 40.2818 19.1013 39.5749 19.4541 39.0915C20.244 38.0097 20.8784 36.874 21.5655 35.7302C22.2896 34.5402 23.0235 33.3561 23.7676 32.1785C24.0545 31.7294 25.4273 29.6475 25.5186 29.2878C25.6168 28.8985 25.5794 26.3394 25.5791 25.7527L25.5801 19.2068C25.0637 19.223 24.4359 19.1282 24.0166 18.78C23.2426 18.137 23.2558 16.2661 23.8565 15.5173C24.1992 15.0901 24.7088 15.0057 25.2305 14.9685C26.1798 14.9288 27.2529 14.9521 28.211 14.9519L33.4795 14.9529H36.8565ZM29.8213 19.2019L29.8204 25.1628C29.8208 26.2779 29.9614 29.7569 29.6153 30.6511C29.3973 31.2141 29.0172 31.7396 28.7051 32.2566C28.3645 32.8209 28.0489 33.3993 27.6934 33.9548C27.2095 34.7109 26.6833 35.4434 26.2149 36.2087C28.8313 36.2399 31.4817 36.2185 34.1006 36.2175C35.1154 36.2184 36.7256 36.2622 37.6895 36.1853C36.8077 34.8561 34.9755 31.8231 34.2256 30.364C33.999 29.9231 34.0798 26.5311 34.0801 25.7458L34.0811 19.2009L29.8213 19.2019Z" fill="white"/>
-              </svg>
-
-            </span>
-          </div>
-          <div class="vf-flag__body">
-            <p class="vf-text vf-text-body--2" style="margin:0;"><a href="{{ '/measurement-and-testing/' | url }}" class="vf-link" style="font-weight: 600;">Measure and test your service [4.1]</a></p>
-            <p class="vf-text vf-text-body--3">Evaluate your service across benchmarking, UX, and performance metrics to identify areas for improvement.</p>
-          </div>
-        </div>
-        <div class="vf-flag vf-flag--middle vf-flag--400">
-          <div class="vf-flag__media">
-            <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 3rem; height: 3rem; border-radius: 50%; background-color: #1a7340; flex-shrink: 0;">
-              <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="60" height="60" rx="30" fill="#007B53"/>
-              <path d="M27.4734 24.998C29.0436 25.0453 30.8566 24.9982 32.4495 25.0027L32.4477 27.9725L39.6496 27.974L41.6028 27.9735C41.9142 27.9735 42.4954 27.9373 42.7732 28.0067C43.6289 28.2206 43.9695 28.8946 43.9539 29.6792C43.9229 31.229 43.9611 32.7366 43.9559 34.2724C43.9496 36.1722 42.5926 35.9888 41.2064 35.9862L39.1225 35.9822L31.7416 35.9842L23.7442 35.9819C22.4136 35.9818 21.0818 35.9965 19.7518 35.9815C19.3091 35.9786 18.8141 35.9054 18.5082 35.5309C18.0126 34.9242 15.4444 32.6402 15.2764 32.03C15.2913 31.915 15.4209 31.6344 15.5241 31.5354C16.349 30.7437 18.2499 28.4886 19.1312 28.0406C19.3751 27.9165 21.6956 27.9744 22.0838 27.9749L27.4745 27.9739C27.4643 26.9882 27.4737 25.9852 27.4734 24.998Z" fill="white"/>
-              <path d="M29.0039 14.0171C29.5446 14.003 30.0854 13.9977 30.6264 14.0009C32.0553 14.014 32.4661 14.5948 32.4507 15.9935L37.7078 15.9911C38.6404 15.9906 39.943 15.942 40.8751 16.0674C41.0229 16.0873 41.6029 16.6474 41.7432 16.7867L43.6546 18.7015C45.0614 20.1115 45.0758 19.8403 43.7192 21.2106L41.6778 23.2729C40.9243 24.0254 40.7268 24.0188 39.6836 24.0014C39.1404 23.9924 38.5314 24.001 37.9844 24.0009L31.665 23.999L22.12 23.9973C20.6231 23.9969 18.9548 24.0696 17.4736 23.9958C17.2588 23.985 17.0293 23.9682 16.834 23.8717C16.5678 23.7401 16.116 23.2972 16.0235 23.0065C15.9231 22.6909 15.9085 17.9707 15.9533 17.4309C15.9704 17.2238 16.0219 17.0277 16.1199 16.8438C16.2387 16.6208 16.5379 16.2104 16.7878 16.1366C17.6757 15.8744 20.0474 15.99 21.0821 15.9903L27.4712 15.989C27.4427 14.8389 27.7099 14.0971 29.0039 14.0171Z" fill="white"/>
-              <path d="M27.4774 36.979C29.1185 37 30.8027 36.9837 32.4471 36.984L32.4497 42.1642C32.4503 42.9799 32.4812 43.9147 32.4062 44.7252C32.3801 45.0076 32.192 45.3356 32.0349 45.5742C31.7193 45.8935 31.1431 46.0233 30.719 45.9909C29.7775 45.9191 28.5608 46.2319 27.8555 45.5268C27.6705 45.3385 27.5485 45.0975 27.5064 44.8369C27.4332 44.3681 27.4755 42.7987 27.4758 42.2484L27.4774 36.979Z" fill="white"/>
-              </svg>
-            </span>
-          </div>
-          <div class="vf-flag__body">
-            <p class="vf-text vf-text-body--2" style="margin:0;"><a href="{{ '/adoption/' | url }}" class="vf-link" style="font-weight: 600;">Embed LRO in your workflow [5.1]</a></p>
-            <p class="vf-text vf-text-body--3">Integrate LRO into design reviews, pull request checks, CI/CD pipelines, and governance cycles.</p>
-          </div>
-        </div>
-      </div> #}
-{# </div>
-  </div>
-</section> #}
 
 <section class="vf-u-padding__top--800 vf-u-padding__bottom--800" style="text-align: center;">
 <div>
   <h2 class="vf-heading vf-heading--2">Help us improve</h2>
   <p class="vf-text vf-text-body--2">Tell us what works well and what could be improved.</p>
   <p class="vf-text vf-text-body--2">Your feedback will help us refine the LRO framework and its documentation.</p>
-  <a href="https://github.com/ebiwd/lro-website/issues" class="vf-button vf-button--secondary | vf-u-margin__top--400">Contribute</a>
+
+  <div id="framework-feedback-banner" class="vf-banner vf-banner--alert vf-u-display-none vf-u-margin__top--400" role="status" aria-live="polite">
+    <div class="vf-banner__content">
+      <p class="vf-banner__text"></p>
+      <button role="button" aria-label="close notification banner" class="vf-button vf-button--icon vf-button--dismiss | vf-banner__button">
+        <svg role="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <title>dismiss banner</title>
+          <path d="M14.3,12.179a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1.5,0,0,0,21.439.442L12.177,9.7a.25.25,0,0,1-.354,0L2.561.442A1.5,1.5,0,0,0,.439,2.563L9.7,11.825a.25.25,0,0,1,0,.354L.439,21.442a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,0,0,2.122-2.121Z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <a href="#" id="framework-feedback-trigger" class="vf-button vf-button--secondary | vf-u-margin__top--400">Contribute</a>
+
+  <form id="framework-feedback-form" class="vf-form vf-u-display-none vf-u-margin__top--400" action="" method="POST" novalidate>
+    <div class="vf-form__item">
+      <label for="framework-feedback" class="vf-form__label">Comments</label>
+      <textarea class="vf-form__textarea" id="framework-feedback" name="feedback" rows="3"></textarea>
+    </div>
+    <p class="framework-feedback-validation-msg"></p>
+    <div class="vf-u-margin__top--400">
+      <h-captcha id="framework-feedback-captcha" sitekey="86c4b2d8-403a-47da-a486-2ab0c1902f7e" size="invisible"></h-captcha>
+    </div>
+    <div class="vf-u-margin__top--400">
+      <button class="vf-button vf-button--primary" type="submit">Submit feedback</button>
+      <button class="vf-button vf-button--secondary vf-u-margin__left--200" type="button" id="framework-feedback-cancel">Cancel</button>
+    </div>
+  </form>
 </div>
 </section>
 </div>
