@@ -97,11 +97,11 @@ function applySearchPagination(resetPage) {
   const resultItems = Array.from(container.querySelectorAll("[data-vf-search-result-item]"));
   const resultsPerPage = 5;
 
-  if (resultItems.length === 0) {
-    renderNoResultsMessage(container);
-    if (paginationObserver) paginationObserver.observe(container, { childList: true, subtree: true });
-    return;
-  }
+  // if (resultItems.length === 0) {
+  //   renderNoResultsMessage(container);
+  //   if (paginationObserver) paginationObserver.observe(container, { childList: true, subtree: true });
+  //   return;
+  // }
 
   if (resultItems.length <= resultsPerPage) {
     resultItems.forEach(function (item) {
