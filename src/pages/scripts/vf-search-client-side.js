@@ -71,7 +71,7 @@ function renderNoResultsMessage(container) {
     + "<h3>Looking for technical content?</h3>"
     + "<ul><li>If you are trying to find IT-related information, please head over to the ServiceNow portal to search or browse for IT knowledge articles and service requests.</li></ul>"
     + "<h3>Need assistance?</h3>"
-    + "<ul><li>If you think something is not working correctly, or content is missing, please raise an issue in ServiceNow selecting the category Web Development and Design and the subcategory EMBL-EBI Intranet.</li></ul>"
+    + "<ul><li>If you think something is not working correctly, or content is missing, please raise an issue in ServiceNow.</li></ul>"
     + "</section>";
 }
 
