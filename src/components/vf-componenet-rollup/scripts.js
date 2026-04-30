@@ -12,7 +12,10 @@ vfBanner();
 
 
 import { vfSearchClientSide } from "../../pages/scripts/vf-search-client-side.js";
+import { initFeedbackForms } from "../../pages/scripts/feedback-forms.js";
 
+// Make vfSearchClientSide globally available for the search page
+window.vfSearchClientSide = vfSearchClientSide;
 
 import { vfMegaMenu } from 'vf-mega-menu/vf-mega-menu';
 vfMegaMenu();
@@ -166,15 +169,14 @@ vfMegaMenu();
 // import { vfBackToTop } from "vf-back-to-top/vf-back-to-top.js";
 // vfBackToTop();
 
-import { vfDropdown } from "vf-dropdown/vf-dropdown.js";
-vfDropdown();
-
 import { vfNavigationOnThisPage } from "vf-navigation/vf-navigation.js";
 vfNavigationOnThisPage();
 import { emblContentMetaProperties_Read } from "embl-content-meta-properties/embl-content-meta-properties";
 
 import { emblNotifications } from "embl-notifications/embl-notifications";
 // emblNotifications();
+
+initFeedbackForms();
 
 // import { vfMegaMenu } from 'vf-mega-menu/vf-mega-menu';
 // vfMegaMenu();

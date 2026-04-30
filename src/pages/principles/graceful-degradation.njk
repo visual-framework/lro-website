@@ -13,15 +13,14 @@ templateEngineOverride: njk
 		<ul class="vf-list">
 			<li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
 			<li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO</a></li>
-			<li class="vf-list__item"><a href="#core-principle" class="vf-link">Core principle</a></li>
-			<li class="vf-list__item"><a href="#key-principles" class="vf-link">Key design principles</a></li>
+			<li class="vf-list__item"><a href="#common-problems" class="vf-link">Comon problems</a></li>
 			<li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation guidance</a></li>
 			<li class="vf-list__item"><a href="#dos-donts" class="vf-link">Do / Don't</a></li>
 			<li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
 			<li class="vf-list__item"><a href="#metrics-tools" class="vf-link">Metrics & Tools</a></li>
-			<li class="vf-list__item"><a href="#benchmarks" class="vf-link">Benchmarks</a></li>
 			<li class="vf-list__item"><a href="#tools" class="vf-link">Tools</a></li>
 			<li class="vf-list__item"><a href="#related-topics" class="vf-link">Related Topics</a></li>
+			<li class="vf-list__item"><a href="#key-takeaways" class="vf-link">Key takeaways</a></li>
 			<li class="vf-list__item"><a href="#further-reading" class="vf-link">Further Reading</a></li>
 		</ul>
 	</nav>
@@ -65,8 +64,8 @@ Examples include:</p>
 	<ul class="vf-list vf-list--unordered">
 		<li class="vf-list__item"><strong>Slow networks</strong> → API timeouts or failed asset loads</li>
 		<li class="vf-list__item"><strong>Low-end devices</strong> → limited CPU/memory</li>
-		<li class="vf-list__item"><strong>Limited data plans</strong> → limited support for modern CSS or JavaScript APIs</li>
-		<li class="vf-list__item"><strong>Unstable connections</strong> → limited hardware capabilities and disabled JS or cookies</li>
+		<li class="vf-list__item"><strong>Outdated browsers</strong> → limited support for modern CSS or JavaScript APIs</li>
+		<li class="vf-list__item"><strong>Restricted environments</strong> → limited hardware capabilities and disabled JS or cookies</li>
 	</ul>
 	<p>
 		Impact if ignored:
@@ -79,7 +78,7 @@ Examples include:</p>
 	</ul>
 	<p>Graceful Degradation prevents this by ensuring the system fails <strong>in pieces rather than all at once.</strong></p>
 
-	<h2 id="key-principles" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Common problems</h2>
+	<h2 id="common-problems" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Common problems</h2>
 	<h3>Typical issues seen</h3>
 	<p>Modern web systems are complex and depend on many interconnected components.</p>
 	<p>Common issues that trigger degraded states include:</p>
@@ -92,209 +91,241 @@ Examples include:</p>
 		<li class="vf-list__item"><strong>Server Overload:</strong> High traffic exceeding system capacity</li>
 	</ul>
 
+	<h3>Why these problems matter</h3>
+	<p>When applications lack graceful fallback mechanisms, the failure of a single component can prevent the entire system from functioning.</p>
+	<p>Examples include:</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item">An entire dashboard failing because one widget crashes</li>
+		<li class="vf-list__item">A page refusing to load because one script fails</li>
+		<li class="vf-list__item">A checkout system breaking due to a third-party payment service outage</li>
+	</ul>
+	<p>Graceful Degradation prevents these scenarios by allowing systems to maintain a reduced but functional experience.</p>
+
+	<h3>Design Principles Involved</h3>
+	<p>Several resilience and accessibility principles underpin Graceful Degradation.</p>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><strong>Fault Tolerance:</strong> Systems should continue operating even when components fail</li>
+		<li class="vf-list__item"><strong>Resilience Engineering:</strong> Systems should absorb disruptions without catastrophic failure</li>
+		<li class="vf-list__item"><strong>User-Centric Design:</strong> Users should still be able to complete essential tasks during failures</li>
+		<li class="vf-list__item"><strong>Redundancy:</strong> Multiple alternatives should exist for critical functionality</li>
+		<li class="vf-list__item"><strong>Fallback Design:</strong> Alternative methods should replace failing components</li>
+		<li class="vf-list__item"><strong>Loose Coupling:</strong> Dependencies should not cause cascading failures</li>
+		<li class="vf-list__item"><strong>Graceful Failure: </strong> Systems should degrade smoothly rather than abruptly stopping</li>
+	</ul>
+
 	<h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Implementation guidance</h2>
-	<p>Use an HTML-first architecture with progressive CSS and JavaScript enhancement. Essential content should always be available before styling or interactivity loads.</p>
-	<h3>HTML</h3>
-	<p>
-		Start with server-rendered HTML that contains the page’s core content and functionality. HTML loads quickly, requires little processing, and works across all browsers, making it the most reliable foundation in low-resource environments.
-	</p>
-	<p>Ensure that:</p>
-	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Key content exists directly in the HTML</li>
-		<li class="vf-list__item">Navigation links and forms work without JavaScript</li>
-		<li class="vf-list__item">Semantic, accessible elements are used</li>
+	<h3>Practical Steps</h3>
+	<ul class="vf-list vf-list--ordered">
+		<li class="vf-list__item">
+			<p>Identify Mission-Critical Functions</p>
+			<p>Determine which features must always remain available.</p>
+			<p>These typically include:</p>
+			<ul class="vf-list vf-list--unordered">
+				<li class="vf-list__item">Key content exists directly in the HTML</li>
+				<li class="vf-list__item">Navigation links and forms work without JavaScript</li>
+				<li class="vf-list__item">Semantic, accessible elements are used</li>
+			</ul>
+			<p>Everything else can degrade if necessary.</p>
+		</li>
+		<li class="vf-list__item">
+			<p>Build Redundancy</p>
+			<p>Critical components should have fallback alternatives.</p>
+			<p>Examples include:</p>
+			<ul class="vf-list vf-list--unordered">
+				<li class="vf-list__item">Multiple payment gateways</li>
+				<li class="vf-list__item">Cached API responses</li>
+				<li class="vf-list__item">Static HTML content replacing dynamic rendering</li>
+			</ul>
+			</li>
+		<li class="vf-list__item">
+			<p>Support Older Browsers</p>
+			<p>Applications should provide compatibility with older technologies.</p>
+			<p>Techniques include:</p>
+			<ul class="vf-list vf-list--unordered">
+				<li class="vf-list__item">Using HTML5 alternatives instead of deprecated plugins</li>
+				<li class="vf-list__item">Avoiding reliance on proprietary browser features</li>
+				<li class="vf-list__item">Providing fallback styles</li>
+			</ul>
+			</li>
+		<li class="vf-list__item">
+			<p>Use Load Balancing And Caching</p>
+			<p>Distributing traffic across servers prevents any single system from becoming overloaded. Caching provides fallback data when live services fail.</p>
+			</li>
+		<li class="vf-list__item">
+			<p>Test Under Failure Conditions</p>
+			<p>Systems should be tested under various scenarios, such as:</p>
+			<ul class="vf-list vf-list--unordered">
+				<li class="vf-list__item">Slow networks</li>
+				<li class="vf-list__item">Device limitations</li>
+				<li class="vf-list__item">Disabled JavaScript</li>
+				<li class="vf-list__item">Server outages</li>
+			</ul>
+			<p>Testing ensures degradation behaviour works as expected.</p>
+			</li>
 	</ul>
-	<p>Avoid:</p>
-	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Rendering content only through JavaScript</li>
-		<li class="vf-list__item">Empty &lt;div id="root"&gt; pages</li>
-		<li class="vf-list__item">Missing semantic markup</li>
-	</ul>
+	<h3>Feature Fallback Strategy</h3>
+	<p>Overview</p>
+	<p>Modern features are used by default, but alternative implementations are provided when those features are unsupported.</p>
+	<p>Example</p>
+	<p>A website using CSS Grid may fall back to Flexbox or simple float layouts.</p>
+	<p>Code example</p>
 	<pre class="vf-code-example__pre"><code>
-&lt;main&gt;
-&lt;h1&gt;Training Summary&lt;/h1&gt;
-&lt;p&gt;This content loads instantly without JavaScript.&lt;/p&gt;
-&lt;/main&gt;
+.container {
+  display: flex;
+}
+@supports (display: grid) {
+  .container {
+	display: grid;
+  }
+}
 	</code></pre>
 	<p>
-		This form remains functional even if JavaScript does not load.
+		This allows modern browsers to use advanced layouts while older browsers continue functioning.
 	</p>
 
-	<h3>CSS</h3>
+	<h3>Content Fallback Strategy</h3>
+	<p>Overview</p>
+	<p>When rich media cannot be rendered, alternative content is provided.</p>
+	<p>Example</p>
+	<p>If video playback fails, a transcript or image can be displayed instead.</p>
+	<p>Code example</p>
+	<pre class="vf-code-example__pre"><code>
+&lt;video controls&gt;
+  &lt;source src="video.mp4" type="video/mp4"&gt;
+  &lt;p&gt;Your browser cannot play this video. Read the transcript below.&lt;/p&gt;
+&lt;/video&gt;
+	</code></pre>
 	<p>
-		Use CSS to enhance layout and appearance, not to provide core functionality. Content should remain accessible even if CSS fails to load.
+		This ensures the information remains accessible.
 	</p>
-	<p>Use:</p>
-	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Modern CSS features progressively</li>
-		<li class="vf-list__item">Simple fallbacks for older browsers</li>
-		<li class="vf-list__item">Lightweight styling systems</li>
-	</ul>
-	<p>Avoid:</p>
-	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Layouts that depend entirely on large CSS frameworks</li>
-		<li class="vf-list__item">Heavy CSS resets</li>
-		<li class="vf-list__item">Browser-specific hacks</li>
-	</ul>
-	<p>Fallback example:</p>
-	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Modern browser → grid layout</li>
-		<li class="vf-list__item">Older browser → simple stacked layout</li>
-	</ul>
 
-	<h3>JavaScript</h3>
+	<h3>Network Failure Fallback Strategy</h3>
+	<p>Systems return cached or placeholder data when external services fail. </p>
+	<p>Example: If an API request fails, the application may display previously cached results instead of failing.</p>
+	<p>Example pattern</p>
+		<ul class="vf-list vf-list--unordered">
+			<li class="vf-list__item">API request fails</li>
+			<li class="vf-list__item">System loads cached data</li>
+			<li class="vf-list__item">User continues interacting with available information</li>
+		</ul>
+	<p>Example: Handling API failures with fallback data.</p>
+	<pre class="vf-code-example__pre"><code>
+try {
+  const response = await fetch(API_URL);
+  const data = await response.json();
+  return data;
+} catch (error) {
+  return cachedData;
+}
+	</code></pre>
 	<p>
-		Add JavaScript only once the core page is already working. Interactivity should enhance the experience, not be required for the page to function.
+		This ensures users still receive information even if the external API fails.
 	</p>
+
+	<h3>Component Isolation Strategy</h3>
+	<p>Overview</p>
+	<p>Independent components are isolated, so failures in one module do not affect the entire system.</p>
+	<p>Example</p>
+	<p>A failing chart widget should not prevent the rest of a dashboard from loading.
+This prevents cascading system failures.
+</p>
+
+	<h2 class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Graceful Degradation Vs Progressive Enhancement</h2>
 	<p>
-		JavaScript can fail due to disabled scripts, slow downloads, parsing errors, or browser incompatibility, so users must still be able to access essential core content and actions.
+		Graceful Degradation and Progressive Enhancement are closely related but follow different design directions.
 	</p>
-	<p>Ensure that:</p>
+	<p>Graceful Degradation</p>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Functionality works without JavaScript</li>
-		<li class="vf-list__item">Feature detection is used before advanced behaviour runs</li>
-		<li class="vf-list__item">Scripts load after the main content</li>
-		<li class="vf-list__item">Heavy features are loaded only when needed</li>
+		<li class="vf-list__item">Build full experience first</li>
+		<li class="vf-list__item">Reduce functionality for less capable environments</li>
 	</ul>
-	<p>Avoid:</p>
+	<p>Progressive Enhancement</p>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Rendering the entire site in JavaScript</li>
-		<li class="vf-list__item">Large dependency chains</li>
-		<li class="vf-list__item">Unhandled errors that break the page</li>
+		<li class="vf-list__item">Build basic functionality first</li>
+		<li class="vf-list__item">Add advanced features for capable environments</li>
 	</ul>
-	<p>Example:</p>
-	<pre class="vf-code-example__pre"><code>
-&lt;button id="submit"&gt;Submit&lt;/button&gt;
-&lt;script&gt;
-		if ('fetch' in window) {
-			// Enhanced behaviour
-		}
-&lt;/script&gt;
-	</code></pre>
-	<p>Build-time improvements:</p>
-	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Reduce JavaScript bundle size</li>
-		<li class="vf-list__item">Remove unnecessary dependencies</li>
-		<li class="vf-list__item">Use modern CSS features progressively</li>
-	</ul>
-	<p>Runtime behaviour:</p>
-	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Load enhancements after essential content</li>
-		<li class="vf-list__item">Conditionally load advanced features</li>
-		<li class="vf-list__item">Use feature detection before execution</li>
-	</ul>
-	<p>Fallback strategies</p>
-	<p>Provide simple alternatives for advanced features, for example:</p>
-	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">System fonts before web fonts</li>
-		<li class="vf-list__item">Standard forms before AJAX forms</li>
-		<li class="vf-list__item">Basic layouts before CSS Grid layouts</li>
-	</ul>
-	<p>Key guidance</p>
-	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Never block content behind JavaScript</li>
-		<li class="vf-list__item">Always deliver essential content through HTML</li>
-		<li class="vf-list__item">Load enhancements only when supported and needed</li>
-	</ul>
-	<p>Use this approach when building public websites, supporting a wide range of devices, targeting global audiences, or meeting accessibility requirements.</p>
-	<p>Basic example</p>
-	<p>Minimal progressive enhancement pattern.</p>
-	<pre class="vf-code-example__pre"><code>
-&lt;main&gt;
-&lt;h1&gt;Latest Updates&lt;/h1&gt;
-&lt;p&gt;Content loads immediately.&lt;/p&gt;
-&lt;/main&gt;
-&lt;script defer src="enhancements.js"&lt;&lt;/script&lt;
-	</code></pre>
-	<p>This ensures the content loads first, while enhancements load later.</p>
-	<p>Advanced example</p>
-	<p>Feature detection example.</p>
-	<pre class="vf-code-example__pre"><code>
-&lt;main&gt;
-&lt;h1&gt;Latest Updates&lt;/h1&gt;
-&lt;p&gt;Content loads immediately.&lt;/p&gt;
-&lt;/main&gt;
-&lt;script defer src="enhancements.js"&lt;&lt;/script&lt;
-	</code></pre>
-	<p>Enhanced functionality is only enabled if supported.</p>
+	<p>In practice, both strategies often complement each other. Progressive Enhancement ensures accessibility from the start, while Graceful Degradation helps systems remain resilient after deployment.</p>
 
 	<h2 id="dos-donts" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Do / Don't</h2>
 
 	<h4>Do</h4>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Deliver core content via HTML</li>
-		<li class="vf-list__item">Ensure functionality works without JavaScript</li>
-		<li class="vf-list__item">Load enhancements progressively</li>
-		<li class="vf-list__item">Use feature detection</li>
-		<li class="vf-list__item">Test under slow network conditions</li>
+		<li class="vf-list__item">Ensure core features remain accessible</li>
+		<li class="vf-list__item">Provide fallback mechanisms</li>
+		<li class="vf-list__item">Cache important data</li>
+		<li class="vf-list__item">Test under degraded conditions</li>
+		<li class="vf-list__item">Design modular components</li>
 	</ul>
 
 	<h4>Don't</h4>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Depend entirely on client-side rendering</li>
-		<li class="vf-list__item">Ship large JavaScript bundles unnecessarily</li>
-		<li class="vf-list__item">Hide content while assets load</li>
-		<li class="vf-list__item">Assume browsers are modern</li>
-		<li class="vf-list__item">Break functionality when scripts fail</li>
+		<li class="vf-list__item">Depend entirely on one external service</li>
+		<li class="vf-list__item">Allow one component to block the entire application</li>
+		<li class="vf-list__item">Assume users always have modern browsers</li>
+		<li class="vf-list__item">Hide essential content behind JavaScript</li>
+		<li class="vf-list__item">Ignore failure scenarios during development</li>
 	</ul>
 
 	<h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Checklist</h2>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Core content loads without JavaScript</li>
-		<li class="vf-list__item">Works on slow network profiles</li>
-		<li class="vf-list__item">Page weight minimised</li>
-		<li class="vf-list__item">Essential tasks work without enhancements</li>
-		<li class="vf-list__item">Failure scenarios handled gracefully</li>
-		<li class="vf-list__item">Tested with CSS and JavaScript disabled</li>
+		<li class="vf-list__item">Core content remains accessible without advanced features</li>
+		<li class="vf-list__item">Fallback alternatives exist for critical functions</li>
+		<li class="vf-list__item">External API failures handled safely</li>
+		<li class="vf-list__item">Website usable on older browsers</li>
+		<li class="vf-list__item">Page functional on slow networks</li>
+		<li class="vf-list__item">Redundant infrastructure implemented</li>
 	</ul>
 
 	<h2 id="metrics-tools" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Metrics & Tools</h2>
-	<p>These metrics are used to evaluate performance and resilience in low-resource environments:</p>
+	<h3>Key Metrics</h3>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item"><strong>Page Weight -</strong> Total size of HTML, CSS, JavaScript, images, and other assets loaded for the initial view.</li>
-		<li class="vf-list__item"><strong>First Contentful Paint (FCP) -</strong> Time until the first meaningful content appears on screen.</li>
-		<li class="vf-list__item"><strong>Time to Interactive (TTI) -</strong> Time until the page becomes fully interactive and responsive to user input.</li>
-		<li class="vf-list__item"><strong>JavaScript Execution Time -</strong> Time spent parsing and executing JavaScript, especially during initial load.</li>
-		<li class="vf-list__item"><strong>Script Error Rate -</strong> Frequency of runtime errors that impact functionality or user experience.</li>
+		<li class="vf-list__item">System availability</li>
+		<li class="vf-list__item">Error rates</li>
+		<li class="vf-list__item">API timeout frequency</li>
+		<li class="vf-list__item">Fallback activation rate</li>
+		<li class="vf-list__item">User task completion under degraded conditions</li>
 	</ul>
 
-	<h2 id="benchmarks" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Benchmarks</h2>
+	<h3>Tools</h3>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Initial page weight: <strong>under 300 KB<</strong>/li>
-		<li class="vf-list__item">Core content visible: <strong>within 3 seconds on slow networks</strong></li>
-		<li class="vf-list__item">JavaScript execution: <strong>kept minimal during initial load</strong></li>
-		<li class="vf-list__item">Interactive readiness: <strong>progressive, not blocked by scripts</strong></li>
-	</ul>
-
-	<h2 id="tools" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Tools</h2>
-	<p>These tools support measurement, simulation, and validation:</p>
-	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item"><strong>Lighthouse - </strong>performance, accessibility, and best practice auditing</li>
-		<li class="vf-list__item"><strong>WebPageTest - </strong> real-world network and device simulation</li>
-		<li class="vf-list__item"><strong>Chrome DevTools - </strong> performance profiling and debugging</li>
-		<li class="vf-list__item"><strong>Network Throttling - </strong> simulation of slow/unstable connections</li>
-		<li class="vf-list__item"><strong>Synthetic Testing Profiles - </strong> automated testing under controlled device/network conditions</li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.browserstack.com/" target="_blank" rel="noopener noreferrer">BrowserStack – Cross-browser testing</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="hhttps://developer.chrome.com/docs/lighthouse" target="_blank" rel="noopener noreferrer">Chrome Lighthouse – Performance analysis</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://wave.webaim.org/" target="_blank" rel="noopener noreferrer">WAVE Accessibility Tool</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.webpagetest.org/" target="_blank" rel="noopener noreferrer">WebPageTest – Network performance testing</a></li>
 	</ul>
 
 	<h2 id="related-topics" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Related Topics</h2>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item">Rendering Strategies</li>
-		<li class="vf-list__item">JavaScript Strategy</li>
-		<li class="vf-list__item">Network Optimisation</li>
+		<li class="vf-list__item">Progressive Enhancement</li>
+		<li class="vf-list__item">Resilient Web Design</li>
 		<li class="vf-list__item">Caching Strategies</li>
-		<li class="vf-list__item">Error Handling</li>
-		<li class="vf-list__item">Accessibility</li>
-		<li class="vf-list__item">Offline Support (PWA)</li>
+		<li class="vf-list__item">Fault-Tolerant System Design</li>
+		<li class="vf-list__item">Network Optimisation</li>
+		<li class="vf-list__item">Feature Flag Management</li>
+		<li class="vf-list__item">Error Handling Patterns</li>
 	</ul>
 
-	<h2 id="read-more" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Further Reading</h2>
+	<h2 id="key-takeaways" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Key Takeaways</h2>
+	<p>Graceful Degradation is an essential resilience strategy that ensures systems remain functional even when parts fail. Rather than preventing all failures, it focuses on controlling their impact.</p>
+	<p>Key outcomes include:</p>
 	<ul class="vf-list vf-list--unordered">
-		<li class="vf-list__item"><a class="vf-link" href="https://developer.mozilla.org/en-US/docs/Glossary/Progressive_Enhancement" target="_blank" rel="noopener noreferrer">Progressive enhancement - Glossary | MDN</a></li>
-		<li class="vf-list__item"><a class="vf-link" href="https://www.quirksmode.org/blog/archives/2021/02/progressive_enh_1.html" target="_blank" rel="noopener noreferrer">Progressive Enhancement reading list 2021 - QuirksBlog</a></li>
-		<li class="vf-list__item"><a class="vf-link" href="https://www.freecodecamp.org/news/what-is-progressive-enhancement-and-why-it-matters-e80c7aaf834a/" target="_blank" rel="noopener noreferrer">What is Progressive Enhancement, and why it matters</a></li>
-		<li class="vf-list__item"><a class="vf-link" href="https://archive.hankchizljaw.com/wrote/the-power-of-progressive-enhancement/" target="_blank" rel="noopener noreferrer">The power of progressive enhancement - Andy Bell</a></li>
-		<li class="vf-list__item"><a class="vf-link" href="https://www.browserlondon.com/blog/2017/03/14/performance-benefits-progressive-enhancement/" target="_blank" rel="noopener noreferrer">The performance benefits of progressive enhancement - Browser London</a></li>
-		<li class="vf-list__item"><a class="vf-link" href="https://www.bbc.co.uk/accessibility/forproducts/guides/html/progressive-enhancement/" target="_blank" rel="noopener noreferrer">Progressive enhancement</a></li>
+		<li class="vf-list__item">Improved reliability</li>
+		<li class="vf-list__item">Broader accessibility</li>
+		<li class="vf-list__item">Better user experience during disruptions</li>
+		<li class="vf-list__item">Reduced system downtime</li>
+		<li class="vf-list__item">Greater resilience in distributed systems</li>
+	</ul>
+
+	<h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Further Reading</h2>
+	<ul class="vf-list vf-list--unordered">
+		<li class="vf-list__item"><a class="vf-link" href="https://developer.mozilla.org/en-US/docs/Glossary/Graceful_degradation" target="_blank" rel="noopener noreferrer">Graceful degradation - Glossary | MDN</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://helio.app/definitions/graceful-degradation/" target="_blank" rel="noopener noreferrer">Graceful Degradation - Helio</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://blog.logrocket.com/guide-graceful-degradation-web-development/" target="_blank" rel="noopener noreferrer">A guide to graceful degradation in web development - LogRocket Blog</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.smashingmagazine.com/2024/12/importance-graceful-degradation-accessible-interface-design/" target="_blank" rel="noopener noreferrer">The Importance Of Graceful Degradation In Accessible Interface Design — Smashing Magazine</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://dev.to/lovestaco/graceful-degradation-keeping-your-app-functional-when-things-go-south-jgj" target="_blank" rel="noopener noreferrer">Graceful Degradation: Keeping Your App Functional When Things Go South - DEV Community</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.seobility.net/en/wiki/Graceful_Degradation" target="_blank" rel="noopener noreferrer">Graceful Degradation - Definition + Benefits - Seobility Wiki</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://adamsilver.io/blog/in-defence-of-graceful-degradation-and-where-progressive-enhancement-comes-in/" target="_blank" rel="noopener noreferrer">In defence of graceful degradation and where progressive enhancement comes in – Adam Silver</a></li>
+		<li class="vf-list__item"><a class="vf-link" href="https://www.getunleash.io/blog/graceful-degradation-featureops-resilience" target="_blank" rel="noopener noreferrer">Graceful degradation in practice: how FeatureOps builds real resilience | Unleash</a></li>
 	</ul>
 
 </article>
