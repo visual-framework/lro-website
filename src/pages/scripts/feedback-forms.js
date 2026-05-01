@@ -1,4 +1,3 @@
-const FEEDBACK_ENDPOINT = "/api/feedback-email";
 const FEEDBACK_TO = "embldev@service-now.com";
 const INDEX_URL = "https://wwwdev.ebi.ac.uk/web-optimisation-framework/";
 const HCAPTCHA_SCRIPT_URL = "https://cdn.jsdelivr.net/npm/@hcaptcha/vanilla-hcaptcha";
@@ -73,19 +72,14 @@ function ensureHcaptchaLoaded() {
   });
 }
 
-async function postFeedback(payload) {
-  const res = await fetch(FEEDBACK_ENDPOINT, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  });
+function postFeedback(payload) {
+  const subject = encodeURIComponent(payload.subject || "Feedback");
+  const body = encodeURIComponent(payload.message || "");
+  const to = encodeURIComponent(payload.to || FEEDBACK_TO);
+  const mailtoUrl = "mailto:" + to + "?subject=" + subject + "&body=" + body;
 
-  if (!res.ok) {
-    const msg = await res.text();
-    throw new Error(msg || "Feedback service returned an error.");
-  }
+  window.location.href = mailtoUrl;
+  return Promise.resolve();
 }
 
 function initFrameworkFeedback() {
@@ -169,16 +163,14 @@ function initFrameworkFeedback() {
     }
   });
 
-  captcha.addEventListener("verified", async function (event) {
+  captcha.addEventListener("verified", async function () {
     if (!pendingSubmission) return;
 
-    const token = event.token;
     try {
       await postFeedback({
         to: FEEDBACK_TO,
         subject: pendingSubmission.subject,
         message: pendingSubmission.message,
-        captchaToken: token,
         type: "framework"
       });
 
@@ -266,7 +258,6 @@ function initArticleFeedback() {
         to: FEEDBACK_TO,
         subject: pendingSubmission.subject,
         message: pendingSubmission.message,
-        captchaToken: event.token,
         type: "article"
       });
 

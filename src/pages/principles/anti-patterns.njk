@@ -6,8 +6,10 @@ templateEngineOverride: njk
 
 <article class="vf-content">
 
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400 vf-search-client-side--no-index">Contents</h2>
+
 	<nav class="toc vf-search-client-side--no-index" aria-label="On this page">
-		<ul class="vf-list">
+		<ul class="vf-list vf-list--unordered">
 			<li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
 			<li class="vf-list__item"><a href="#why-low-resource-users" class="vf-link">Why this matters for low-resource users</a></li>
 			<li class="vf-list__item"><a href="#common-problems" class="vf-link">Common problems</a></li>
@@ -24,7 +26,7 @@ templateEngineOverride: njk
 		</ul>
 	</nav>
 
-	<h2 id="overview">Overview</h2>
+	<h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Overview</h2>
 	<p>
 		Anti-patterns refer to commonly used approaches in software design and web development that appear effective but
 		create significant performance and scalability problems when systems operate under constrained conditions.
@@ -65,7 +67,7 @@ templateEngineOverride: njk
 		that prioritise resilience and performance.
 	</p>
 
-	<h2 id="why-low-resource-users">Why this matters for low-resource users</h2>
+	<h2 id="why-low-resource-users" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Why this matters for low-resource users</h2>
 	<h3>User impact</h3>
 	<p>
 		Users in low-resource environments face significant challenges when interacting with heavy web applications.
@@ -91,7 +93,7 @@ templateEngineOverride: njk
 	</ul>
 	<p>Avoiding anti-patterns improves both performance and reliability.</p>
 
-	<h2 id="common-problems">Common problems</h2>
+	<h2 id="common-problems" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Common problems</h2>
 	<h3>Overly complex architectures</h3>
 	<p>
 		Many modern applications rely on complex client-side architectures that require significant resources to operate.
@@ -117,7 +119,7 @@ templateEngineOverride: njk
 		These inefficiencies significantly reduce performance in constrained environments.
 	</p>
 
-	<h2 id="design-principles">Design principles involved</h2>
+	<h2 id="design-principles" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Design principles involved</h2>
 	<p>
 		Understanding anti-patterns helps reinforce several key design principles.
 	</p>
@@ -131,7 +133,7 @@ templateEngineOverride: njk
 		Avoiding anti-patterns ensures these principles are upheld.
 	</p>
 
-	<h2 id="strategy-options">Strategy options</h2>
+	<h2 id="strategy-options" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Strategy options</h2>
 	<h3>SPA-only architectures</h3>
 	<p>
 		Single Page Applications (SPAs) rely heavily on client-side JavaScript to dynamically render content.
@@ -294,7 +296,7 @@ function fetchData() {
 		Optimised queries reduce both server load and network traffic.
 	</p>
 
-	<h2 id="implementation">Implementation guidance</h2>
+	<h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Implementation guidance</h2>
 	<h3>Audit system architecture</h3>
 	<p>
 		Identify areas where resource usage is unnecessarily high.
@@ -314,7 +316,7 @@ function fetchData() {
 		<li class="vf-list__item">Simulate slow network environments to evaluate system behaviour</li>
 	</ul>
 
-	<h2 id="examples">Real-world examples</h2>
+	<h2 id="examples" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Real-world examples</h2>
 	<h3>Heavy single-page applications</h3>
 	<p>
 		Many modern websites rely entirely on large JavaScript frameworks, which delays content rendering on slower
@@ -329,7 +331,7 @@ function fetchData() {
 		Dashboards often load massive datasets without pagination, significantly slowing performance.
 	</p>
 
-	<h2 id="dos-donts">Do / Don't</h2>
+	<h2 id="dos-donts" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Do / Don't</h2>
 	<h4>Do</h4>
 	<ul class="vf-list vf-list--unordered">
 		<li class="vf-list__item">Use pagination for large datasets</li>
@@ -348,7 +350,7 @@ function fetchData() {
 		<li class="vf-list__item">Overload pages with third-party scripts</li>
 	</ul>
 
-	<h2 id="checklist">Checklist (quick review)</h2>
+	<h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Checklist (quick review)</h2>
 	<ul class="vf-list vf-list--unordered">
 		<li class="vf-list__item">SPA architecture balanced with server rendering</li>
 		<li class="vf-list__item">Large datasets paginated</li>
@@ -358,7 +360,7 @@ function fetchData() {
 		<li class="vf-list__item">Animations lightweight and optional</li>
 	</ul>
 
-	<h2 id="metrics-tools">Metrics and tools</h2>
+	<h2 id="metrics-tools" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Metrics and tools</h2>
 	<h3>Key metrics</h3>
 	<ul class="vf-list vf-list--unordered">
 		<li class="vf-list__item">Total page weight</li>
@@ -374,7 +376,7 @@ function fetchData() {
 		<li class="vf-list__item">PageSpeed Insights</li>
 	</ul>
 
-	<h2 id="related-topics">Related topics</h2>
+	<h2 id="related-topics" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Related topics</h2>
 	<ul class="vf-list vf-list--unordered">
 		<li class="vf-list__item">Design patterns</li>
 		<li class="vf-list__item">Page and interaction design principles</li>
@@ -383,7 +385,7 @@ function fetchData() {
 		<li class="vf-list__item">Network optimisation strategies</li>
 	</ul>
 
-	<h2 id="key-takeaways">Key takeaways</h2>
+	<h2 id="key-takeaways" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Key takeaways</h2>
 	<p>
 		Anti-patterns highlight design approaches that significantly reduce system performance and accessibility in
 		low-resource environments.
@@ -397,8 +399,8 @@ function fetchData() {
 		diverse network conditions.
 	</p>
 
-	<h2 id="further-reading">Further reading</h2>
-	<ul class="vf-list vf-list--unordered">
+	<h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Further reading</h2>
+	<ul class="fr vf-list vf-list--unordered">
 		<li class="vf-list__item"><a class="vf-link" href="https://www.researchgate.net/publication/387894661_Patterns_for_Software_Systems_in_Low-Resource_Environments" target="_blank" rel="noopener noreferrer">(PDF) Patterns for Software Systems in Low-Resource Environments</a></li>
 		<li class="vf-list__item"><a class="vf-link" href="https://www.mobiloud.com/blog/pwa-vs-spa" target="_blank" rel="noopener noreferrer">PWA vs SPA: Key Differences | Is One Better Than The Other?</a></li>
 		<li class="vf-list__item"><a class="vf-link" href="https://www.sciencedirect.com/science/article/pii/S0950584921000549" target="_blank" rel="noopener noreferrer">Motivations, benefits, and issues for adopting Micro-Frontends: A Multivocal Literature Review - ScienceDirect</a></li>

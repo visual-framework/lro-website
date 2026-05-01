@@ -20,6 +20,15 @@ html {
         height: auto;
       }
 
+      .vf-logo .vf-logo__image {
+        height: unset;
+      }
+
+      .vf-logo .vf-text {
+        margin-left: 0.5rem;
+        margin-bottom: 0;
+      }
+
       #search-content .vf-summary__meta {
         margin-top: 0.5rem;
       }
@@ -98,9 +107,9 @@ html {
         height: 100%;
         width: 100%;
       }
-
-      .toc .vf-list__item {
-        margin-bottom: 0;
+      
+      .toc .vf-list__item::marker, .fr .vf-list__item::marker {
+        color: #3B6FB6;
       }
 
       .toc .vf-list__item a{
@@ -112,11 +121,6 @@ html {
         padding-inline-start: 1.75rem;
       }
 
-      .toc ul.vf-list,
-      .toc ol.vf-list {
-        padding-inline-start: 0rem;
-      }
-
       .vf-content ul.vf-list > .vf-list__item,
       .vf-content ol.vf-list > .vf-list__item {
         font-family: "IBM Plex Sans", Helvetica, Arial, sans-serif;
@@ -125,12 +129,6 @@ html {
         font-weight: 400;
         line-height: 1.421;
         padding-inline-start: 0.5rem;
-      }
-
-      .toc ul.vf-list > .vf-list__item,
-      .toc ol.vf-list > .vf-list__item {
-        font-size: 16px;
-        padding-inline-start: 0rem;
       }
 
         .responsive-only-menu .search-menu-link {
@@ -249,6 +247,7 @@ html {
 
         .responsive-only-menu .responsive-only {
           margin-left: 1rem;
+          margin-right: 44px;
         }
 
         .responsive-only-menu .responsive-only .vf-list__item{
@@ -263,20 +262,19 @@ html {
 
         .desktop-only-menu ul.vf-navigation__list li {
           position: relative;
-          margin: 0.8rem 0.8rem !important;
         }
 
         .desktop-only-menu ul.vf-navigation__list li:last-child {
           position: absolute;
           right: 1em;
           padding: 0;
-          margin: 0;
+          margin-bottom: 0 !important;
         }
 
         .desktop-only-menu ul.vf-navigation__list li a {
           align-items: center;
           text-decoration: none;
-          padding: 0.8rem 0;
+          padding: 0;
           margin: 0;
         }
 
@@ -286,6 +284,10 @@ html {
           left: 0;
           right: 0;
           bottom: 0;
+        }
+
+        .desktop-only-menu ul.vf-navigation__list li a:hover {
+          text-decoration: none;
         }
 
         .desktop-only-menu ul.vf-navigation__list li a:hover:before {
@@ -310,12 +312,12 @@ html {
 
         .desktop-only-menu {
           margin: unset;
-          padding-top: 0.5rem;
           padding-left: 2rem;
           border-bottom: 1px solid #E4E4E4;
           background-color: #F3F3F3;
           display: flex !important;
         }
+        
         .desktop-only .vf-search-container {
         background-image: url(https://acxngcvroo.cloudimg.io/v7/www.embl.org/files/wp-content/uploads/EMBL-EBI-Intranet-Background-DNA-scaled.jpg);
       }
@@ -351,41 +353,7 @@ html {
       .desktop-only .vf-mega-menu__content .vf-summary-container {
         padding: 0 1rem;
       }
-      .lro-page-layout {
-        display: grid;
-        grid-template-columns: 1fr 4fr;
-        gap: 0;
-        align-items: start;
-      }
-      /* Non-home pages: keep an empty right column on desktop */
-      @media (min-width: 901px) {
-        .lro-page-layout--with-empty-right {
-          grid-template-columns: 1fr 3fr 1fr;
-        }
-        .lro-page-layout--with-empty-right .lro-sidebar {
-          grid-column: 1;
-        }
-        .lro-page-layout--with-empty-right .lro-main-content {
-          grid-column: 2;
-        }
-      }
-      /* Tablet: 2 + 3 column split */
-      @media (max-width: 900px) and (min-width: 601px) {
-        .lro-page-layout {
-          grid-template-columns: 2fr 3fr;
-        }
-      }
-      /* Mobile: single column */
-      @media (max-width: 600px) {
-        .lro-page-layout {
-          grid-template-columns: 1fr;
-        }
-        .vf-search-container form {
-          width: 90%;
-          padding-top: 20%;
-          padding-bottom: 20%;
-        }
-      }
+
       .lro-sidebar {
         background-color: #F3F3F3;
         position: sticky;
@@ -394,13 +362,13 @@ html {
         padding-left: 2rem;
         overflow: scroll;
       }
-      @media (max-width: 600px) {
-        .lro-sidebar {
-          position: static;
-          min-height: auto;
-          max-height: none;
-        }
+      .lro-page-layout {
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+        gap: 0;
+        align-items: start;
       }
+
       .lro-main-content {
         min-width: 0;
         overflow: hidden;
@@ -436,6 +404,43 @@ html {
 
       .vf-footer__logo-mission{
         display: flex;
+      }
+      /* Non-home pages: keep an empty right column on desktop */
+      @media (min-width: 901px) {
+        .lro-page-layout--with-empty-right {
+          grid-template-columns: 1fr 3fr 1fr;
+        }
+        .lro-page-layout--with-empty-right .lro-sidebar {
+          grid-column: 1;
+        }
+        .lro-page-layout--with-empty-right .lro-main-content {
+          grid-column: 2;
+        }
+        figure {
+          width: 75%;
+        }
+      }
+      /* Tablet: 2 + 3 column split */
+      @media (max-width: 900px) and (min-width: 601px) {
+        .lro-page-layout {
+          grid-template-columns: 2fr 3fr;
+        }
+      }
+      /* Mobile: single column */
+      @media (max-width: 600px) {
+        .lro-page-layout {
+          grid-template-columns: 1fr;
+        }
+        .vf-search-container form {
+          width: 90%;
+          padding-top: 20%;
+          padding-bottom: 20%;
+        }
+        .lro-sidebar {
+          position: static;
+          min-height: auto;
+          max-height: none;
+        }
       }
 
       @media (max-width: 768px) {

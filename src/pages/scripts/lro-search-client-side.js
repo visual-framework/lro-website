@@ -1,5 +1,5 @@
 // Page-level search pagination wrapper.
-import { vfSearchClientSide as vfSearchClientSideCore } from "vf-search-client-side/vf-search-client-side";
+import { vfSearchClientSide as vfSearchClientSideCore } from "./modified-vf-search-client-side.js";
 
 function getQueryVariable(variable) {
   var query = window.location.search.substring(1);
@@ -65,14 +65,21 @@ function renderResultsSummary(container, startIndex, endIndex, totalResults) {
 function renderNoResultsMessage(container) {
   container.innerHTML = ""
     + "<section class='vf-search-no-results'>"
-    + "<h2>Sorry, we didn't find anything matching your query</h2>"
-    + "<h3>Search tips</h3>"
-    + "<ul><li>We try to accommodate most simple spelling mistakes and plurals, but you might try searching for a synonym.</li></ul>"
-    + "<h3>Looking for technical content?</h3>"
-    + "<ul><li>If you are trying to find IT-related information, please head over to the ServiceNow portal to search or browse for IT knowledge articles and service requests.</li></ul>"
-    + "<h3>Need assistance?</h3>"
-    + "<ul><li>If you think something is not working correctly, or content is missing, please raise an issue in ServiceNow.</li></ul>"
+    + "<h3>We couldn’t find any results matching the search criteria</h3>"
+    + "<ul><li>Check your spelling</li><li>Use more general terms</li></ul>"
     + "</section>";
+}
+
+function toggleNoResultsFeedback(show) {
+  const feedbackSection = document.getElementById("search-no-results-feedback");
+  if (!feedbackSection) return;
+
+  if (show) {
+    feedbackSection.classList.remove("vf-u-display-none");
+    return;
+  }
+
+  feedbackSection.classList.add("vf-u-display-none");
 }
 
 // resetPage=true when called from the observer (new search results rendered) —
@@ -97,11 +104,14 @@ function applySearchPagination(resetPage) {
   const resultItems = Array.from(container.querySelectorAll("[data-vf-search-result-item]"));
   const resultsPerPage = 5;
 
-  // if (resultItems.length === 0) {
-  //   renderNoResultsMessage(container);
-  //   if (paginationObserver) paginationObserver.observe(container, { childList: true, subtree: true });
-  //   return;
-  // }
+  if (resultItems.length === 0) {
+    toggleNoResultsFeedback(true);
+    renderNoResultsMessage(container);
+    if (paginationObserver) paginationObserver.observe(container, { childList: true, subtree: true });
+    return;
+  }
+
+  toggleNoResultsFeedback(false);
 
   if (resultItems.length <= resultsPerPage) {
     resultItems.forEach(function (item) {
