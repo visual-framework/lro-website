@@ -6,5 +6,270 @@ templateEngineOverride: njk
 ---
 
 <article class="vf-content">
-  <p class="vf-lede">This page is currently being developed.</p>
+
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400 vf-search-client-side--no-index">Contents</h2>
+  {# ── Table of contents ── #}
+  <nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+    <ul class="vf-list vf-list--unordered">
+      <li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+      <li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO</a></li>
+      <li class="vf-list__item"><a href="#common-problems" class="vf-link">Common Problems</a></li>
+      <li class="vf-list__item"><a href="#strategy-options" class="vf-link">Strategy Options</a></li>
+      <li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation Guidance</a></li>
+      <li class="vf-list__item"><a href="#dos-dont" class="vf-link">Do / Don't</a></li>
+      <li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+      <li class="vf-list__item"><a href="#metrics" class="vf-link">Metrics & Tools</a></li>
+      <li class="vf-list__item"><a href="#further-reading" class="vf-link">Further Reading</a></li>
+    </ul>
+  </nav>
+
+  {# ── Overview ── #}
+  <h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Overview</h2>
+
+  <p>Resilience and offline patterns focus on ensuring that applications continue to work reliably under unstable, slow, or completely unavailable network conditions. This includes handling failures gracefully, enabling offline functionality, and ensuring data consistency.</p>
+
+  <h3>Key idea in an LRO context</h3>
+
+  <p>The core LRO principle here is: <strong>"design for failure as the default, not the exception."</strong> Applications should assume unreliable connectivity and still deliver meaningful functionality using caching, background processing, and recovery mechanisms.</p>
+
+  {# ── Why this matters for LRO ── #}
+  <h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400">Why this matters for LRO</h2>
+
+  <h3>User impact</h3>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Slow networks lead to frequent request failures and timeouts</li>
+    <li class="vf-list__item">Low-end devices struggle with retry-heavy or JS-heavy logic</li>
+    <li class="vf-list__item">Expensive data plans penalise repeated downloads and failed requests</li>
+    <li class="vf-list__item">Unstable connectivity causes interruptions during critical flows (forms, uploads, payments)</li>
+  </ul>
+
+  <h3>Risks if ignored</h3>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Users experience broken flows and abandon tasks</li>
+    <li class="vf-list__item">Repeated retries increase data costs</li>
+    <li class="vf-list__item">Data loss during submissions reduces trust</li>
+    <li class="vf-list__item">Apps appear unreliable and unusable in real-world conditions</li>
+  </ul>
+
+  {# ── Common Problems ── #}
+  <h2 id="common-problems" class="vf-u-margin--0 vf-u-padding__top--400">Common Problems</h2>
+
+  <h3>Typical issues seen</h3>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Blank screens when offline</li>
+    <li class="vf-list__item">Failed API calls without fallback</li>
+    <li class="vf-list__item">Form submissions lost on refresh</li>
+    <li class="vf-list__item">Partial page loads with broken UI</li>
+    <li class="vf-list__item">Upload failures without recovery</li>
+    <li class="vf-list__item">Infinite retry loops consuming data</li>
+  </ul>
+
+  <h3>Why do they fail in LRO contexts?</h3>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Assumption of constant connectivity</li>
+    <li class="vf-list__item">Lack of caching or offline-first design</li>
+    <li class="vf-list__item">Over-reliance on synchronous server responses</li>
+    <li class="vf-list__item">No retry or recovery mechanisms</li>
+    <li class="vf-list__item">Poor error handling and messaging</li>
+  </ul>
+
+  {# ── Strategy Options ── #}
+  <h2 id="strategy-options" class="vf-u-margin--0 vf-u-padding__top--400">Strategy Options</h2>
+
+  <h3>Service Workers</h3>
+
+  <p>Service workers act as a network proxy between your application and the network, enabling:</p>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Caching of assets for faster repeat visits</li>
+    <li class="vf-list__item">Offline functionality when the network is unavailable</li>
+    <li class="vf-list__item">Background processing for tasks like push notifications or sync</li>
+  </ul>
+
+  <p><strong>Key best practices:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Register the service worker at the application entry point</li>
+    <li class="vf-list__item">Cache core shell files during installation</li>
+    <li class="vf-list__item">Intercept fetch requests and apply caching strategies</li>
+    <li class="vf-list__item">Use caching strategies like cache-first, network-first, or stale-while-revalidate</li>
+  </ul>
+
+  <p><strong>Example: Basic Service Worker with Cache</strong></p>
+
+  <pre class="vf-code-example__pre"><code>// Install event: cache the core shell of the app
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open('core-v1').then(cache => {
+      // Add essential files to the cache
+      return cache.addAll([
+        '/',         // HTML entry point
+        '/styles.css', // Core styles
+        '/app.js'      // Core JavaScript
+      ]);
+    })
+  );
+});
+
+// Fetch event: respond with cached resources if available
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(response => {
+      // Return cached response if found, otherwise fetch from network
+      return response || fetch(event.request);
+    })
+  );
+});</code></pre>
+
+  <h3>Offline Experience</h3>
+
+  <p>Designing UI/UX that works meaningfully when connectivity is lost.</p>
+
+  <p><strong>Key practices:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Show clear offline indicators</li>
+    <li class="vf-list__item">Provide retry buttons instead of auto-retries</li>
+    <li class="vf-list__item">Disable non-functional features gracefully</li>
+    <li class="vf-list__item">Allow users to continue reading cached content</li>
+  </ul>
+
+  <p><strong>Good practices:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Use skeletons instead of blank screens</li>
+    <li class="vf-list__item">Show last available data</li>
+    <li class="vf-list__item">Inform users about sync status</li>
+  </ul>
+
+  <h3>Sync & Recovery</h3>
+
+  <p>Ensuring user actions performed offline are reliably synced when connectivity returns.</p>
+
+  <p><strong>Key practices:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Queue actions locally (IndexedDB)</li>
+    <li class="vf-list__item">Use background sync APIs where available</li>
+    <li class="vf-list__item">Implement idempotent APIs</li>
+    <li class="vf-list__item">Resolve conflicts using timestamps or versioning</li>
+  </ul>
+
+  <p><strong>Common strategies:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Write-ahead logging for actions</li>
+    <li class="vf-list__item">Retry with exponential backoff</li>
+    <li class="vf-list__item">Conflict resolution (last write wins/merge)</li>
+  </ul>
+
+  <h3>Long-running Submission Workflows</h3>
+
+  <p>Handling large or time-consuming operations like file uploads in unreliable networks.</p>
+
+  <p><strong>Key practices:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Split uploads into smaller chunks</li>
+    <li class="vf-list__item">Track upload progress locally</li>
+    <li class="vf-list__item">Resume from last successful chunk</li>
+    <li class="vf-list__item">Use server-side session IDs</li>
+  </ul>
+
+  <p><strong>Benefits:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Reduces data loss</li>
+    <li class="vf-list__item">Avoids restarting uploads</li>
+    <li class="vf-list__item">Improves user confidence</li>
+  </ul>
+
+  <h3>Resilience Patterns</h3>
+
+  <p><strong>Error handling strategies:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Network failures:</strong> Detect offline state and queue requests instead of failing immediately</li>
+    <li class="vf-list__item"><strong>Partial loading:</strong> Load critical content first and defer non-essential components</li>
+    <li class="vf-list__item"><strong>Fallback content:</strong> Serve cached or static fallback pages and provide meaningful placeholders</li>
+    <li class="vf-list__item"><strong>Error messaging:</strong> Use clear, actionable messages and avoid technical jargon</li>
+    <li class="vf-list__item"><strong>Circuit breakers:</strong> Stop repeated failing requests and prevent server overload</li>
+    <li class="vf-list__item"><strong>Retry limits:</strong> Use exponential backoff and limit retry attempts to avoid infinite loops</li>
+    <li class="vf-list__item"><strong>Degraded mode:</strong> Disable heavy features and prioritise core functionality</li>
+    <li class="vf-list__item"><strong>Stateless recovery design:</strong> Avoid reliance on in-memory state and persist progress locally</li>
+  </ul>
+
+  {# ── Implementation Guidance ── #}
+  <h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400">Implementation Guidance</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Implement service workers for offline support</li>
+    <li class="vf-list__item">Cache essential app shell during service worker installation</li>
+    <li class="vf-list__item">Use background sync for queued actions</li>
+    <li class="vf-list__item">Handle network state changes with online/offline event listeners</li>
+    <li class="vf-list__item">Implement retry logic with exponential backoff</li>
+    <li class="vf-list__item">Queue failed requests for later submission</li>
+    <li class="vf-list__item">Show sync status UI to users</li>
+    <li class="vf-list__item">Test thoroughly on slow and unreliable networks</li>
+  </ul>
+
+  {# ── Do / Don't ── #}
+  <h2 id="dos-dont" class="vf-u-margin--0 vf-u-padding__top--400 vf-search-client-side--no-index">Do / Don't</h2>
+
+  <h3>Do</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Design for offline usage</li>
+    <li class="vf-list__item">Implement service workers</li>
+    <li class="vf-list__item">Queue failed requests</li>
+    <li class="vf-list__item">Use clear error messages</li>
+    <li class="vf-list__item">Test on slow networks</li>
+  </ul>
+
+  <h3>Don't</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Assume constant connectivity</li>
+    <li class="vf-list__item">Use infinite retry loops</li>
+    <li class="vf-list__item">Show blank screens offline</li>
+    <li class="vf-list__item">Lose user data on connection failures</li>
+    <li class="vf-list__item">Ignore network errors</li>
+  </ul>
+
+  {# ── Checklist ── #}
+  <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400">Checklist</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Service worker implemented and tested</li>
+    <li class="vf-list__item">App works in offline mode</li>
+    <li class="vf-list__item">Failed requests are queued</li>
+    <li class="vf-list__item">Sync status is visible to users</li>
+    <li class="vf-list__item">Error messages are clear and actionable</li>
+    <li class="vf-list__item">Retry logic uses exponential backoff</li>
+    <li class="vf-list__item">App tested on slow and unreliable networks</li>
+  </ul>
+
+  {# ── Metrics & Tools ── #}
+  <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400">Metrics & Tools</h2>
+
+  <p><strong>Key metrics to monitor:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Service worker cache hit rate</li>
+    <li class="vf-list__item">Offline usage frequency</li>
+    <li class="vf-list__item">Sync failure rate</li>
+    <li class="vf-list__item">Network error frequency</li>
+  </ul>
+
+  <p><strong>Tools:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Chrome DevTools Network tab</li>
+    <li class="vf-list__item">Lighthouse offline audit</li>
+    <li class="vf-list__item">Service Worker testing tools</li>
+    <li class="vf-list__item">Network throttling simulators</li>
+  </ul>
+
+  {# ── Further Reading ── #}
+  <h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400">Further Reading</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/service-workers/" target="_blank" rel="noopener noreferrer">Service Workers | web.dev</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/offline/" target="_blank" rel="noopener noreferrer">Offline Capability | web.dev</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker_API" target="_blank" rel="noopener noreferrer">Service Worker API | MDN</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.sitepoint.com/offline-first-apps/" target="_blank" rel="noopener noreferrer">Offline-First Apps | SitePoint</a></li>
+  </ul>
+
 </article>

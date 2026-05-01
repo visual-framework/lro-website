@@ -6,5 +6,387 @@ templateEngineOverride: njk
 ---
 
 <article class="vf-content">
-  <p class="vf-lede">This page is currently being developed.</p>
+
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400 vf-search-client-side--no-index">Contents</h2>
+  {# ── Table of contents ── #}
+  <nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+    <ul class="vf-list vf-list--unordered">
+      <li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+      <li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO</a></li>
+      <li class="vf-list__item"><a href="#common-problems" class="vf-link">Common Problems</a></li>
+      <li class="vf-list__item"><a href="#design-principles" class="vf-link">Design Principles</a></li>
+      <li class="vf-list__item"><a href="#optimisation" class="vf-link">Optimisation Techniques</a></li>
+      <li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation Guidance</a></li>
+      <li class="vf-list__item"><a href="#code-examples" class="vf-link">Code Examples</a></li>
+      <li class="vf-list__item"><a href="#dos-dont" class="vf-link">Do / Don't</a></li>
+      <li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+      <li class="vf-list__item"><a href="#metrics" class="vf-link">Metrics and Tools</a></li>
+      <li class="vf-list__item"><a href="#further-reading" class="vf-link">Further reading</a></li>
+    </ul>
+  </nav>
+
+  {# ── Overview ── #}
+  <h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Overview</h2>
+
+  <p>Fonts and icons are an important part of modern web design, but they can significantly increase page weight and slow down rendering if not used carefully. Many websites load multiple custom fonts, icon libraries, or large font files that block page rendering and consume unnecessary bandwidth.</p>
+
+  <p>In low-resource environments, such as regions with slow networks, limited device memory, or expensive data plans, heavy use of fonts and icons can delay text visibility, cause layout shifts, or prevent content from rendering properly.</p>
+
+  <p>The goal of an LRO-friendly font and icon strategy is to ensure that text and essential UI elements remain readable and usable even when custom fonts fail to load or when networks are slow. This is achieved by prioritising system fonts, minimising font files, and using lightweight icon approaches.</p>
+
+  {# ── Why this matters for LRO ── #}
+  <h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400">Why this matters for LRO</h2>
+
+  <h3>User impact</h3>
+
+  <p>Font loading can strongly affect how quickly users see readable content. Slow font delivery can result in:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Invisible text during page load</li>
+    <li class="vf-list__item">Delayed rendering of content</li>
+    <li class="vf-list__item">Increased data usage</li>
+    <li class="vf-list__item">Additional CPU processing on low-end devices</li>
+  </ul>
+
+  <p>Users on low-bandwidth connections may experience long delays before text appears if custom fonts are large or hosted on slow third-party servers.</p>
+
+  <h3>Risks if ignored</h3>
+
+  <p>If fonts and icons are not optimised:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Pages may render blank text (FOIT – Flash of Invisible Text)</li>
+    <li class="vf-list__item">Large font files increase page weight</li>
+    <li class="vf-list__item">External font services introduce additional network requests</li>
+    <li class="vf-list__item">Icon libraries add unnecessary CSS and font files</li>
+    <li class="vf-list__item">In extreme cases, users may abandon the page before any readable content appears</li>
+  </ul>
+
+  {# ── Common Problems ── #}
+  <h2 id="common-problems" class="vf-u-margin--0 vf-u-padding__top--400">Common Problems</h2>
+
+  <h3>Typical issues seen</h3>
+
+  <p>Common mistakes when using fonts and icons include:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Loading multiple font families and weights</li>
+    <li class="vf-list__item">Relying entirely on external font services</li>
+    <li class="vf-list__item">Large icon font libraries with hundreds of unused icons</li>
+    <li class="vf-list__item">Blocking CSS files containing fonts</li>
+    <li class="vf-list__item">Font files larger than the actual content</li>
+  </ul>
+
+  <h3>Why do they fail in LRO contexts?</h3>
+
+  <p>These problems become worse in low-resource environments because:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Slow networks delay font downloads</li>
+    <li class="vf-list__item">Low-end devices struggle to process complex font rendering</li>
+    <li class="vf-list__item">Expensive data plans discourage large downloads</li>
+    <li class="vf-list__item">Unstable connections may interrupt font loading</li>
+  </ul>
+
+  <p>This can lead to delayed or broken UI rendering.</p>
+
+  {# ── Design Principles ── #}
+  <h2 id="design-principles" class="vf-u-margin--0 vf-u-padding__top--400">Design Principles</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Content first</strong> — text should remain readable without custom fonts</li>
+    <li class="vf-list__item"><strong>Progressive enhancement</strong> — custom fonts enhance the experience, but are not required</li>
+    <li class="vf-list__item"><strong>Data minimisation</strong> — minimise the number and size of font files</li>
+    <li class="vf-list__item"><strong>Reliability over richness</strong> — choose fonts that always render quickly</li>
+    <li class="vf-list__item"><strong>Graceful fallback</strong> — provide system font alternatives</li>
+  </ul>
+
+  {# ── Optimisation Techniques ── #}
+  <h2 id="optimisation" class="vf-u-margin--0 vf-u-padding__top--400">Optimisation Techniques</h2>
+
+  <h3>System Fonts</h3>
+
+  <p>System fonts are fonts already installed on user devices. Examples include:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Arial</li>
+    <li class="vf-list__item">Helvetica</li>
+    <li class="vf-list__item">Roboto (Android devices)</li>
+    <li class="vf-list__item">San Francisco (Apple devices)</li>
+  </ul>
+
+  <p><strong>Advantages:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Zero network requests</li>
+    <li class="vf-list__item">Immediate rendering</li>
+    <li class="vf-list__item">Minimal performance impact</li>
+  </ul>
+
+  <p><strong>Example:</strong></p>
+  <pre class="vf-code-example__pre"><code>body {
+  font-family: system-ui, -apple-system, Arial, sans-serif;
+}</code></pre>
+
+  <p><strong>LRO recommendation:</strong> Use system fonts for most content pages where branding requirements are flexible.</p>
+
+  <h3>Self-Hosted Web Fonts</h3>
+
+  <p>Web fonts can be hosted locally instead of relying on external services.</p>
+
+  <p><strong>Advantages:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Better control over loading behaviour</li>
+    <li class="vf-list__item">Improved caching</li>
+    <li class="vf-list__item">Reduced dependency on third-party services</li>
+  </ul>
+
+  <p><strong>Best practices include:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Using modern formats such as WOFF2</li>
+    <li class="vf-list__item">Limiting font weights</li>
+    <li class="vf-list__item">Compressing font files</li>
+  </ul>
+
+  <p><strong>Example:</strong></p>
+  <pre class="vf-code-example__pre"><code>@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter.woff2") format("woff2");
+  font-display: swap;
+}</code></pre>
+
+  <p><strong>LRO recommendation:</strong> If custom fonts are required, self-host them and limit the number of weights.</p>
+
+  <h3>External Font Services</h3>
+
+  <p>Examples include Google Fonts and Adobe Fonts. While convenient, they introduce additional network requests and external dependencies.</p>
+
+  <p><strong>Potential problems:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">DNS lookup delays</li>
+    <li class="vf-list__item">Additional HTTP connections</li>
+    <li class="vf-list__item">Blocked fonts in restricted networks</li>
+  </ul>
+
+  <p><strong>LRO recommendation:</strong> Avoid external font services for critical pages.</p>
+
+  <h3>Icon Strategies</h3>
+
+  <p>Icons are commonly implemented using three approaches.</p>
+
+  <h4>Icon Fonts</h4>
+
+  <p>Large icon font libraries (e.g. Font Awesome) often include hundreds of unused icons.</p>
+
+  <p><strong>Problems:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Large font files</li>
+    <li class="vf-list__item">Unnecessary CSS</li>
+    <li class="vf-list__item">Slow rendering</li>
+  </ul>
+
+  <h4>SVG Icons</h4>
+
+  <p>SVG icons are lightweight and scalable.</p>
+
+  <p><strong>Example:</strong></p>
+  <pre class="vf-code-example__pre"><code>&lt;svg width="16" height="16"&gt;
+  &lt;path d="..."/&gt;
+&lt;/svg&gt;</code></pre>
+
+  <p><strong>Advantages:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Small file size</li>
+    <li class="vf-list__item">No font download required</li>
+    <li class="vf-list__item">Flexible styling</li>
+  </ul>
+
+  <h4>Inline SVG or Icon Sprites</h4>
+
+  <p>Icons can also be bundled into a single SVG sprite.</p>
+
+  <p><strong>Example:</strong></p>
+  <pre class="vf-code-example__pre"><code>&lt;svg class="icon"&gt;
+  &lt;use href="#search-icon"&gt;&lt;/use&gt;
+&lt;/svg&gt;</code></pre>
+
+  <p><strong>LRO recommendation:</strong> Prefer SVG icons over icon fonts.</p>
+
+  {# ── Implementation Guidance ── #}
+  <h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400">Implementation Guidance</h2>
+
+  <h3>Minimise font files</h3>
+
+  <p>Reduce the number of font weights.</p>
+
+  <p><strong>Instead of:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Regular</li>
+    <li class="vf-list__item">Medium</li>
+    <li class="vf-list__item">Semi-bold</li>
+    <li class="vf-list__item">Bold</li>
+    <li class="vf-list__item">Extra-bold</li>
+  </ul>
+
+  <p><strong>Use only:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Regular</li>
+    <li class="vf-list__item">Bold</li>
+  </ul>
+
+  <h3>Use modern font formats</h3>
+
+  <p>WOFF2 provides the best compression.</p>
+
+  <p><strong>Typical file sizes:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">WOFF2 → ~30–50 KB</li>
+    <li class="vf-list__item">WOFF → ~60–90 KB</li>
+    <li class="vf-list__item">TTF → 150 KB+</li>
+  </ul>
+
+  <h3>Use font-display</h3>
+
+  <p>The font-display property controls how fonts render during loading.</p>
+
+  <p><strong>Example:</strong></p>
+  <pre class="vf-code-example__pre"><code>font-display: swap;</code></pre>
+
+  <p>This ensures fallback fonts appear immediately while custom fonts load.</p>
+
+  <h3>Subset fonts</h3>
+
+  <p>Font subsetting removes unused characters. For example:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Latin characters only</li>
+    <li class="vf-list__item">Excluding rarely used glyphs</li>
+  </ul>
+
+  <p>This can reduce font size by more than 70%.</p>
+
+  <h3>Lazy load non-critical fonts</h3>
+
+  <p>Fonts used only in secondary UI elements can load later.</p>
+
+  <p><strong>Example:</strong></p>
+  <pre class="vf-code-example__pre"><code>&lt;link rel="preload" href="/fonts/inter.woff2" as="font" crossorigin&gt;</code></pre>
+
+  <h3>Replace icon libraries</h3>
+
+  <p>Large icon libraries should be replaced with:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Inline SVG icons</li>
+    <li class="vf-list__item">SVG sprites</li>
+    <li class="vf-list__item">Minimal icon sets</li>
+  </ul>
+
+  {# ── Code Examples ── #}
+  <h2 id="code-examples" class="vf-u-margin--0 vf-u-padding__top--400">Code Examples</h2>
+
+  <h3>Example 1: Basic LRO-Friendly Font Setup</h3>
+
+  <pre class="vf-code-example__pre"><code>/* Use system fonts first for fast rendering */
+body {
+  font-family: system-ui, Arial, sans-serif;
+}
+
+/* Load a custom font asynchronously with font-display swap */
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter.woff2") format("woff2");
+  font-display: swap;
+}</code></pre>
+
+  <p><strong>Comments:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><code>system-ui</code> renders text immediately using native system fonts</li>
+    <li class="vf-list__item"><code>font-display: swap</code> ensures text is visible while the custom font loads, avoiding invisible text</li>
+    <li class="vf-list__item">Using the .woff2 format keeps the file size small</li>
+  </ul>
+
+  <h3>Example 2: Lightweight SVG Icon</h3>
+
+  <pre class="vf-code-example__pre"><code>&lt;!-- Button with inline SVG icon --&gt;
+&lt;button&gt;
+  &lt;!-- Inline SVG avoids downloading a separate large icon font --&gt;
+  &lt;svg width="16" height="16" aria-hidden="true"&gt;
+    &lt;path d="M2 2 L14 2 L14 14 L2 14 Z"/&gt;
+  &lt;/svg&gt;
+  Search
+&lt;/button&gt;</code></pre>
+
+  <p><strong>Comments:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Inline SVGs are lightweight and render instantly</li>
+    <li class="vf-list__item">Avoids including large icon font libraries for a few icons</li>
+    <li class="vf-list__item">Scales cleanly without additional HTTP requests</li>
+  </ul>
+
+  <p>Using system fonts with fallback and inline SVGs reduces initial load size, network requests, and rendering delays, making your site faster and more accessible for low-resource users.</p>
+
+  {# ── Do / Don't ── #}
+  <h2 id="dos-dont" class="vf-u-margin--0 vf-u-padding__top--400 vf-search-client-side--no-index">Do / Don't</h2>
+
+  <h3>Do</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Prefer system fonts when possible</li>
+    <li class="vf-list__item">Limit the number of font weights</li>
+    <li class="vf-list__item">Use the WOFF2 font format</li>
+    <li class="vf-list__item">Use font-display: swap</li>
+    <li class="vf-list__item">Replace icon fonts with SVG icons</li>
+    <li class="vf-list__item">Subset font files</li>
+  </ul>
+
+  <h3>Don't</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Load multiple font families</li>
+    <li class="vf-list__item">Rely heavily on external font services</li>
+    <li class="vf-list__item">Include large icon font libraries</li>
+    <li class="vf-list__item">Block rendering with large font files</li>
+    <li class="vf-list__item">Load fonts that are rarely used</li>
+  </ul>
+
+  {# ── Checklist ── #}
+  <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400">Checklist</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Page works without custom fonts</li>
+    <li class="vf-list__item">Fallback system fonts are defined</li>
+    <li class="vf-list__item">Font files use the WOFF2 format</li>
+    <li class="vf-list__item">The font-display property is used</li>
+    <li class="vf-list__item">Unnecessary font weights removed</li>
+    <li class="vf-list__item">Icon fonts replaced with SVG where possible</li>
+  </ul>
+
+  {# ── Metrics and Tools ── #}
+  <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400">Metrics and Tools</h2>
+
+  <h3>Key metrics</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Font download size</li>
+    <li class="vf-list__item">Total page weight</li>
+    <li class="vf-list__item">Render blocking resources</li>
+    <li class="vf-list__item">First contentful paint (FCP)</li>
+  </ul>
+
+  <h3>Recommended benchmarks for LRO</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Total font payload &lt; 100 KB</li>
+    <li class="vf-list__item">Number of font families ≤ 1</li>
+    <li class="vf-list__item">Font weights ≤ 2</li>
+  </ul>
+
+  <h3>Tools</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Chrome DevTools Network panel</li>
+    <li class="vf-list__item">Lighthouse performance audit</li>
+    <li class="vf-list__item">WebPageTest waterfall analysis</li>
+    <li class="vf-list__item">DebugBear performance monitoring</li>
+  </ul>
+
+  {# ── Further Reading ── #}
+  <h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400">Further Reading</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="https://www.wattspeed.com/blog/how-to-improve-your-website-speed-by-optimizing-fonts" target="_blank" rel="noopener noreferrer">How to improve your website speed by optimizing fonts</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.wattspeed.com/blog/how-to-reduce-font-load" target="_blank" rel="noopener noreferrer">How to Reduce Font Load - Wattspeed Blog</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://typetype.org/articles/web-font-optimization/" target="_blank" rel="noopener noreferrer">Web Font Optimization: Effective Techniques to Improve Loading Speed | TypeType</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.wattspeed.com/blog/ultimate-guide-web-font-optimization" target="_blank" rel="noopener noreferrer">Ultimate Guide to Web Font Optimization</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.debugbear.com/blog/core-web-vitals" target="_blank" rel="noopener noreferrer">The Ultimate Core Web Vitals Checklist</a></li>
+  </ul>
+
 </article>
