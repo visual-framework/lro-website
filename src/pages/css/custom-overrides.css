@@ -357,6 +357,11 @@ html {
       .desktop-only .vf-mega-menu__content .vf-summary-container {
         padding: 0 1rem;
       }
+      .vf-hero .vf-hero__kicker a {
+        border-bottom: none;
+        text-decoration: none;
+        color: #3b6fb6;
+      }
 
       .lro-sidebar {
         background-color: #F3F3F3;
