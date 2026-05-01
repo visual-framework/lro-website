@@ -6,8 +6,10 @@ templateEngineOverride: njk
 
 <article class="vf-content">
 
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400 vf-search-client-side--no-index">Contents</h2>
+
 	<nav class="toc vf-search-client-side--no-index" aria-label="On this page">
-		<ul class="vf-list">
+		<ul class="vf-list vf-list--unordered">
 			<li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
 			<li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO</a></li>
 			<li class="vf-list__item"><a href="#common-problems" class="vf-link">Common problems</a></li>
@@ -25,7 +27,7 @@ templateEngineOverride: njk
 		</ul>
 	</nav>
 
-	<h2 id="overview">Overview</h2>
+	<h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Overview</h2>
 	<p>
 		Design patterns in the context of Low Resource Optimisation (LRO) refer to commonly used interface and
 		architectural approaches that minimise resource consumption while maintaining usability.
@@ -66,7 +68,7 @@ templateEngineOverride: njk
 		Applying these patterns improves performance, accessibility, and reliability across diverse environments.
 	</p>
 
-	<h2 id="why-lro">Why this matters for LRO</h2>
+	<h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Why this matters for LRO</h2>
 	<h3>User impact</h3>
 	<p>
 		Users in constrained environments often encounter difficulties accessing heavy web applications.
@@ -97,7 +99,7 @@ templateEngineOverride: njk
 		Low-resource design patterns mitigate these risks by prioritising efficiency and resilience.
 	</p>
 
-	<h2 id="common-problems">Common problems</h2>
+	<h2 id="common-problems" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Common problems</h2>
 	<h3>Heavy page architecture</h3>
 	<p>
 		Many web applications load large numbers of resources before displaying content.
@@ -127,7 +129,7 @@ templateEngineOverride: njk
 		Design patterns that reduce these inefficiencies are essential for low-resource optimisation.
 	</p>
 
-	<h2 id="design-principles">Design principles involved</h2>
+	<h2 id="design-principles" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Design principles involved</h2>
 	<p>
 		Effective low-resource design patterns rely on several core principles.
 	</p>
@@ -142,7 +144,7 @@ templateEngineOverride: njk
 		These principles ensure that digital systems remain usable across diverse environments.
 	</p>
 
-	<h2 id="strategy-options">Strategy options</h2>
+	<h2 id="strategy-options" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Strategy options</h2>
 	<h3>Summary-first pages</h3>
 	<p>
 		Summary-first pages present key information at the top of the page before detailed content loads.
@@ -293,7 +295,7 @@ templateEngineOverride: njk
 		Reducing data transfer not only improves performance but also lowers energy consumption.
 	</p>
 
-	<h2 id="implementation">Implementation guidance</h2>
+	<h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Implementation guidance</h2>
 	<h3>Identify heavy components</h3>
 	<p>
 		Audit pages to determine which components consume the most resources.
@@ -315,7 +317,7 @@ templateEngineOverride: njk
 		<li class="vf-list__item">Simulate slow network environments to verify usability</li>
 	</ul>
 
-	<h2 id="code-example">Code example (lazy loading images)</h2>
+	<h2 id="code-example" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Code example (lazy loading images)</h2>
 	<p>
 		Example of lazy loading to delay non-critical image downloads.
 	</p>
@@ -324,14 +326,14 @@ templateEngineOverride: njk
 		Lazy loading ensures that images are downloaded only when users scroll to them.
 	</p>
 
-	<h2 id="examples">Real-world examples</h2>
+	<h2 id="examples" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Real-world examples</h2>
 	<ul class="vf-list vf-list--unordered">
 		<li class="vf-list__item">Wikipedia - Wikipedia pages prioritise text content and simple layouts, enabling fast loading even on slow networks.</li>
 		<li class="vf-list__item">BBC News - BBC websites provide simplified mobile versions that reduce page weight and prioritise content.</li>
 		<li class="vf-list__item">Static documentation websites - Many technical documentation platforms use static site generators to deliver content quickly.</li>
 	</ul>
 
-	<h2 id="dos-donts">Do / Don't</h2>
+	<h2 id="dos-donts" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Do / Don't</h2>
 	<h4>Do</h4>
 	<ul class="vf-list vf-list--unordered">
 		<li class="vf-list__item">Use summary-first layouts</li>
@@ -350,7 +352,7 @@ templateEngineOverride: njk
 		<li class="vf-list__item">Ignore performance impacts of layout design</li>
 	</ul>
 
-	<h2 id="checklist">Checklist (quick review)</h2>
+	<h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Checklist (quick review)</h2>
 	<ul class="vf-list vf-list--unordered">
 		<li class="vf-list__item">Summary content visible immediately</li>
 		<li class="vf-list__item">Heavy visualisations loaded on demand</li>
@@ -360,7 +362,7 @@ templateEngineOverride: njk
 		<li class="vf-list__item">Navigation structure is simple and predictable</li>
 	</ul>
 
-	<h2 id="metrics-tools">Metrics and tools</h2>
+	<h2 id="metrics-tools" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Metrics and tools</h2>
 	<h3>Key metrics</h3>
 	<ul class="vf-list vf-list--unordered">
 		<li class="vf-list__item">Page weight</li>
@@ -376,7 +378,7 @@ templateEngineOverride: njk
 		<li class="vf-list__item">PageSpeed Insights</li>
 	</ul>
 
-	<h2 id="related-topics">Related LRO topics</h2>
+	<h2 id="related-topics" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Related LRO topics</h2>
 	<ul class="vf-list vf-list--unordered">
 		<li class="vf-list__item">Page and interaction design principles</li>
 		<li class="vf-list__item">Data transparency and user control</li>
@@ -385,7 +387,7 @@ templateEngineOverride: njk
 		<li class="vf-list__item">Network optimisation strategies</li>
 	</ul>
 
-	<h2 id="key-takeaways">Key takeaways</h2>
+	<h2 id="key-takeaways" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Key takeaways</h2>
 	<p>
 		Design patterns provide practical methods for implementing low-resource optimisation strategies.
 	</p>
@@ -399,8 +401,8 @@ templateEngineOverride: njk
 		usable even in constrained environments.
 	</p>
 
-	<h2 id="further-reading">Further reading</h2>
-	<ul class="vf-list vf-list--unordered">
+	<h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Further reading</h2>
+	<ul class="fr vf-list vf-list--unordered">
 		<li class="vf-list__item"><a class="vf-link" href="https://www.linkedin.com/pulse/optimizing-performance-low-bandwidth-environments-comprehensive-yp5rc" target="_blank" rel="noopener noreferrer">Optimizing Performance in Low Bandwidth Environments: A Comprehensive Approach</a></li>
 		<li class="vf-list__item"><a class="vf-link" href="https://www.bbcmaestro.com/blog/guide-to-layout-design" target="_blank" rel="noopener noreferrer">A guide to layout design | BBC Maestro</a></li>
 		<li class="vf-list__item"><a class="vf-link" href="https://brainly.in/question/61174022" target="_blank" rel="noopener noreferrer">15.helps us to summarise all the key points into one single Template so that in future, whenever there - Brainly.in</a></li>

@@ -11,7 +11,7 @@ import { vfBanner } from "vf-banner/vf-banner";
 vfBanner();
 
 
-import { vfSearchClientSide } from "../../pages/scripts/vf-search-client-side.js";
+import { vfSearchClientSide } from "../../pages/scripts/lro-search-client-side.js";
 import { initFeedbackForms } from "../../pages/scripts/feedback-forms.js";
 
 // Make vfSearchClientSide globally available for the search page

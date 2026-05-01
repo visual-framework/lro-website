@@ -8,7 +8,7 @@ templateEngineOverride: njk
 
   {# ── Table of contents ── #}
   <nav class="toc vf-search-client-side--no-index" aria-label="On this page">
-    <ul class="vf-list">
+    <ul class="vf-list vf-list--unordered">
       <li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
       <li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO?</a></li>
       <li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation guidance - Core Rendering Strategies</a></li>
@@ -21,7 +21,7 @@ templateEngineOverride: njk
   </nav>
 
   {# ── Overview ── #}
-  <h2 id="overview">Overview</h2>
+  <h2 id="overview" class="vf-search-client-side--no-index">Overview</h2>
   <p>
     A rendering strategy defines <strong>where and when a web page is generated</strong>: in the browser, on the server, or ahead of time as static files.
     This choice directly determines:
@@ -39,7 +39,7 @@ templateEngineOverride: njk
 
 
   {# ── Why this matters for LRO? ── #}
-  <h2 id="why-lro">Why this matters for LRO?</h2>
+  <h2 id="why-lro"  class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Why this matters for LRO?</h2>
 
   <h4>Impact on Low-Resource Users</h4>
   <ul class="vf-list vf-list--unordered">
@@ -75,7 +75,7 @@ templateEngineOverride: njk
 
 
   {# ── Implementation guidance ── #}
-  <h2 id="implementation">Implementation guidance - Core Rendering Strategies</h2>
+  <h2 id="implementation"  class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Implementation guidance - Core Rendering Strategies</h2>
 
   {# ── 1. CSR ── #}
   <h3>1. Client-Side Rendering (CSR)</h3>
@@ -304,7 +304,7 @@ templateEngineOverride: njk
 
 
   {# ── Summary ── #}
-  <h2 id="summary">Summary</h2>
+  <h2 id="summary"  class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Summary</h2>
 
   <h3>Key Trade-offs</h3>
   <table class="vf-table vf-table--striped">
@@ -405,7 +405,7 @@ templateEngineOverride: njk
 
 
   {# ── Do's / Don't ── #}
-  <h2 id="dos-dont">Do's / Don't</h2>
+  <h2 id="dos-dont"  class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Do's / Don't</h2>
 
   <h4>Do's</h4>
   <ul class="vf-list vf-list--unordered">
@@ -424,7 +424,7 @@ templateEngineOverride: njk
 
 
   {# ── Checklist ── #}
-  <h2 id="checklist">Checklist</h2>
+  <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Checklist</h2>
   <ul class="vf-list vf-list--unordered">
     <li class="vf-list__item">☐ Core content visible without JavaScript</li>
     <li class="vf-list__item">☐ No blank screen on slow networks</li>
@@ -437,7 +437,7 @@ templateEngineOverride: njk
 
 
   {# ── Metrics & tools ── #}
-  <h2 id="metrics">Metrics &amp; tools</h2>
+  <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Metrics &amp; tools</h2>
   <ul class="vf-list vf-list--unordered">
     <li class="vf-list__item">Time to First Text (TTFT)</li>
     <li class="vf-list__item">First Contentful Paint (FCP)</li>
@@ -449,7 +449,7 @@ templateEngineOverride: njk
 
 
   {# ── Further reading ── #}
-  <h2 id="further-reading">Further reading</h2>
+  <h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Further reading</h2>
   <ul class="vf-list vf-list--unordered">
     <li class="vf-list__item"><a class="vf-link" href="https://larsbarkman.com/blog/web-frontend-rendering-strategies/" target="_blank" rel="noopener noreferrer">Lars Barkman. Web Frontend Rendering Strategies</a></li>
     <li class="vf-list__item"><a class="vf-link" href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Frameworks_libraries/Introduction#static_site_generators" target="_blank" rel="noopener noreferrer">MDN Web Docs. Introduction to Static Site Generators</a></li>
