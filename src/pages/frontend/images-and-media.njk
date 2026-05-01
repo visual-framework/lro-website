@@ -6,5 +6,407 @@ templateEngineOverride: njk
 ---
 
 <article class="vf-content">
-  <p class="vf-lede">This page is currently being developed.</p>
+
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400 vf-search-client-side--no-index">Contents</h2>
+  {# ── Table of contents ── #}
+  <nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+    <ul class="vf-list vf-list--unordered">
+      <li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+      <li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO</a></li>
+      <li class="vf-list__item"><a href="#common-problems" class="vf-link">Common Problems</a></li>
+      <li class="vf-list__item"><a href="#design-principles" class="vf-link">Design Principles</a></li>
+      <li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation Guidance</a></li>
+      <li class="vf-list__item"><a href="#accessibility" class="vf-link">Accessibility Considerations</a></li>
+      <li class="vf-list__item"><a href="#dos-dont" class="vf-link">Do / Don't</a></li>
+      <li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+      <li class="vf-list__item"><a href="#metrics" class="vf-link">Metrics and Tools</a></li>
+      <li class="vf-list__item"><a href="#scientific-use-cases" class="vf-link">Use Cases for Scientific Websites</a></li>
+      <li class="vf-list__item"><a href="#further-reading" class="vf-link">Further Reading</a></li>
+    </ul>
+  </nav>
+
+  {# ── Overview ── #}
+  <h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Overview</h2>
+
+  <p>Images and media content often represent the largest portion of a webpage's total file size. Optimising images and videos is therefore one of the most effective ways to improve website performance, especially for users on slow networks or limited devices.</p>
+
+  <p>In low-resource environments such as LMIC regions, large media files can dramatically increase loading time, data usage, and rendering delays. A well-designed image and media strategy ensures that visual content remains useful and engaging without negatively affecting performance or accessibility.</p>
+
+  <p>The goal of an LRO-friendly media strategy is to deliver the smallest possible media files that still communicate the intended visual information, while ensuring that images and videos load progressively and only when needed.</p>
+
+  {# ── Why this matters for LRO ── #}
+  <h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400">Why this matters for LRO</h2>
+
+  <p>Large images and videos can slow down websites significantly and consume large amounts of bandwidth. This problem becomes much more pronounced in low-resource environments, where users often rely on slow mobile networks or have strict data limits.</p>
+
+  <p>Optimised images help achieve several important outcomes:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Faster page loading and improved user experience</li>
+    <li class="vf-list__item">Reduced data consumption for users</li>
+    <li class="vf-list__item">Better performance on low-power devices</li>
+    <li class="vf-list__item">Improved search engine performance and Core Web Vitals scores</li>
+  </ul>
+
+  <p>Research shows that when page load time increases from one second to three seconds, the bounce rate can increase significantly, meaning many users leave before the page finishes loading.</p>
+
+  <p>Because images are frequently the largest element on a webpage, they often determine the Largest Contentful Paint (LCP) metric used in performance evaluation.</p>
+
+  {# ── Common Problems ── #}
+  <h2 id="common-problems" class="vf-u-margin--0 vf-u-padding__top--400">Common Problems</h2>
+
+  <p>Many websites unintentionally degrade performance because of inefficient media usage. Typical problems include:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Large uncompressed images uploaded directly from cameras</li>
+    <li class="vf-list__item">Images much larger than the size displayed on screen</li>
+    <li class="vf-list__item">Use of heavy formats such as PNG when JPEG or WebP would be smaller</li>
+    <li class="vf-list__item">Video backgrounds that load immediately on page load</li>
+    <li class="vf-list__item">Multiple decorative images that do not add meaningful content</li>
+  </ul>
+
+  <p>These issues can significantly increase page size and delay rendering.</p>
+
+  <p>Another common issue is using the same image for all devices. Serving a large desktop image to a mobile device wastes bandwidth and increases loading time.</p>
+
+  {# ── Design Principles ── #}
+  <h2 id="design-principles" class="vf-u-margin--0 vf-u-padding__top--400">Design Principles</h2>
+
+  <p>A sustainable media strategy for low-resource environments follows several key principles:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Use images only when they provide real value to the content</li>
+    <li class="vf-list__item">Serve the right image size for each device</li>
+    <li class="vf-list__item">Deliver media progressively rather than loading everything at once</li>
+    <li class="vf-list__item">Optimise file size without sacrificing necessary quality</li>
+    <li class="vf-list__item">Prefer formats that offer better compression</li>
+  </ul>
+
+  <p>Reducing the number of images and serving device-appropriate images can significantly reduce bandwidth usage and improve performance.</p>
+
+  {# ── Implementation Guidance ── #}
+  <h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400">Implementation Guidance</h2>
+
+  <h3>Image Formats and When to Use Them</h3>
+
+  <p>Different image formats are suitable for different types of content.</p>
+
+  <h4>JPEG</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Best for photographs and detailed images.</li>
+    <li class="vf-list__item">Uses lossy compression to reduce file size.</li>
+  </ul>
+
+	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.5a.avif' | url }}" alt="Use lazy loading for assets that are not required during the initial page render." loading="lazy">
+		<figcaption class="vf-figure__caption"></figcaption>
+	</figure>
+  <h4>PNG</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Supports transparency.</li>
+    <li class="vf-list__item">Suitable for graphics and logos.</li>
+  </ul>
+  <h4>SVG</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Ideal for icons, diagrams and illustrations.</li>
+    <li class="vf-list__item">Vector-based and extremely lightweight.</li>
+  </ul>
+
+	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.5b.avif' | url }}" alt="Use lazy loading for assets that are not required during the initial page render." loading="lazy">
+		<figcaption class="vf-figure__caption"></figcaption>
+	</figure>
+
+  <h4>WebP</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Modern format with better compression than JPEG and PNG.</li>
+    <li class="vf-list__item">Supported by most modern browsers.</li>
+  </ul>
+  <h4>AVIF</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">New generation image format.</li>
+    <li class="vf-list__item">Provides extremely high compression.</li>
+  </ul>
+
+  <h3>Image Format Comparison for LRO</h3>
+  
+	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.5c.avif' | url }}" alt="Use lazy loading for assets that are not required during the initial page render." loading="lazy">
+		<figcaption class="vf-figure__caption"></figcaption>
+	</figure>
+
+  <table class="vf-table vf-table--striped">
+    <thead class="vf-table__header">
+      <tr class="vf-table__row">
+        <th class="vf-table__heading" scope="col">Format</th>
+        <th class="vf-table__heading" scope="col">Best Use Case</th>
+        <th class="vf-table__heading" scope="col">Compression Efficiency</th>
+        <th class="vf-table__heading" scope="col">Typical File Size</th>
+        <th class="vf-table__heading" scope="col">LRO Recommendation</th>
+      </tr>
+    </thead>
+    <tbody class="vf-table__body">
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">JPEG</td>
+        <td class="vf-table__cell">Photographs</td>
+        <td class="vf-table__cell">Medium</td>
+        <td class="vf-table__cell">Medium</td>
+        <td class="vf-table__cell">Good baseline format</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">PNG</td>
+        <td class="vf-table__cell">Logos / graphics</td>
+        <td class="vf-table__cell">Low</td>
+        <td class="vf-table__cell">Large</td>
+        <td class="vf-table__cell">Use only when transparency is required</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">SVG</td>
+        <td class="vf-table__cell">Icons / diagrams</td>
+        <td class="vf-table__cell">Very high</td>
+        <td class="vf-table__cell">Very small</td>
+        <td class="vf-table__cell">Highly recommended</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">WebP</td>
+        <td class="vf-table__cell">Photographs / graphics</td>
+        <td class="vf-table__cell">High</td>
+        <td class="vf-table__cell">Smaller than JPEG</td>
+        <td class="vf-table__cell">Strongly recommended</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">AVIF</td>
+        <td class="vf-table__cell">Modern image optimisation</td>
+        <td class="vf-table__cell">Very high</td>
+        <td class="vf-table__cell">Smallest</td>
+        <td class="vf-table__cell">Use where supported</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>General Guidance</h3>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Use WebP or AVIF for most images</li>
+    <li class="vf-list__item">Use SVG for icons and diagrams</li>
+    <li class="vf-list__item">Use JPEG only when compatibility is required</li>
+    <li class="vf-list__item">Avoid PNG for large images</li>
+  </ul>
+
+  <h3>Image Sizing and Resolution</h3>
+
+  <p>Image resolution is often misunderstood in web optimisation. DPI values are primarily relevant for print and do not significantly affect how images appear on screens. What matters more is the actual pixel dimensions of the image.</p>
+
+  <p>Best practices for image sizing include:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Resize images to match their display size</li>
+    <li class="vf-list__item">Avoid uploading images larger than needed</li>
+    <li class="vf-list__item">Typical web images should be around 1000px wide</li>
+    <li class="vf-list__item">Logos and icons should be much smaller</li>
+  </ul>
+
+  <p>Oversized images increase page weight without improving visual quality.</p>
+
+  <h3>Responsive Images</h3>
+
+  <p>Different devices require different image sizes. Responsive images ensure the browser downloads only the most appropriate version.</p>
+
+	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.5d.avif' | url }}" alt="Use lazy loading for assets that are not required during the initial page render." loading="lazy">
+		<figcaption class="vf-figure__caption"></figcaption>
+	</figure>
+
+  <p><strong>Example using the &lt;picture&gt; element:</strong></p>
+  <pre class="vf-code-example__pre"><code>&lt;picture&gt;
+  &lt;source
+    media="(max-width:700px)"
+    srcset="hero-mobile-400.jpg 400w,
+            hero-mobile-700.jpg 700w"&gt;
+  &lt;source
+    media="(min-width:701px)"
+    srcset="hero-desktop-700.jpg 700w,
+            hero-desktop-1200.jpg 1200w"&gt;
+  &lt;img src="hero-desktop-1200.jpg"
+       alt="Scientific dataset visualisation"&gt;
+&lt;/picture&gt;</code></pre>
+
+  <p>This approach ensures that smaller devices download smaller images, saving bandwidth and improving loading speed.</p>
+
+  <h3>Lazy Loading</h3>
+
+  <p>Lazy loading delays the loading of images until they are needed, typically when they appear in the viewport.</p>
+
+  <p><strong>Benefits include:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Faster initial page load</li>
+    <li class="vf-list__item">Reduced network requests</li>
+    <li class="vf-list__item">Lower data usage</li>
+  </ul>
+
+  <p><strong>Example:</strong></p>
+  <pre class="vf-code-example__pre"><code>&lt;img src="dataset-image.jpg" loading="lazy" alt="Dataset illustration"&gt;</code></pre>
+
+  <p>Lazy loading is especially important for long pages containing many images.</p>
+
+  <h3>Optimised Image Delivery Pipeline</h3>
+  <p>Typical non-optimised image loading:</p>
+
+	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.5e.avif' | url }}" alt="Use lazy loading for assets that are not required during the initial page render." loading="lazy">
+		<figcaption class="vf-figure__caption"></figcaption>
+	</figure>
+  <p>LRO optimised pipeline:</p>
+
+	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.5f.avif' | url }}" alt="Use lazy loading for assets that are not required during the initial page render." loading="lazy">
+		<figcaption class="vf-figure__caption"></figcaption>
+	</figure>
+  <p>Benefits:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Faster first contentful paint</li>
+    <li class="vf-list__item">Reduced initial data usage</li>
+    <li class="vf-list__item">Improved experience on slow networks</li>
+  </ul>
+
+  <h3>Embedding Critical Images</h3>
+  <p>Some images, such as logos or icons, are critical for page functionality.</p>
+  <p>For very small images, embedding them directly into HTML can reduce network requests.</p>
+  <p>Example</p>
+  <pre class="vf-code-example__pre"><code>&lt;img src="data:image/png;base64,iVBORw0KGgoAAA..." alt="Logo"&gt;</code></pre>
+
+  <p>Embedding allows the browser to display the image immediately when the HTML loads.
+  This technique should only be used for very small images.</p>
+
+
+  <h3>Media and Video Strategy</h3>
+
+  <p>Videos are often much larger than images and can heavily impact performance.</p>
+
+  <p>Best practices include:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Avoid autoplay videos when possible</li>
+    <li class="vf-list__item">Use thumbnail images instead of loading videos immediately</li>
+    <li class="vf-list__item">Host videos on external platforms when appropriate</li>
+    <li class="vf-list__item">Compress videos before embedding</li>
+    <li class="vf-list__item">Load videos only when users interact with them</li>
+  </ul>
+
+  {# ── Accessibility Considerations ── #}
+  <h2 id="accessibility" class="vf-u-margin--0 vf-u-padding__top--400">Accessibility Considerations</h2>
+
+  <p>Images and graphics can make content easier to follow and more welcoming, especially for people with cognitive or learning disabilities. They also help people with visual impairments orient themselves and understand the structure of a page.</p>
+
+  <p>At the same time, images are a common source of accessibility barriers when they lack suitable text alternatives or when essential information is conveyed visually only.</p>
+
+  <h3>Choosing an approach</h3>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Informative images:</strong> Summarise the key information the image adds.</li>
+    <li class="vf-list__item"><strong>Decorative images:</strong> Use a null alternative (alt="") when the image adds no meaningful information.</li>
+    <li class="vf-list__item"><strong>Functional images:</strong> Describe the action or destination (e.g., "Print", "Submit"), not the visual appearance.</li>
+    <li class="vf-list__item"><strong>Images of text:</strong> Avoid where possible (except logos); if used, include the same words in the alternative text.</li>
+    <li class="vf-list__item"><strong>Complex images (charts/diagrams):</strong> Provide a complete text equivalent of the data or message.</li>
+    <li class="vf-list__item"><strong>Groups of images:</strong> Provide one alternative text that covers the meaning of the set.</li>
+    <li class="vf-list__item"><strong>Image maps:</strong> Provide overall context plus meaningful alternative text for each clickable region.</li>
+  </ul>
+
+  <h3>Accessible Media</h3>
+
+  <p>Audio and video can add significant value to scientific content, but they also introduce frequent accessibility barriers when key information is available only through sound or only through visuals.</p>
+
+  <p>Plan for these barriers early through scripting, storyboarding, and recording, rather than trying to "fix" accessibility in post-production. A practical baseline is to ensure the content still makes sense if someone only hears it or only sees it.</p>
+
+  <p>For audio quality, prioritise clear speech and reduce background noise or music so listeners can distinguish the speaker.</p>
+
+  <p>For video, avoid visual patterns that can trigger seizures, make any overlay text readable with sufficient contrast and legible sizing, and ensure speaker visibility where possible.</p>
+
+  {# ── Do / Don't ── #}
+  <h2 id="dos-dont" class="vf-u-margin--0 vf-u-padding__top--400 vf-search-client-side--no-index">Do / Don't</h2>
+
+  <h3>Do</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Resize images before uploading</li>
+    <li class="vf-list__item">Use modern formats such as WebP</li>
+    <li class="vf-list__item">Use responsive images for different devices</li>
+    <li class="vf-list__item">Lazy load non-critical images</li>
+    <li class="vf-list__item">Compress images before deployment</li>
+    <li class="vf-list__item">Use SVG for icons and diagrams</li>
+  </ul>
+
+  <h3>Don't</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Upload images straight from cameras</li>
+    <li class="vf-list__item">Use large hero images without optimisation</li>
+    <li class="vf-list__item">Load decorative images that do not add value</li>
+    <li class="vf-list__item">Use video backgrounds that autoplay</li>
+    <li class="vf-list__item">Deliver large desktop images to mobile devices</li>
+  </ul>
+
+  {# ── Checklist ── #}
+  <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400">Checklist</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Images resized to appropriate dimensions</li>
+    <li class="vf-list__item">Images compressed before upload</li>
+    <li class="vf-list__item">Responsive images implemented</li>
+    <li class="vf-list__item">Lazy loading enabled for non-critical images</li>
+    <li class="vf-list__item">Appropriate image formats selected</li>
+    <li class="vf-list__item">Video content optimised or externally hosted</li>
+  </ul>
+
+  {# ── Metrics and Tools ── #}
+  <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400">Metrics and Tools</h2>
+
+  <h3>Key metrics to monitor</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Image payload size</li>
+    <li class="vf-list__item">Largest Contentful Paint</li>
+    <li class="vf-list__item">Total page weight</li>
+    <li class="vf-list__item">Number of image requests</li>
+  </ul>
+
+  <h3>Recommended LRO benchmarks</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Individual image size ideally below 200–500 KB</li>
+    <li class="vf-list__item">Total image payload ideally below 1 MB for content pages</li>
+    <li class="vf-list__item">Critical images loaded within first render</li>
+  </ul>
+
+  <h3>Image Optimisation Tools</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Image Resizer:</strong> Easily resize and compress your images without losing quality. Perfect for both individual and bulk image resizing.</li>
+    <li class="vf-list__item"><strong>Image Compressor:</strong> Reduce your image file sizes while keeping the original quality intact. Great for speeding up your site with minimal effort.</li>
+    <li class="vf-list__item"><strong>Squoosh:</strong> A handy tool that lets you compare your original and compressed images side-by-side. Supports formats like JPEG, PNG, and WebP.</li>
+  </ul>
+
+  <h3>Video Optimisation Tools</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Zamzar:</strong> A versatile tool for converting video formats quickly and easily. Perfect for making videos web-friendly.</li>
+    <li class="vf-list__item"><strong>Clideo:</strong> An easy online tool to compress video files without significantly affecting their quality. Perfect for quick optimisations.</li>
+    <li class="vf-list__item"><strong>VEED.IO:</strong> Compress and edit your videos online. Resize for different platforms or reduce file sizes to speed up your website.</li>
+  </ul>
+
+  {# ── Use Cases for Scientific Websites ── #}
+  <h2 id="scientific-use-cases" class="vf-u-margin--0 vf-u-padding__top--400">Use Cases for Scientific Websites</h2>
+
+  <p>Scientific dataset pages often contain complex visualisations and images.</p>
+
+  <p>Optimisation strategies include:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Serving smaller preview images first</li>
+    <li class="vf-list__item">Loading high-resolution figures only when users request them</li>
+    <li class="vf-list__item">Using SVG diagrams instead of raster images</li>
+  </ul>
+
+  <p>Training and documentation pages benefit from smaller images and illustrations that prioritise readability and speed.</p>
+
+  {# ── Further Reading ── #}
+  <h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400">Further Reading</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="https://www.fershee.com/articles/sustainable-websites-tips-use-images-efficiently" target="_blank" rel="noopener noreferrer">Sustainable websites tips – use images efficiently</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://requestmetrics.com/web-performance/optimize-images" target="_blank" rel="noopener noreferrer">How to Optimize Website Images: The Complete 2026 Guide</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.kraken.io/blog/ultimate-guide-to-image-optimization" target="_blank" rel="noopener noreferrer">The Ultimate Guide to Website Image Optimisation</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://dawncreative.co.uk/how-to-optimise-images-and-video-for-faster-website-loading/" target="_blank" rel="noopener noreferrer">How to optimise images and video for faster website loading</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.w3.org/WAI/tutorials/images/" target="_blank" rel="noopener noreferrer">W3C WAI Tutorials: Images concepts</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.w3.org/WAI/media/av/" target="_blank" rel="noopener noreferrer">W3C WAI: Accessible audio and video content</a></li>
+  </ul>
+
 </article>

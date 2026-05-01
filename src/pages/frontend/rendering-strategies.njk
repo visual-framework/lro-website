@@ -6,6 +6,7 @@ templateEngineOverride: njk
 
 <article class="vf-content">
 
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400 vf-search-client-side--no-index">Contents</h2>
   {# ── Table of contents ── #}
   <nav class="toc vf-search-client-side--no-index" aria-label="On this page">
     <ul class="vf-list vf-list--unordered">
@@ -21,7 +22,7 @@ templateEngineOverride: njk
   </nav>
 
   {# ── Overview ── #}
-  <h2 id="overview" class="vf-search-client-side--no-index">Overview</h2>
+  <h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Overview</h2>
   <p>
     A rendering strategy defines <strong>where and when a web page is generated</strong>: in the browser, on the server, or ahead of time as static files.
     This choice directly determines:
@@ -43,7 +44,7 @@ templateEngineOverride: njk
 
   <h4>Impact on Low-Resource Users</h4>
   <ul class="vf-list vf-list--unordered">
-    <li class="vf-list__item">Large JavaScript bundles are slow on 2G networks</li>
+    <li class="vf-list__item">Large JavaScript bundles are slow on low-bandwidth networks</li>
     <li class="vf-list__item">Hydration (when JavaScript activates static HTML into an interactive page) consumes CPU and memory</li>
     <li class="vf-list__item">Weak devices struggle with JS-heavy pages</li>
     <li class="vf-list__item">Blank screens feel like broken experiences</li>
@@ -66,7 +67,7 @@ templateEngineOverride: njk
   </p>
 
   <h4>Example (HTML-first)</h4>
-  <pre class="vf-code-example__pre"><code>&lt;!-- Load HTML content first, then call relevant javascript files --&gt;
+  <pre class="vf-code-example__pre"><code>&lt;!-- Below is an example where we are loading HTML content first and then calling relevant javascript files. --&gt;
 &lt;main&gt;
   &lt;h1&gt;Protein Summary&lt;/h1&gt;
   &lt;p&gt;This protein is involved in DNA repair...&lt;/p&gt;
@@ -89,7 +90,7 @@ templateEngineOverride: njk
   <h4>How it works</h4>
   <ul class="vf-list vf-list--unordered">
     <li class="vf-list__item">Minimal HTML shell with a root element</li>
-    <li class="vf-list__item">Browser downloads and executes JavaScript bundle</li>
+    <li class="vf-list__item">Browser downloads and executes the JavaScript bundle</li>
     <li class="vf-list__item">JavaScript renders all content dynamically</li>
   </ul>
   <pre class="vf-code-example__pre"><code>&lt;!-- The HTML below renders the root element where the application will be mounted --&gt;
@@ -143,7 +144,7 @@ templateEngineOverride: njk
   <ul class="vf-list vf-list--unordered">
     <li class="vf-list__item">The server generates a fully rendered HTML page for each request.</li>
     <li class="vf-list__item">The browser immediately displays the content without waiting for JavaScript.</li>
-    <li class="vf-list__item">JavaScript loads afterward to enable interactivity through hydration.</li>
+    <li class="vf-list__item">JavaScript loads afterwards to enable interactivity through hydration.</li>
   </ul>
   <pre class="vf-code-example__pre"><code>&lt;!-- Root container where server-rendered HTML is injected --&gt;
 &lt;div id="root"&gt;
@@ -209,7 +210,7 @@ templateEngineOverride: njk
   {# ── 3. SSG ── #}
   <h3>3. Static Site Generation (SSG)</h3>
   <p>
-    Static Site Generation (SSG) pre-builds pages into static HTML during a build process using data from local files or external sources (e.g. CMS). These files are served directly to users without runtime processing.
+    Static Site Generation (SSG) prebuilds pages into static HTML during the build process using data from local files or external sources (e.g. CMS). These files are served directly to users without runtime processing.
   </p>
 
   <h4>How it works</h4>
@@ -225,6 +226,10 @@ templateEngineOverride: njk
     <li class="vf-list__item">Works reliably on slow or unstable networks</li>
     <li class="vf-list__item">Minimal device processing required</li>
   </ul>
+
+  <p>
+    As an <strong>example,</strong> Visual Framework uses static site generation. Read more <a class="vf-link" href="https://stable.visual-framework.dev/building/">here</a>.
+  </p>
 
   <h4>Why it's ideal for LRO</h4>
   <ul class="vf-list vf-list--unordered">
@@ -260,13 +265,18 @@ templateEngineOverride: njk
   <h4>Use when</h4>
   <ul class="vf-list vf-list--unordered">
     <li class="vf-list__item">Documentation</li>
-    <li class="vf-list__item">Content driven services</li>
+    <li class="vf-list__item">Content-driven services</li>
     <li class="vf-list__item">Help pages and reference datasets</li>
   </ul>
 
   <h4>LRO guidance</h4>
   <p>Recommended baseline approach for LRO. Use SSG wherever possible, and layer interactivity progressively only where needed.</p>
 
+  <h3>CSR vs SSR vs SSG:</h3>
+	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.1.avif' | url }}" alt="" loading="lazy">
+		<figcaption class="vf-figure__caption"></figcaption>
+	</figure>
 
   {# ── 4. ISR ── #}
   <h3>4. Incremental Static Regeneration (ISR)</h3>
@@ -295,12 +305,14 @@ templateEngineOverride: njk
   </ul>
 
   <h4>LRO guidance</h4>
-  <p>Well-suited for content that changes occasionally, while retaining the benefits of static delivery.</p>
+  <p><strong>LRO guidance: </strong>Well-suited for content that changes occasionally, while retaining the benefits of static delivery.</p>
 
 
   {# ── 5. Progressive Enhancement ── #}
   <h3>5. Progressive Enhancement</h3>
   <p>Building frontends that work without JavaScript, then enhancing with interactive features.</p>
+
+  <p><em><a class="vf-link" href="/web-optimisation-framework/principles/progressive-enhancement/">Read more</a></em></p>
 
 
   {# ── Summary ── #}
@@ -405,9 +417,9 @@ templateEngineOverride: njk
 
 
   {# ── Do's / Don't ── #}
-  <h2 id="dos-dont"  class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Do's / Don't</h2>
+  <h2 id="dos-dont"  class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Do / Don't</h2>
 
-  <h4>Do's</h4>
+  <h4>Do</h4>
   <ul class="vf-list vf-list--unordered">
     <li class="vf-list__item">Serve HTML first</li>
     <li class="vf-list__item">Defer non-critical JS</li>
@@ -426,13 +438,13 @@ templateEngineOverride: njk
   {# ── Checklist ── #}
   <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Checklist</h2>
   <ul class="vf-list vf-list--unordered">
-    <li class="vf-list__item">☐ Core content visible without JavaScript</li>
-    <li class="vf-list__item">☐ No blank screen on slow networks</li>
-    <li class="vf-list__item">☐ Page usable on low-end device</li>
-    <li class="vf-list__item">☐ Interactive parts optional</li>
-    <li class="vf-list__item">☐ Tested with throttling (2G + low CPU)</li>
-    <li class="vf-list__item">☐ Bundle size budget enforced</li>
-    <li class="vf-list__item">☐ Rendering strategy reviewed in LRO design</li>
+    <li class="vf-list__item">Core content visible without JavaScript</li>
+    <li class="vf-list__item">No blank screen on slow networks</li>
+    <li class="vf-list__item">Page usable on a low-end device</li>
+    <li class="vf-list__item">Interactive parts optional</li>
+    <li class="vf-list__item">Tested with throttling (2G + low CPU)</li>
+    <li class="vf-list__item">Bundle size budget enforced</li>
+    <li class="vf-list__item">Rendering strategy reviewed in LRO design</li>
   </ul>
 
 

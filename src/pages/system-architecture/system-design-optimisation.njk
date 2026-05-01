@@ -6,5 +6,260 @@ templateEngineOverride: njk
 ---
 
 <article class="vf-content">
-  <p class="vf-lede">This page is currently being developed.</p>
+
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400 vf-search-client-side--no-index">Contents</h2>
+  {# ── Table of contents ── #}
+  <nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+    <ul class="vf-list vf-list--unordered">
+      <li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+      <li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO</a></li>
+      <li class="vf-list__item"><a href="#core-principles" class="vf-link">Core Engineering Principles</a></li>
+      <li class="vf-list__item"><a href="#strategies" class="vf-link">Strategies</a></li>
+      <li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation Guidance</a></li>
+      <li class="vf-list__item"><a href="#real-world" class="vf-link">Real-world Patterns</a></li>
+      <li class="vf-list__item"><a href="#dos-dont" class="vf-link">Do / Don't</a></li>
+      <li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+      <li class="vf-list__item"><a href="#metrics" class="vf-link">Metrics and Evaluation</a></li>
+      <li class="vf-list__item"><a href="#further-reading" class="vf-link">Further Reading</a></li>
+    </ul>
+  </nav>
+
+  {# ── Overview ── #}
+  <h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Overview</h2>
+
+  <p>Performance and efficiency engineering focuses on designing and implementing systems that maximise output while minimising resource consumption. In low-resource environments, this involves reducing data transfer, improving response times, and ensuring efficient use of device and network capabilities.</p>
+
+  <p>Modern web systems often prioritise feature richness and scalability, but without careful optimisation, they can become resource-intensive. This results in slow load times, high bandwidth usage, and poor responsiveness, especially for users on constrained networks.</p>
+
+  <p>This topic provides a structured approach to engineering systems that are:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Fast and responsive</li>
+    <li class="vf-list__item">Bandwidth-efficient</li>
+    <li class="vf-list__item">Scalable under varying conditions</li>
+    <li class="vf-list__item">Resilient to network instability</li>
+  </ul>
+
+  <h3>Key idea in an LRO context</h3>
+
+  <p>Performance in low-resource environments is not just about speed but about <strong>efficiency per unit of resource.</strong></p>
+
+  <p><strong>Core idea:</strong> Deliver maximum value with minimum data, processing, and network overhead.</p>
+
+  <p>This involves balancing three key system factors:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Latency</strong> (response time)</li>
+    <li class="vf-list__item"><strong>Throughput</strong> (amount of data processed)</li>
+    <li class="vf-list__item"><strong>Bandwidth</strong> (data transfer capacity)</li>
+  </ul>
+
+  <p>Efficient systems optimise across all three dimensions rather than focusing on one.</p>
+
+  {# ── Why this matters for LRO ── #}
+  <h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400">Why this matters for LRO</h2>
+
+  <h3>User impact</h3>
+
+  <p>Performance inefficiencies are amplified in constrained environments:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Slow page loads</strong> – Large assets take longer to download</li>
+    <li class="vf-list__item"><strong>High data consumption</strong> – Users incur higher costs on limited data plans</li>
+    <li class="vf-list__item"><strong>Delayed interactions</strong> – Latency affects responsiveness</li>
+    <li class="vf-list__item"><strong>Device strain</strong> – Heavy processing impacts low-end devices</li>
+  </ul>
+
+  <h3>System impact</h3>
+
+  <p>Inefficient systems also affect backend performance:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Increased server load</strong> – Redundant requests and large payloads</li>
+    <li class="vf-list__item"><strong>Reduced scalability</strong> – Systems fail under high traffic</li>
+    <li class="vf-list__item"><strong>Higher operational costs</strong> – More bandwidth and infrastructure required</li>
+  </ul>
+
+  {# ── Core Engineering Principles ── #}
+  <h2 id="core-principles" class="vf-u-margin--0 vf-u-padding__top--400">Core Engineering Principles</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Efficiency over excess</strong> – Systems should avoid unnecessary processing, data transfer, and rendering</li>
+    <li class="vf-list__item"><strong>Minimise round trips</strong> – Reducing the number of network requests significantly improves performance</li>
+    <li class="vf-list__item"><strong>Reuse over recompute</strong> – Caching and storage strategies should prevent repeated work</li>
+    <li class="vf-list__item"><strong>Adapt to constraints</strong> – Systems should dynamically adjust behaviour based on network and device conditions</li>
+  </ul>
+
+  {# ── Strategies ── #}
+  <h2 id="strategies" class="vf-u-margin--0 vf-u-padding__top--400">Strategies</h2>
+
+  <h3>Website technical optimisations</h3>
+
+  <p>Technical optimisations improve how efficiently a website is delivered and rendered.</p>
+
+  <p><strong>Key practices:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Minimise HTTP requests</li>
+    <li class="vf-list__item">Use efficient file formats</li>
+    <li class="vf-list__item">Enable compression (e.g., Gzip, Brotli)</li>
+    <li class="vf-list__item">Optimise server response times</li>
+  </ul>
+
+  <h3>Asset optimisation</h3>
+
+  <p>Assets such as images, scripts, and stylesheets contribute significantly to page weight.</p>
+
+  <p><strong>Key practices:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Compress images and use modern formats (WebP, AVIF)</li>
+    <li class="vf-list__item">Minify CSS and JavaScript</li>
+    <li class="vf-list__item">Remove unused code</li>
+    <li class="vf-list__item">Use responsive images</li>
+  </ul>
+
+  <h3>Caching strategies</h3>
+
+  <p>Caching stores previously loaded resources so they can be reused without repeated downloads.</p>
+
+  <p><strong>Types of caching:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Browser caching</li>
+    <li class="vf-list__item">CDN caching</li>
+    <li class="vf-list__item">Server-side caching</li>
+  </ul>
+
+  <p><strong>Key practices:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Cache static assets aggressively</li>
+    <li class="vf-list__item">Use cache headers effectively</li>
+    <li class="vf-list__item">Implement cache invalidation strategies</li>
+  </ul>
+
+  <h3>Storage management</h3>
+
+  <p>Efficient use of local storage reduces dependency on network requests.</p>
+
+  <p><strong>Key practices:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Store frequently accessed data locally</li>
+    <li class="vf-list__item">Use IndexedDB or local storage for offline access</li>
+    <li class="vf-list__item">Manage storage limits carefully</li>
+  </ul>
+
+  <h3>Payload minimisation</h3>
+
+  <p>Reducing the amount of data transferred between the client and the server is critical.</p>
+
+  <p><strong>Key practices:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Send only the required data</li>
+    <li class="vf-list__item">Use efficient data formats (JSON over XML)</li>
+    <li class="vf-list__item">Implement data compression</li>
+    <li class="vf-list__item">Avoid redundant fields in API responses</li>
+  </ul>
+
+  <h3>Bandwidth-aware design</h3>
+
+  <p>Applications should adapt their behaviour based on the available bandwidth.</p>
+
+  <p><strong>Key practices:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Detect network conditions</li>
+    <li class="vf-list__item">Adjust image quality dynamically</li>
+    <li class="vf-list__item">Disable non-essential features on slow networks</li>
+    <li class="vf-list__item">Limit background data usage</li>
+  </ul>
+
+  <h3>Content delivery optimisation</h3>
+
+  <p>Content delivery strategies improve how data is distributed globally.</p>
+
+  <p><strong>Key practices:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Use Content Delivery Networks (CDNs)</li>
+    <li class="vf-list__item">Serve content from the nearest location</li>
+    <li class="vf-list__item">Optimise DNS resolution</li>
+  </ul>
+
+  {# ── Implementation Guidance ── #}
+  <h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400">Implementation Guidance</h2>
+
+  <h3>Engineering workflow</h3>
+
+  <ol class="vf-list vf-list--ordered">
+    <li class="vf-list__item"><strong>Analyse performance baseline</strong> – Measure current system performance using tools and metrics</li>
+    <li class="vf-list__item"><strong>Identify bottlenecks</strong> – Locate areas with high latency, large payloads, or excessive requests</li>
+    <li class="vf-list__item"><strong>Apply targeted optimisations</strong> – Focus on high-impact improvements such as caching and compression</li>
+    <li class="vf-list__item"><strong>Validate improvements</strong> – Test under real-world conditions, including slow networks and low-end devices</li>
+  </ol>
+
+  {# ── Real-world Patterns ── #}
+  <h2 id="real-world" class="vf-u-margin--0 vf-u-padding__top--400">Real-world Patterns</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>CDN-backed websites</strong> – Use distributed servers to deliver content efficiently</li>
+    <li class="vf-list__item"><strong>Mobile-first applications</strong> – Optimised for low bandwidth and limited device capability</li>
+    <li class="vf-list__item"><strong>Offline-first apps</strong> – Use local storage and caching to minimise network dependency</li>
+  </ul>
+
+  {# ── Do / Don't ── #}
+  <h2 id="dos-dont" class="vf-u-margin--0 vf-u-padding__top--400 vf-search-client-side--no-index">Do / Don't</h2>
+
+  <h3>Do</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Optimise assets and reduce payload size</li>
+    <li class="vf-list__item">Implement caching strategies</li>
+    <li class="vf-list__item">Monitor performance continuously</li>
+    <li class="vf-list__item">Use efficient API design</li>
+    <li class="vf-list__item">Adapt to network conditions</li>
+  </ul>
+
+  <h3>Don't</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Send unnecessary data</li>
+    <li class="vf-list__item">Ignore repeat visit optimisation</li>
+    <li class="vf-list__item">Overload pages with large assets</li>
+    <li class="vf-list__item">Depend on constant network connectivity</li>
+    <li class="vf-list__item">Skip performance monitoring</li>
+  </ul>
+
+  {# ── Checklist ── #}
+  <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400">Checklist</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Assets compressed and optimised</li>
+    <li class="vf-list__item">Caching implemented effectively</li>
+    <li class="vf-list__item">Payload size minimised</li>
+    <li class="vf-list__item">API requests optimised</li>
+    <li class="vf-list__item">Performance monitored continuously</li>
+    <li class="vf-list__item">System adapts to bandwidth conditions</li>
+    <li class="vf-list__item">Repeat visits optimised</li>
+  </ul>
+
+  {# ── Metrics and Evaluation ── #}
+  <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400">Metrics and Evaluation</h2>
+
+  <h3>Key metrics</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Page load time</li>
+    <li class="vf-list__item">Time to first byte (TTFB)</li>
+    <li class="vf-list__item">Total page size</li>
+    <li class="vf-list__item">Number of requests</li>
+    <li class="vf-list__item">API response time</li>
+    <li class="vf-list__item">Cache hit rate</li>
+  </ul>
+
+  <h3>Tools</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Google Lighthouse</li>
+    <li class="vf-list__item">WebPageTest</li>
+    <li class="vf-list__item">PageSpeed Insights</li>
+  </ul>
+
+  {# ── Further Reading ── #}
+  <h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400">Further Reading</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/performance/" target="_blank" rel="noopener noreferrer">Performance | web.dev</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://en.wikipedia.org/wiki/Scalability" target="_blank" rel="noopener noreferrer">Scalable System Architecture | Wikipedia</a></li>
+    <li class="vf-link" href="https://medium.com/" target="_blank" rel="noopener noreferrer">Optimizing Web Applications | Medium</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.sitepoint.com/designing-low-bandwidth-users/" target="_blank" rel="noopener noreferrer">Designing for Low Bandwidth Users | SitePoint</a></li>
+  </ul>
+
 </article>

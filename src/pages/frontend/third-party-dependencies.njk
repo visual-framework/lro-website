@@ -6,5 +6,469 @@ templateEngineOverride: njk
 ---
 
 <article class="vf-content">
-  <p class="vf-lede">This page is currently being developed.</p>
+
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400 vf-search-client-side--no-index">Contents</h2>
+  {# ── Table of contents ── #}
+  <nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+    <ul class="vf-list vf-list--unordered">
+      <li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+      <li class="vf-list__item"><a href="#why-lro" class="vf-link">Why does this matter for LRO?</a></li>
+      <li class="vf-list__item"><a href="#types" class="vf-link">Types of Third-Party Dependencies</a></li>
+      <li class="vf-list__item"><a href="#third-party-dependencies" class="vf-link">How Third-Party dependencies load</a></li>
+      <li class="vf-list__item"><a href="#common-problems" class="vf-link">Common Problems</a></li>
+      <li class="vf-list__item"><a href="#risk-assessment" class="vf-link">Risk Assessment</a></li>
+      <li class="vf-list__item"><a href="#audit-checklist" class="vf-link">Dependency Audit Checklist</a></li>
+      <li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation Guidance</a></li>
+      <li class="vf-list__item"><a href="#dos-dont" class="vf-link">Do / Don't</a></li>
+      <li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+      <li class="vf-list__item"><a href="#metrics" class="vf-link">Metrics and Tools</a></li>
+      <li class="vf-list__item"><a href="#further-reading" class="vf-link">Further Reading</a></li>
+    </ul>
+  </nav>
+
+  {# ── Overview ── #}
+  <h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Overview</h2>
+
+  <p>Modern websites often use third-party dependencies such as analytics tools, UI libraries, embedded widgets, video players, social sharing tools, and API integrations. These provide functionality quickly without having to build everything in-house.</p>
+
+  <p>A third-party dependency is any external resource loaded from another domain or managed by an external provider (e.g. analytics scripts, ads, chat widgets, or embedded media).</p>
+
+  <p>While useful, these dependencies can negatively impact performance, reliability, and security. In low-resource environments (LRO), the impact is amplified because each dependency:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Adds extra network requests</li>
+    <li class="vf-list__item">Increases total page weight</li>
+    <li class="vf-list__item">Can block rendering while scripts load and execute</li>
+  </ul>
+
+  {# ── Why does this matter for LRO? ── #}
+  <h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400">Why does this matter for LRO?</h2>
+
+  <p>On slower networks and older devices, third-party scripts are often a major source of performance problems. They can:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Compete with essential content for bandwidth</li>
+    <li class="vf-list__item">Add more network requests</li>
+    <li class="vf-list__item">Block the browser's main thread</li>
+    <li class="vf-list__item">Delay rendering and user interactions</li>
+    <li class="vf-list__item">Cause layout shifts or delay critical content</li>
+  </ul>
+
+  <p>Because these scripts are controlled by external providers, developers have limited control over how efficiently they load. A single poorly optimised widget or analytics script can significantly slow the experience.</p>
+
+  <p><strong>The key principle is:</strong> Essential content must load first. Third-party functionality must never block the core experience.</p>
+
+  <p>A good LRO strategy ensures external features are carefully controlled so the page remains fast, usable, and resilient on slow networks and low-end devices.</p>
+
+  {# ── Types of Third-Party Dependencies ── #}
+  <h2 id="types" class="vf-u-margin--0 vf-u-padding__top--400">Types of Third-Party Dependencies</h2>
+
+  <p>Third-party dependencies generally fall into four main categories.</p>
+
+  <h3>Libraries and Frameworks</h3>
+
+  <p>Reusable code used for UI components, charts, data processing, or utilities.</p>
+
+  <p><strong>Examples:</strong> chart libraries, UI frameworks, date libraries</p>
+
+  <p>These can significantly increase bundle size if not carefully managed.</p>
+
+  <h3>Plugins and Extensions</h3>
+
+  <p>Prebuilt components that add specific functionality to a page.</p>
+
+  <p><strong>Examples:</strong> cookie banners, pop-ups, search widgets, comment systems</p>
+
+  <p>These often load additional scripts and styles from external servers.</p>
+
+  <h3>APIs and Microservices</h3>
+
+  <p>External services that provide data or functionality through API calls.</p>
+
+  <p><strong>Examples:</strong> mapping services, translation APIs, payment gateways, authentication systems</p>
+
+  <p>API dependencies introduce latency and potential reliability issues if the external service becomes slow or unavailable.</p>
+
+  <h3>Embedded Widgets</h3>
+
+  <p>Visual elements loaded from external services.</p>
+
+  <p><strong>Examples:</strong> video players, social media embeds, analytics dashboards, ads</p>
+
+  <p>Embedded widgets often load multiple scripts, stylesheets, and network requests.</p>
+
+
+  <h2 id="third-party-dependencies" class="vf-u-margin--0 vf-u-padding__top--400">How Third-Party dependencies load</h2>
+	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.4a.avif' | url }}" alt="" loading="lazy">
+		<figcaption class="vf-figure__caption"></figcaption>
+	</figure>
+  <p>When multiple third-party dependencies load simultaneously, they compete with core site resources.</p>
+  <p>For users on slow networks, this can significantly delay rendering.</p>
+
+  {# ── Common Problems with Third-Party Dependencies ── #}
+  <h2 id="common-problems" class="vf-u-margin--0 vf-u-padding__top--400">Common Problems with Third-Party Dependencies</h2>
+
+  <h3>Excessive Network Requests</h3>
+
+  <p>Each dependency may require multiple requests, including scripts, styles, fonts, and tracking endpoints, increasing page load time.</p>
+
+  <h3>Render-Blocking Scripts</h3>
+
+  <p>Some scripts block rendering until fully loaded, causing blank screens.</p>
+
+  <h3>Main Thread Blocking</h3>
+
+  <p>Heavy scripts consume CPU and delay interactions, leading to slow input responsiveness on low-power devices.</p>
+
+  <h3>Poor Caching</h3>
+
+  <p>Inefficient caching in many third-party scripts can force repeated downloads, increasing data usage.</p>
+
+  <h3>Uncontrolled Updates</h3>
+
+  <p>Automatic updates may introduce breaking changes or performance regressions. Use version pinning to maintain stability.</p>
+
+  {# ── Risk Assessment for Third-Party Dependencies ── #}
+  <h2 id="risk-assessment" class="vf-u-margin--0 vf-u-padding__top--400">Risk Assessment for Third-Party Dependencies</h2>
+
+  <p>Before integrating a dependency, developers should assess its impact.</p>
+
+  <h3>Key Questions</h3>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Is it essential to the user experience?</li>
+    <li class="vf-list__item">Can this be built natively instead?</li>
+    <li class="vf-list__item">What is the performance cost?</li>
+    <li class="vf-list__item">Does it introduce security risks?</li>
+    <li class="vf-list__item">Is it actively maintained?</li>
+    <li class="vf-list__item">What happens if it fails or is unavailable?</li>
+  </ul>
+
+  <p>Careful evaluation helps avoid unnecessary dependencies and protects performance, reliability, and user experience, especially in low-resource environments.</p>
+
+  {# ── Dependency Audit Checklist ── #}
+  <h2 id="audit-checklist" class="vf-u-margin--0 vf-u-padding__top--400">Dependency Audit Checklist</h2>
+
+  <p>Teams should regularly audit third-party dependencies.</p>
+
+  <p>For each dependency, check:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Is it still needed?</li>
+    <li class="vf-list__item">What is its size and network impact?</li>
+    <li class="vf-list__item">Does it block rendering?</li>
+    <li class="vf-list__item">Is it actively maintained?</li>
+    <li class="vf-list__item">Does it introduce security vulnerabilities?</li>
+    <li class="vf-list__item">Can it be replaced with a lighter option?</li>
+    <li class="vf-list__item">Can it be self-hosted?</li>
+  </ul>
+
+  <p>Use automated tools to identify unused or costly dependencies.</p>
+
+  <p><strong>Tools:</strong> Lighthouse, WebPageTest, Chrome DevTools (Network panel), Bundle analysers</p>
+
+  {# ── Implementation Guidance ── #}
+  <h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400">Implementation Guidance</h2>
+
+  <h3>Minimise Dependencies</h3>
+
+  <p>The simplest optimisation is to reduce the number of external libraries used.</p>
+
+  <p>Fewer dependencies reduce:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Network requests</li>
+    <li class="vf-list__item">Security risks</li>
+    <li class="vf-list__item">Maintenance complexity</li>
+    <li class="vf-list__item">Performance overhead</li>
+  </ul>
+
+  <p>Minimising dependencies also reduces the application's attack surface.</p>
+
+  <h3>Load Scripts Asynchronously</h3>
+
+  <p>The browser cannot continue rendering the page while a synchronous script is loading and running. Third-party scripts should rarely block rendering.</p>
+
+	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.4b.avif' | url }}" alt="" loading="lazy">
+		<figcaption class="vf-figure__caption"></figcaption>
+	</figure>
+  <p>Third-party scripts should rarely block rendering.</p>
+
+  <p><strong>Example #1:</strong></p>
+  <pre class="vf-code-example__pre"><code>&lt;script async src="analytics.js"&gt;&lt;/script&gt;</code></pre>
+
+	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.4c.avif' | url }}" alt="" loading="lazy">
+		<figcaption class="vf-figure__caption"></figcaption>
+	</figure>
+  <p><strong>Example #2:</strong></p>
+  <pre class="vf-code-example__pre"><code>&lt;script defer src="analytics.js"&gt;&lt;/script&gt;</code></pre>
+
+	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.4d.avif' | url }}" alt="" loading="lazy">
+		<figcaption class="vf-figure__caption"></figcaption>
+	</figure>
+
+  <p>Async downloads scripts while the page continues rendering. <code>defer</code> executes the script after HTML parsing completes.</p>
+
+  <h3>Lazy Load Third-Party Resources</h3>
+
+  <p>Non-critical resources should load only when required.</p>
+
+  <p><strong>Examples:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Loading video embeds when users scroll near them</li>
+    <li class="vf-list__item">Loading analytics after page interaction</li>
+    <li class="vf-list__item">Loading ads only when visible</li>
+  </ul>
+
+  <p>Lazy loading defers loading of non-critical content until it is actually needed (e.g., when it enters the viewport). This reduces initial download size, speeds up page load, and saves CPU and network resources, which is especially important for low-resource devices.</p>
+
+  <h3>Example: Lazy Loading with IntersectionObserver</h3>
+
+  <pre class="vf-code-example__pre"><code>// Select the element to lazy load (e.g., a widget or image)
+const widget = document.querySelector('#lazy-widget');
+
+// Create an IntersectionObserver to monitor when the element enters the viewport
+const observer = new IntersectionObserver((entries, observer) => {
+  // Check if the observed element is visible in the viewport
+  if (entries[0].isIntersecting) {
+    // Call the function to load the widget or heavy content
+    loadWidget();
+    // Stop observing after the content has loaded
+    observer.unobserve(entries[0].target);
+  }
+});
+
+// Start observing the target element
+observer.observe(widget);
+
+// Function to load widget content
+function loadWidget() {
+  // Example: dynamically import a module or create elements
+  import('./widget.js').then(module => {
+    module.initWidget(widget);
+  });
+}</code></pre>
+
+  <h3>Use Resource Hints</h3>
+
+  <p>Browsers can establish early connections to external servers.</p>
+
+  <p><strong>Example:</strong></p>
+  <pre class="vf-code-example__pre"><code>&lt;link rel="preconnect" href="https://analytics.example.com"&gt;</code></pre>
+
+  <p>This reduces DNS and connection setup time.</p>
+
+  <h3>Self-Host Critical Libraries</h3>
+
+  <p>If licensing permits, hosting libraries locally can reduce external network overhead.</p>
+
+  <p><strong>Benefits:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Better caching control</li>
+    <li class="vf-list__item">Fewer DNS lookups</li>
+    <li class="vf-list__item">Improved reliability</li>
+  </ul>
+
+  <h3>Split Large Bundles</h3>
+
+  <p>Large third-party libraries can often be partially loaded using code splitting or tree shaking.</p>
+
+  <p><strong>Example:</strong></p>
+  <pre class="vf-code-example__pre"><code>import("chart-library")</code></pre>
+
+  <p>This ensures that code loads only when needed.</p>
+
+  <h3>Lazy Loading Patterns</h3>
+
+  <p>Lazy loading should follow predictable patterns.</p>
+
+  <h4>Scroll-based Lazy Loading</h4>
+
+  <p>Load scripts when a component enters the viewport. Use the IntersectionObserver API.</p>
+
+  <h4>Interaction-based Lazy Loading</h4>
+
+  <p>Load functionality after user interaction.</p>
+
+  <p><strong>Examples:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Open modal</li>
+    <li class="vf-list__item">Click button</li>
+    <li class="vf-list__item">Expand widget</li>
+  </ul>
+
+  <h4>Post-load Lazy Loading</h4>
+
+  <p>Load scripts after the page becomes interactive.</p>
+
+  <pre class="vf-code-example__pre"><code>&lt;script&gt;
+  // Wait until the entire page has finished loading
+  window.addEventListener("load", () => {
+    // Initialize non-critical functionality, e.g., analytics
+    loadAnalytics();
+  });
+
+  // Example function to initialize analytics
+  function loadAnalytics() {
+    // Load external analytics script or initialize tracking logic
+    const script = document.createElement('script');
+    script.src = 'analytics.js';
+    script.async = true; // Load asynchronously to avoid blocking
+    document.body.appendChild(script);
+  }
+&lt;/script&gt;</code></pre>
+
+	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.4e.avif' | url }}" alt="Use lazy loading for assets that are not required during the initial page render." loading="lazy">
+		<figcaption class="vf-figure__caption"></figcaption>
+	</figure>
+
+  <h3>Alternative Strategies</h3>
+
+  <p>Sometimes third-party libraries can be replaced with lighter alternatives.</p>
+
+  <table class="vf-table vf-table--striped">
+    <thead class="vf-table__header">
+      <tr class="vf-table__row">
+        <th class="vf-table__heading" scope="col">Feature</th>
+        <th class="vf-table__heading" scope="col">Heavy Solution</th>
+        <th class="vf-table__heading" scope="col">Lightweight Alternative</th>
+      </tr>
+    </thead>
+    <tbody class="vf-table__body">
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Charts</td>
+        <td class="vf-table__cell">Large chart libraries</td>
+        <td class="vf-table__cell">Simple SVG charts</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Date formatting</td>
+        <td class="vf-table__cell">moment.js</td>
+        <td class="vf-table__cell">Native Intl API</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Analytics</td>
+        <td class="vf-table__cell">Heavy analytics suite</td>
+        <td class="vf-table__cell">Lightweight analytics</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">UI widgets</td>
+        <td class="vf-table__cell">Large frameworks</td>
+        <td class="vf-table__cell">Native components</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Reducing dependency size often improves performance more than optimising load behaviour.</p>
+
+  <h3>Fallback and Failure Strategies</h3>
+
+  <p>External services (APIs, analytics, ads, widgets) can sometimes fail or be slow. Your website should remain functional and usable even when these services are unavailable.</p>
+
+  <p>Recommended strategies include:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Progressive Enhancement</strong> – Build the core experience first, then enhance with additional features</li>
+    <li class="vf-list__item"><strong>Graceful Degradation</strong> – Features degrade smoothly without breaking the main functionality</li>
+    <li class="vf-list__item"><strong>Fallback UI Components</strong> – Display placeholder content if the service fails</li>
+    <li class="vf-list__item"><strong>Error Handling for API Calls</strong> – Catch and handle errors to prevent crashes</li>
+  </ul>
+
+  <h3>Example: Safe API Fetch with Fallback</h3>
+
+  <pre class="vf-code-example__pre"><code>// URL of the external API
+const api = 'https://example.com/data';
+
+// Fetch data from the API
+fetch(api)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('API request failed');
+    }
+    return response.json();
+  })
+  .then(data => {
+    // Render the data on the page
+    renderData(data);
+  })
+  .catch(error => {
+    // Log the error for debugging
+    console.error('API fetch error:', error);
+    // Show fallback UI to the user
+    showFallbackMessage('Data is currently unavailable. Please try again later.');
+  });
+
+// Example rendering functions
+function renderData(data) {
+  const container = document.getElementById('data-container');
+  container.textContent = JSON.stringify(data, null, 2);
+}
+
+function showFallbackMessage(message) {
+  const container = document.getElementById('data-container');
+  container.textContent = message;
+}</code></pre>
+
+  <h3>CDN and Distribution</h3>
+
+  <p>Third-party libraries can also benefit from global content delivery networks. CDNs reduce latency by serving resources from servers closer to users.</p>
+
+  <p>However, developers should still ensure that CDN usage does not introduce unnecessary dependencies or tracking scripts.</p>
+
+  {# ── Do / Don't ── #}
+  <h2 id="dos-dont" class="vf-u-margin--0 vf-u-padding__top--400 vf-search-client-side--no-index">Do / Don't</h2>
+
+  <h3>Do</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Audit dependencies regularly</li>
+    <li class="vf-list__item">Load scripts asynchronously</li>
+    <li class="vf-list__item">Lazy load widgets and embeds</li>
+    <li class="vf-list__item">Self-host critical libraries when possible</li>
+    <li class="vf-list__item">Test dependency performance on slow networks</li>
+  </ul>
+
+  <h3>Don't</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Add dependencies without evaluating impact</li>
+    <li class="vf-list__item">Allow third-party scripts to block rendering</li>
+    <li class="vf-list__item">Rely heavily on large frameworks for simple tasks</li>
+    <li class="vf-list__item">Ignore external service failure scenarios</li>
+  </ul>
+
+  {# ── Checklist ── #}
+  <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400">Checklist</h2>
+
+  <p>Before adding a new dependency:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Confirm the dependency is necessary</li>
+    <li class="vf-list__item">Check file size and performance impact</li>
+    <li class="vf-list__item">Review maintenance activity</li>
+    <li class="vf-list__item">Evaluate security vulnerabilities</li>
+    <li class="vf-list__item">Ensure asynchronous loading</li>
+    <li class="vf-list__item">Implement fallback behaviour</li>
+  </ul>
+
+  {# ── Metrics and Tools ── #}
+  <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400">Metrics and Tools</h2>
+
+  <p>Developers should measure the performance impact of third-party scripts.</p>
+
+  <h3>Important metrics</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Total number of third-party requests</li>
+    <li class="vf-list__item">Total third-party transfer size</li>
+    <li class="vf-list__item">CPU time used by third-party scripts</li>
+    <li class="vf-list__item">Main-thread blocking time</li>
+    <li class="vf-list__item">Impact on Core Web Vitals</li>
+  </ul>
+
+  {# ── Further Reading ── #}
+  <h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400">Further Reading</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="https://www.contentful.com/blog/5-ways-optimize-third-party-scripts/" target="_blank" rel="noopener noreferrer">5 Ways to Optimize Third-Party Scripts</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://dev.to/vuild/strategies-for-crafting-high-performance-web-apps-with-smaller-bundle-sizes-3eab" target="_blank" rel="noopener noreferrer">Strategies for Crafting High-Performance Web Apps with Smaller Bundle Sizes</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/articles/third-party-javascript/" target="_blank" rel="noopener noreferrer">Load Third-Party JavaScript | Articles | web.dev</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.debugbear.com/blog/how-to-reduce-the-impact-of-third-party-code" target="_blank" rel="noopener noreferrer">How To Reduce The Impact Of Third-Party Code: A Guide</a></li>
+  </ul>
+
 </article>

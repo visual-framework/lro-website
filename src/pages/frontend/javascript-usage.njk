@@ -6,5 +6,372 @@ templateEngineOverride: njk
 ---
 
 <article class="vf-content">
-  <p class="vf-lede">This page is currently being developed.</p>
+
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400 vf-search-client-side--no-index">Contents</h2>
+  {# ── Table of contents ── #}
+  <nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+    <ul class="vf-list vf-list--unordered">
+      <li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+      <li class="vf-list__item"><a href="#why-lro" class="vf-link">Why does this matter for LRO?</a></li>
+      <li class="vf-list__item"><a href="#common-problems" class="vf-link">Common Problems</a></li>
+      <li class="vf-list__item"><a href="#core-optimization" class="vf-link">Core Optimization Techniques</a></li>
+      <li class="vf-list__item"><a href="#key-takeaways" class="vf-link">Key Takeaways</a></li>
+      <li class="vf-list__item"><a href="#dos-dont" class="vf-link">Do / Don't</a></li>
+      <li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+      <li class="vf-list__item"><a href="#metrics" class="vf-link">Metrics &amp; tools</a></li>
+      <li class="vf-list__item"><a href="#further-reading" class="vf-link">Further reading</a></li>
+    </ul>
+  </nav>
+
+  {# ── Overview ── #}
+  <h2 id="overview"  class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Overview</h2>
+
+  <p>JavaScript affects more than download size. It impacts:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Data usage</strong></li>
+    <li class="vf-list__item"><strong>CPU performance</strong></li>
+    <li class="vf-list__item"><strong>Memory consumption</strong></li>
+    <li class="vf-list__item"><strong>Battery life</strong></li>
+  </ul>
+  <p>For LRO users, JavaScript is often the largest performance bottleneck.</p>
+  
+  <blockquote class="vf-blockquote">
+    <p><strong>Principle: Keep JavaScript as small and minimal as possible.</strong></p>
+  </blockquote>
+
+  {# ── Why does this matter for LRO? ── #}
+  <h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Why does this matter for LRO?</h2>
+
+  <p>JavaScript has four core costs:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Download</strong> – network transfer</li>
+    <li class="vf-list__item"><strong>Parse</strong> – converting code to structure</li>
+    <li class="vf-list__item"><strong>Compile</strong> – preparing code for execution</li>
+    <li class="vf-list__item"><strong>Execute</strong> – running logic and updating UI</li>
+  </ul>
+
+  <p>On low-end devices, these steps can be 3–5× slower, significantly delaying interactivity.</p>
+
+  {# ── Common Problems ── #}
+  <h2 id="common-problems" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Common Problems</h2>
+
+  <h3>Network Issues</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Large bundles slow down loading</li>
+    <li class="vf-list__item">Too many files increase requests</li>
+    <li class="vf-list__item">Third-party scripts add delays</li>
+  </ul>
+
+  <h3>Parse &amp; Compile Issues</h3>
+  <p>Importing entire libraries increases processing time.</p>
+  
+  <h4>Avoid:</h4>
+  <pre class="vf-code-example__pre"><code>// Imports the entire lodash library
+// This increases bundle size and adds extra parsing/compilation cost
+import _ from "lodash";</code></pre>
+
+  <h4>Prefer:</h4>
+  <pre class="vf-code-example__pre"><code>// Imports only the required function instead of the whole library
+// Reduces bundle size and improves load + execution time
+import { debounce } from "lodash-es";</code></pre>
+
+  <h3>Execution Issues</h3>
+  <p>Frequent DOM updates and heavy loops block the main thread.</p>
+
+  <h4>Avoid:</h4>
+  <pre class="vf-code-example__pre"><code>// Loop runs many times and updates the DOM on each iteration
+// Each update triggers layout recalculation (reflow), which is expensive
+for (let i = 0; i < 10000; i++) {
+  document.body.innerHTML += "&lt;div&gt;&lt;/div&gt;"; 
+}</code></pre>
+
+  <h4>Prefer:</h4>
+  <pre class="vf-code-example__pre"><code>// Create a document fragment (in-memory container)
+// This avoids direct DOM manipulation inside the loop
+const fragment = document.createDocumentFragment();
+for (let i = 0; i < 10000; i++) {
+  // Create elements and append to fragment instead of the DOM
+  fragment.appendChild(document.createElement("div"));
+}
+// Append all elements to the DOM in a single operation
+// This minimizes reflows and improves performance
+document.body.appendChild(fragment);</code></pre>
+
+  <h3>Hidden Costs</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Memory leaks</li>
+    <li class="vf-list__item">Battery drain</li>
+    <li class="vf-list__item">Poor input responsiveness</li>
+  </ul>
+
+  {# ── Core Optimization Techniques ── #}
+  <h2 id="core-optimization" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Core Optimization Techniques</h2>
+
+  <h3>Write Efficient JavaScript</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Prefer native browser APIs</li>
+    <li class="vf-list__item">Minimise re-renders</li>
+    <li class="vf-list__item">Cache DOM queries</li>
+    <li class="vf-list__item">Use event delegation</li>
+  </ul>
+
+  <pre class="vf-code-example__pre"><code>// Attach a single event listener to a parent container
+document.querySelector("#menu").addEventListener("click", (e) => {
+  
+  // Check if the clicked element matches the target selector
+  if (e.target.matches("button")) {
+    
+    // Handle click for the specific button
+    handleClick(e.target);
+  }
+});</code></pre>
+
+  <h3>Use Better Code Architecture</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Break into small modules</li>
+    <li class="vf-list__item">Lazy-load non-critical features</li>
+    <li class="vf-list__item">Separate vendor and app logic</li>
+  </ul>
+
+  <pre class="vf-code-example__pre"><code>// Load the chart module only when it is actually needed
+if (userWantsChart) {
+  
+  // Dynamically import the chart code (lazy loading)
+  // This reduces initial bundle size and improves load performance
+  import("./chart.js").then(module => {
+    
+    // Execute the render function after the module is loaded
+    module.render();
+  });
+}</code></pre>
+
+  <h3>Set a JavaScript Budget</h3>
+
+  <table class="vf-table vf-table--striped">
+    <thead class="vf-table__header">
+      <tr class="vf-table__row">
+        <th class="vf-table__heading" scope="col">Metric</th>
+        <th class="vf-table__heading" scope="col">Target</th>
+        <th class="vf-table__heading" scope="col">Max</th>
+      </tr>
+    </thead>
+    <tbody class="vf-table__body">
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Initial JS</td>
+        <td class="vf-table__cell">&lt;100KB</td>
+        <td class="vf-table__cell">200KB</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Total JS</td>
+        <td class="vf-table__cell">&lt;300KB</td>
+        <td class="vf-table__cell">500KB</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Third-party JS</td>
+        <td class="vf-table__cell">&lt;50KB</td>
+        <td class="vf-table__cell">100KB</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">TTI (3G)</td>
+        <td class="vf-table__cell">&lt;3.8s</td>
+        <td class="vf-table__cell">7.3s</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">TBT</td>
+        <td class="vf-table__cell">&lt;200ms</td>
+        <td class="vf-table__cell">600ms</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Reduce Bundle Size</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Remove unused dependencies</li>
+    <li class="vf-list__item">Analyze bundles</li>
+    <li class="vf-list__item">Avoid duplicates</li>
+  </ul>
+
+  <h3>Minify Code</h3>
+  <p>Removes unnecessary characters without changing behaviour.</p>
+
+  <p><strong>Before minification:</strong></p>
+  <pre class="vf-code-example__pre"><code>// Readable function with descriptive names and formatting
+function calculateTotal(price, tax) {
+  return price + tax;
+}</code></pre>
+
+  <p><strong>After minification:</strong></p>
+  <pre class="vf-code-example__pre"><code>// Minified version with shortened variable names and no extra spacing
+// Functionality remains exactly the same
+function a(b,c){return b+c}</code></pre>
+
+  <p>Tools for minification:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Terser</li>
+    <li class="vf-list__item">Webpack</li>
+    <li class="vf-list__item">Rollup</li>
+    <li class="vf-list__item">Vite</li>
+  </ul>
+
+  <h3>Use Code Splitting</h3>
+  <p>Load only what is needed.</p>
+
+  <p><strong>Example: Lazy Loading a Component (React)</strong></p>
+  <pre class="vf-code-example__pre"><code>// Lazily load the Visualisation component only when it is rendered
+// This prevents adding heavy code to the initial bundle
+const Visualisation = React.lazy(() => import('./Visualisation'));</code></pre>
+
+  <h3>Optimise Script Loading</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Use defer and async</li>
+    <li class="vf-list__item">Avoid blocking scripts</li>
+    <li class="vf-list__item">Compress files</li>
+  </ul>
+
+  <pre class="vf-code-example__pre"><code>// Adding defer attribute to defer particular js file from loading
+&lt;script src="main.js" defer&gt;&lt;/script&gt;</code></pre>
+
+  <h3>Lazy Load Non-Critical Features</h3>
+  <p>Non-critical features should only be loaded after the user interacts with the page. This reduces unnecessary data usage and CPU processing on initial load.</p>
+
+  <pre class="vf-code-example__pre"><code>// Wait for the first user interaction (click) before loading optional functionality
+document.addEventListener("click", async () => {
+  
+  // Dynamically import the module only when needed
+  const module = await import("./optional-feature.js");
+  
+  // Initialize the feature after it is loaded
+  module.init();
+});</code></pre>
+
+  <h3>Break Long Tasks</h3>
+  <p>A single task that takes longer than 50 ms to run is classified as a long task. If the user attempts to interact with the page or an important UI update is requested while a long task is running, their experience will be affected. An expected response or visual update will be delayed, resulting in the UI appearing sluggish or unresponsive.</p>
+
+  <pre class="vf-code-example__pre"><code>// Function to process a large array of items without blocking the UI
+function processItems(items) {
+  let i = 0;
+  // Chunked processing function
+  function chunk() {
+    // Process up to 100 items per frame
+    for (let j = 0; j < 100 && i < items.length; j++, i++) {
+      handle(items[i]); // Process individual item
+    }
+    // If there are more items, schedule the next chunk
+    if (i < items.length) {
+      requestAnimationFrame(chunk); // Runs in the next animation frame
+    }
+  }
+  // Start processing the first chunk
+  chunk();
+}</code></pre>
+
+  <h3>Choose Lightweight Frameworks</h3>
+
+  <table class="vf-table vf-table--striped">
+    <thead class="vf-table__header">
+      <tr class="vf-table__row">
+        <th class="vf-table__heading" scope="col">Option</th>
+        <th class="vf-table__heading" scope="col">Recommendation</th>
+      </tr>
+    </thead>
+    <tbody class="vf-table__body">
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Vanilla JS</td>
+        <td class="vf-table__cell">Best for simple features</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Svelte</td>
+        <td class="vf-table__cell">Excellent</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Preact</td>
+        <td class="vf-table__cell">Lightweight alternative</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Vue / React</td>
+        <td class="vf-table__cell">Use with SSR</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Angular</td>
+        <td class="vf-table__cell">Use only if justified</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Manage Third-Party Scripts</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Audit regularly</li>
+    <li class="vf-list__item">Load with async/defer</li>
+    <li class="vf-list__item">Self-host when possible</li>
+  </ul>
+
+  {# ── Key Takeaways ── #}
+  <h2 id="key-takeaways" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Key Takeaways</h2>
+
+  <p><strong>JavaScript cost = network + processing + execution</strong></p>
+
+  <p>Performance improves by:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Code splitting</li>
+    <li class="vf-list__item">Lazy loading</li>
+    <li class="vf-list__item">Removing unused code</li>
+    <li class="vf-list__item">Avoiding heavy frameworks</li>
+  </ul>
+
+  {# ── Do / Don't ── #}
+  <h2 id="dos-dont" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Do / Don't</h2>
+
+  <h4>Do</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Use small modules</li>
+    <li class="vf-list__item">Split code by feature</li>
+    <li class="vf-list__item">Measure performance</li>
+    <li class="vf-list__item">Remove unused JavaScript</li>
+  </ul>
+
+  <h4>Don't</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Ship large frameworks unnecessarily</li>
+    <li class="vf-list__item">Include unused libraries</li>
+    <li class="vf-list__item">Overuse third-party scripts</li>
+  </ul>
+
+  {# ── Checklist ── #}
+  <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Checklist</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Remove unused JavaScript</li>
+    <li class="vf-list__item">Split code by feature</li>
+    <li class="vf-list__item">Replace heavy libraries with native APIs</li>
+    <li class="vf-list__item">Cache DOM lookups</li>
+    <li class="vf-list__item">Use async loading</li>
+    <li class="vf-list__item">Optimise loops and conditions</li>
+    <li class="vf-list__item">Avoid inline script duplication</li>
+    <li class="vf-list__item">Profile before and after changes</li>
+  </ul>
+
+  {# ── Metrics & tools ── #}
+  <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Metrics &amp; tools</h2>
+  
+  <p>To ensure LRO compliance, continuously monitor:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Bundle size (compressed JS)</li>
+    <li class="vf-list__item">JS execution time</li>
+    <li class="vf-list__item">Time to Interactive (TTI)</li>
+    <li class="vf-list__item">Total Blocking Time (TBT)</li>
+  </ul>
+
+  <p>These metrics reflect real user experience on constrained devices.</p>
+
+  {# ── Further reading ── #}
+  <h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Further reading</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="https://www.debugbear.com/blog/front-end-javascript-performance" target="_blank" rel="noopener noreferrer">How To Optimize Front-end JavaScript Performance | DebugBear</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.debugbear.com/blog/optimize-javascript-bundle-size" target="_blank" rel="noopener noreferrer">Optimizing JavaScript Bundle Size | DebugBear</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.debugbear.com/blog/minify-javascript" target="_blank" rel="noopener noreferrer">Minify JavaScript And CSS Code For A Faster Website | DebugBear</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Performance/JavaScript" target="_blank" rel="noopener noreferrer">JavaScript performance optimization - Learn web development | MDN</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://medium.com/frontendmasters/practical-strategies-to-optimize-javascript-code-and-boost-web-performance-7d4c4bb5d42f" target="_blank" rel="noopener noreferrer">Practical Strategies to Optimize JavaScript Code and Boost Web Performance | by Frontend Master</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://bulkaudit.com/bundle-size/" target="_blank" rel="noopener noreferrer">JavaScript Optimization - Bundle Size, Tree Shaking &amp; Code Splitting | BulkAudit</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/articles/javascript-startup-optimization" target="_blank" rel="noopener noreferrer">JavaScript Start-up Optimization | Articles | web.dev</a></li>
+  </ul>
+
 </article>

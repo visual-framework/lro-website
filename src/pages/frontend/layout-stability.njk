@@ -6,5 +6,310 @@ templateEngineOverride: njk
 ---
 
 <article class="vf-content">
-  <p class="vf-lede">This page is currently being developed.</p>
+
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400 vf-search-client-side--no-index">Contents</h2>
+  {# ── Table of contents ── #}
+  <nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+    <ul class="vf-list vf-list--unordered">
+      <li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+      <li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO</a></li>
+      <li class="vf-list__item"><a href="#cls-benchmarks" class="vf-link">CLS Performance Benchmarks</a></li>
+      <li class="vf-list__item"><a href="#common-causes" class="vf-link">Common Causes of Layout Shifts</a></li>
+      <li class="vf-list__item"><a href="#design-principles" class="vf-link">Design Principles</a></li>
+      <li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation Guidance</a></li>
+      <li class="vf-list__item"><a href="#dos-dont" class="vf-link">Do / Don't</a></li>
+      <li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+      <li class="vf-list__item"><a href="#metrics" class="vf-link">Metrics and Tools</a></li>
+      <li class="vf-list__item"><a href="#scientific-use-cases" class="vf-link">Use Cases for Scientific Websites</a></li>
+      <li class="vf-list__item"><a href="#further-reading" class="vf-link">Further Reading</a></li>
+    </ul>
+  </nav>
+
+  {# ── Overview ── #}
+  <h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Overview</h2>
+
+  <p>Layout stability refers to how visually stable a page remains while it loads and during user interaction. When elements on the page move unexpectedly during page load, this is known as a layout shift.</p>
+
+  <p>The metric used to measure this is Cumulative Layout Shift (CLS), one of Google's Core Web Vitals. CLS measures how much visible content shifts on the screen during page load and interaction. Unlike other performance metrics, CLS is not time-based; instead, it measures how much content moves and how far it moves.</p>
+
+  <p>Unexpected layout shifts create a frustrating user experience. For example, a user might try to click a link, but the page shifts and they accidentally click something else.</p>
+
+  <p>For users in low-resource environments, layout instability is even more noticeable because slow networks and delayed resource loading increase the likelihood of content shifting during rendering.</p>
+
+  <p>The goal of a layout stability strategy is to ensure that page structure remains predictable and stable while content loads.</p>
+
+  {# ── Why this matters for LRO ── #}
+  <h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400">Why this matters for LRO</h2>
+
+  <p>Users in low-resource environments often experience slower connections, delayed resource loading, and partial page rendering.</p>
+
+  <p>When a website loads slowly, images, ads, fonts, and scripts often appear later in the loading process. If space has not been reserved for them, the browser must rearrange the layout when they arrive.</p>
+
+  <p>This leads to several problems:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Users accidentally click the wrong button or link</li>
+    <li class="vf-list__item">Text jumps while the user is reading</li>
+    <li class="vf-list__item">Interactive elements move unexpectedly</li>
+    <li class="vf-list__item">The page feels unstable and difficult to use</li>
+  </ul>
+
+  <p>Layout shifts occurring above the fold (the visible part of the page) are particularly disruptive because they affect the content users interact with first.</p>
+
+  <p>Ensuring layout stability is therefore critical for creating reliable experiences for users with slow networks or low-end devices.</p>
+
+  {# ── CLS Performance Benchmarks ── #}
+  <h2 id="cls-benchmarks" class="vf-u-margin--0 vf-u-padding__top--400">CLS Performance Benchmarks</h2>
+
+  <p>Google defines CLS thresholds as follows:</p>
+
+  <table class="vf-table vf-table--striped">
+    <thead class="vf-table__header">
+      <tr class="vf-table__row">
+        <th class="vf-table__heading" scope="col">CLS Score</th>
+        <th class="vf-table__heading" scope="col">Performance Rating</th>
+      </tr>
+    </thead>
+    <tbody class="vf-table__body">
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">0 – 0.1</td>
+        <td class="vf-table__cell">Good</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">0.1 – 0.25</td>
+        <td class="vf-table__cell">Needs improvement</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">&gt; 0.25</td>
+        <td class="vf-table__cell">Poor</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>A CLS score below 0.1 is considered good performance.</p>
+
+  <p>For low-resource optimisation frameworks, the goal should be:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Target CLS ≤ 0.1</li>
+    <li class="vf-list__item">Avoid shifts in the initial viewport</li>
+    <li class="vf-list__item">Minimise shifts caused by late-loading content</li>
+  </ul>
+  <p>Example image showing layout shift during loading:</p>
+  <figure class="vf-figure vf-figure--align vf-figure--align-centered">
+    <img src="{{ '/images/content_images/LRO diagram 3.2.7a.avif' | url }}" alt="" loading="lazy">
+    <figcaption class="vf-figure__caption"></figcaption>
+  </figure>
+  <p>Explanation</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Before image loads -> Text appears near the top</li>
+    <li class="vf-list__item">Image loads later ->Text suddenly moves down</li>
+  </ul>
+<p>The user reading the text experiences a sudden shift.</p>
+
+  {# ── Common Causes of Layout Shifts ── #}
+  <h2 id="common-causes" class="vf-u-margin--0 vf-u-padding__top--400">Common Causes of Layout Shifts</h2>
+
+  <p>Several common development patterns cause layout instability.</p>
+
+  <h3>Images without dimensions</h3>
+
+  <p>When image width and height are not defined, the browser cannot allocate space for the image before it loads. Once the image finishes downloading, the layout changes and pushes content downward.</p>
+
+  <h3>Ads and embedded content</h3>
+
+  <p>Ads, embedded videos, maps, and iframes often load after the page content. If space is not reserved for them, they push existing content downward when they appear.</p>
+
+  <h3>Dynamically injected content</h3>
+
+  <p>Content added via JavaScript after page load can push existing content down. Examples include:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Notification banners</li>
+    <li class="vf-list__item">Cookie notices</li>
+    <li class="vf-list__item">Dynamic recommendations</li>
+  </ul>
+
+  <h3>Web fonts</h3>
+
+  <p>Web fonts can cause layout shifts when the browser initially displays text in a fallback font and then replaces it with the final font. This can change the width or height of text blocks.</p>
+
+  <h3>Animations that trigger layout recalculation</h3>
+
+  <p>Animations that modify layout properties such as top, left, width, or height can cause layout shifts.</p>
+
+  {# ── Design Principles ── #}
+  <h2 id="design-principles" class="vf-u-margin--0 vf-u-padding__top--400">Design Principles for Layout Stability</h2>
+
+  <p>Stable layouts follow a few key design principles:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Reserve space for content before it loads</li>
+    <li class="vf-list__item">Avoid dynamically inserting elements above existing content</li>
+    <li class="vf-list__item">Keep important content fixed in the layout</li>
+    <li class="vf-list__item">Ensure predictable loading behaviour</li>
+  </ul>
+
+  <p>These principles help ensure that users see a stable page structure from the moment the page starts loading.</p>
+
+  {# ── Implementation Guidance ── #}
+  <h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400">Implementation Guidance</h2>
+
+  <h3>Always define media dimensions</h3>
+
+  <p>The most common fix for layout shifts is to define the dimensions of images and videos.</p>
+
+  <p><strong>Example:</strong></p>
+  <pre class="vf-code-example__pre"><code>&lt;img src="dataset.jpg" width="800" height="400" alt="Scientific dataset visualization"&gt;</code></pre>
+
+  <p>Providing dimensions allows the browser to calculate the aspect ratio and reserve the correct space during layout.</p>
+
+  <p>Another approach is to use the CSS aspect-ratio property:</p>
+  <pre class="vf-code-example__pre"><code>.image-container {
+  aspect-ratio: 16 / 9;
+}</code></pre>
+
+  <h3>Reserve space for ads and embeds</h3>
+
+  <p>Ads and embedded content should always have reserved space.</p>
+
+  <figure class="vf-figure vf-figure--align vf-figure--align-centered">
+    <img src="{{ '/images/content_images/LRO diagram 3.2.7b.avif' | url }}" alt="" loading="lazy">
+    <figcaption class="vf-figure__caption"></figcaption>
+  </figure>
+<h3>Concept illustrated:</h3>
+<h4>Without reserved space</h4>
+  <ul class="vf-list vf-list--ordered">
+    <li class="vf-list__item">HTML loads</li>
+    <li class="vf-list__item">Image loads later</li>
+    <li class="vf-list__item">ext shifts downward</li>
+  </ul>
+<h3>With reserved space</h4>
+  <ul class="vf-list vf-list--ordered">
+    <li class="vf-list__item">HTML loads</li>
+    <li class="vf-list__item">Space reserved for image</li>
+    <li class="vf-list__item">Image loads inside the reserved space</li>
+    <li class="vf-list__item">No layout shift</li>
+  </ul>
+  <p><strong>Example CSS:</strong></p>
+  <pre class="vf-code-example__pre"><code>.ad-slot {
+  min-height: 250px;
+}</code></pre>
+
+  <p>This ensures the layout does not shift when the ad loads. If exact dimensions are unknown, use placeholders or skeleton components.</p>
+
+  <h3>Avoid inserting content above existing content</h3>
+
+  <p>When dynamic content appears at the top of the page, it pushes everything downward.</p>
+
+  <p>Better strategies include:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Loading dynamic content below existing content</li>
+    <li class="vf-list__item">Showing notifications as overlays</li>
+    <li class="vf-list__item">Allowing users to trigger content updates manually</li>
+  </ul>
+
+  <h3>Use safe animation techniques</h3>
+
+  <p>Animations should avoid properties that trigger layout recalculation.</p>
+
+  <p><strong>Avoid:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Top, left, width, height</li>
+  </ul>
+
+  <p><strong>Instead use:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">transform: translateY()</li>
+    <li class="vf-list__item">transform: scale()</li>
+  </ul>
+
+  <p>Transform-based animations do not trigger layout recalculation and therefore do not cause layout shifts.</p>
+
+  <h3>Optimise web fonts</h3>
+
+  <p>Fonts can cause layout shifts when fallback fonts are replaced.</p>
+
+  <p>Solutions include:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Use font-display: swap</li>
+    <li class="vf-list__item">Choose fallback fonts similar to the final font</li>
+    <li class="vf-list__item">Preload critical fonts</li>
+  </ul>
+
+  <p><strong>Example:</strong></p>
+  <pre class="vf-code-example__pre"><code>&lt;link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin&gt;</code></pre>
+
+  {# ── Do / Don't ── #}
+  <h2 id="dos-dont" class="vf-u-margin--0 vf-u-padding__top--400 vf-search-client-side--no-index">Do / Don't</h2>
+
+  <h3>Do</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Define width and height for images and videos</li>
+    <li class="vf-list__item">Reserve space for ads and embeds</li>
+    <li class="vf-list__item">Use CSS aspect ratio for responsive media</li>
+    <li class="vf-list__item">Use transform-based animations</li>
+    <li class="vf-list__item">Optimise web font loading</li>
+  </ul>
+
+  <h3>Don't</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Insert content above existing elements after page load</li>
+    <li class="vf-list__item">Load media without reserved space</li>
+    <li class="vf-list__item">Use layout-triggering animations</li>
+    <li class="vf-list__item">Replace fonts without fallback strategies</li>
+    <li class="vf-list__item">Dynamically resize elements during loading</li>
+  </ul>
+
+  {# ── Checklist ── #}
+  <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400">Checklist</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">All images have width and height attributes</li>
+    <li class="vf-list__item">Ad and embed containers have reserved dimensions</li>
+    <li class="vf-list__item">Web fonts use fallback strategies</li>
+    <li class="vf-list__item">Animations use transform instead of layout properties</li>
+    <li class="vf-list__item">Dynamic content does not shift the existing layout</li>
+  </ul>
+
+  {# ── Metrics and Tools ── #}
+  <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400">Metrics and Tools</h2>
+
+  <p>Tools that help detect layout shifts include:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Chrome DevTools performance panel</li>
+    <li class="vf-list__item">Lighthouse performance audits</li>
+    <li class="vf-list__item">PageSpeed Insights</li>
+    <li class="vf-list__item">WebPageTest filmstrip analysis</li>
+  </ul>
+
+  <p>These tools help identify which elements are causing layout shifts during loading.</p>
+
+  <p>Real-user monitoring tools can also track CLS in real user environments and help prioritise the most impactful issues.</p>
+
+  {# ── Use Cases for Scientific Websites ── #}
+  <h2 id="scientific-use-cases" class="vf-u-margin--0 vf-u-padding__top--400">Use Cases for Scientific Websites</h2>
+
+  <p>Scientific platforms often include dynamic visualisations, dataset tables, and embedded tools.</p>
+
+  <p>Potential CLS risks include:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Large figures loading after text</li>
+    <li class="vf-list__item">Embedded charts resizing dynamically</li>
+    <li class="vf-list__item">Dataset tables loading progressively</li>
+  </ul>
+
+  <p>Recommended mitigation strategies include:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Reserving space for visualisations</li>
+    <li class="vf-list__item">Using skeleton placeholders</li>
+    <li class="vf-list__item">Lazy loading non-critical components</li>
+  </ul>
+
+  {# ── Further Reading ── #}
+  <h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400">Further Reading</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/articles/cls/" target="_blank" rel="noopener noreferrer">Cumulative Layout Shift (CLS) | Articles | web.dev</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/articles/optimize-cls/" target="_blank" rel="noopener noreferrer">Optimize Cumulative Layout Shift | Articles | web.dev</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.cwv.co.uk/what-is-cumulative-layout-shift-cls-and-how-to-fix-it/" target="_blank" rel="noopener noreferrer">What is Cumulative Layout Shift (CLS) And How to Fix It</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.bluewhale.media/blog/cumulative-layout-shift/" target="_blank" rel="noopener noreferrer">How To Optimise For Cumulative Layout Shift (CLS)</a></li>
+  </ul>
+
 </article>

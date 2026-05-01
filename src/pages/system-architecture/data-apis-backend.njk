@@ -1,10 +1,248 @@
 ---
-title: Data, APIs and Backend Efficiency
+title: Data, APIs and backend efficiency
 layout: layouts/topic.njk
 isArticlePage: true
 templateEngineOverride: njk
 ---
 
 <article class="vf-content">
-  <p class="vf-lede">This page is currently being developed.</p>
+
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400 vf-search-client-side--no-index">Contents</h2>
+  {# ── Table of contents ── #}
+  <nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+    <ul class="vf-list vf-list--unordered">
+      <li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+      <li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO</a></li>
+      <li class="vf-list__item"><a href="#common-problems" class="vf-link">Common Problems</a></li>
+      <li class="vf-list__item"><a href="#design-principles" class="vf-link">Core Design Principles</a></li>
+      <li class="vf-list__item"><a href="#strategy-options" class="vf-link">Strategy Options</a></li>
+      <li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation Guidance</a></li>
+      <li class="vf-list__item"><a href="#dos-dont" class="vf-link">Do / Don't</a></li>
+      <li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+      <li class="vf-list__item"><a href="#metrics" class="vf-link">Metrics and Tools</a></li>
+      <li class="vf-list__item"><a href="#further-reading" class="vf-link">Further Reading</a></li>
+    </ul>
+  </nav>
+
+  {# ── Overview ── #}
+  <h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Overview</h2>
+
+  <p>Efficient backend systems and APIs are essential for usability in low-bandwidth and unreliable networks. Even if the frontend is lightweight, slow APIs, large payloads, or inefficient queries can significantly degrade performance. The goal is to minimise data transfer, reduce latency, and ensure reliable responses under constrained conditions.</p>
+
+  <p>In Low Resource Optimisation (LRO), backend systems should:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Send only essential data to minimise data transfer</li>
+    <li class="vf-list__item">Reduce unnecessary API calls</li>
+    <li class="vf-list__item">Return contextual, not full, records</li>
+    <li class="vf-list__item">Support progressive data loading</li>
+    <li class="vf-list__item">Remain resilient to latency, timeouts, and connection drops</li>
+  </ul>
+
+  {# ── Why this matters for LRO ── #}
+  <h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400">Why this matters for low-resource environments</h2>
+
+  <p>Users in low-resource settings often face:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Slow networks (e.g. 2G / 3G)</li>
+    <li class="vf-list__item">High latency and slow response times</li>
+    <li class="vf-list__item">Unstable connections with frequent drops</li>
+    <li class="vf-list__item">Expensive data usage</li>
+    <li class="vf-list__item">Low-end devices with limited CPU and memory</li>
+  </ul>
+
+  <p>Backend inefficiencies amplify these constraints, leading to:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Higher data costs from large payloads</li>
+    <li class="vf-list__item">Slower performance due to multiple API calls</li>
+    <li class="vf-list__item">Timeouts from inefficient queries</li>
+    <li class="vf-list__item">Repeated downloads without caching</li>
+  </ul>
+
+  <p>Even small inefficiencies can significantly impact usability.</p>
+
+  {# ── Common Problems ── #}
+  <h2 id="common-problems" class="vf-u-margin--0 vf-u-padding__top--400">Common Problems</h2>
+
+  <h3>Over-fetching data</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Returning full datasets when only a few fields are needed</li>
+    <li class="vf-list__item">Leads to large payloads, slow parsing, and wasted data</li>
+  </ul>
+
+  <h3>Under-fetching / excessive API calls</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Multiple requests required to render a single page</li>
+    <li class="vf-list__item">High latency makes delays worse</li>
+  </ul>
+
+  <h3>Large and verbose data structures</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Deep JSON nesting and long keys increase payload size</li>
+    <li class="vf-list__item">Adds unnecessary "silent weight"</li>
+  </ul>
+
+  <h3>Missing pagination</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Large datasets returned in one response</li>
+    <li class="vf-list__item">Can cause memory issues on low-end devices</li>
+  </ul>
+
+  <h3>Lack of caching</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Repeated downloads of the same data</li>
+    <li class="vf-list__item">Increases data usage and server load</li>
+  </ul>
+
+  {# ── Core Design Principles ── #}
+  <h2 id="design-principles" class="vf-u-margin--0 vf-u-padding__top--400">Core Design Principles</h2>
+
+  <h3>Minimise data transfer</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Use field filtering to return only required attributes</li>
+    <li class="vf-list__item">Apply server-side filtering before sending data</li>
+    <li class="vf-list__item">Enforce compression (Brotli/Gzip)</li>
+    <li class="vf-list__item">Prefer efficient formats for large datasets</li>
+  </ul>
+
+  <h3>Reduce round-trips</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Aggregate related data into single endpoints</li>
+    <li class="vf-list__item">Use resource expansion to avoid chained requests</li>
+    <li class="vf-list__item">Leverage modern protocols (HTTP/2, HTTP/3)</li>
+  </ul>
+
+  <h3>Cache aggressively</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Use Cache-Control and ETags to prevent re-downloads</li>
+    <li class="vf-list__item">Cache static and reference data long-term</li>
+    <li class="vf-list__item">Apply stale-while-revalidate for instant responses</li>
+    <li class="vf-list__item">Use CDN/edge caching to reduce geographic latency</li>
+  </ul>
+
+  <h3>Build for resilience</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Support resumable downloads</li>
+    <li class="vf-list__item">Implement retries with backoff</li>
+    <li class="vf-list__item">Handle timeouts gracefully</li>
+    <li class="vf-list__item">Design APIs to tolerate unstable connections</li>
+    <li class="vf-list__item">Enable progressive data delivery</li>
+  </ul>
+
+  {# ── Strategy Options ── #}
+  <h2 id="strategy-options" class="vf-u-margin--0 vf-u-padding__top--400">Strategy Options</h2>
+
+  <h3>Request-level optimisation</h3>
+
+  <p><strong>Use sparse fieldsets to reduce payload size:</strong> Instead of creating multiple versions of an endpoint, allow the client to define the response shape via query parameters.</p>
+
+  <pre class="vf-code-example__pre"><code># Request only the fields needed for the UI
+GET /courses?fields=id,title,duration
+
+Response:
+{
+  "id": 1,
+  "title": "Protein Analysis",
+  "duration": "2 hours"
+}</code></pre>
+
+  <p><strong>Implement pagination with small default limits:</strong> Unbounded data is the primary cause of browser crashes on low-resource devices.</p>
+
+  <pre class="vf-code-example__pre"><code>GET /courses?page=1&limit=10</code></pre>
+
+  <p><strong>Use GraphQL or similar approaches for flexible querying:</strong> GraphQL is the ultimate tool for LRO because it solves both over-fetching and under-fetching in a single query.</p>
+
+  <pre class="vf-code-example__pre"><code>{
+  course(id:1){
+    title
+    duration
+  }
+}</code></pre>
+
+  <h3>Architectural optimisation</h3>
+
+  <p><strong>Create aggregation endpoints (Backend-for-Frontend):</strong> If GraphQL is too complex to implement, use the Aggregator Pattern. Create specific endpoints that combine data from multiple microservices.</p>
+
+  <p><strong>Example:</strong> <code>GET /summary/gene/BRCA1</code></p>
+
+  <h3>Delivery and infrastructure</h3>
+
+  <p><strong>Use CDN and edge caching for faster delivery:</strong> Move the data physically closer to the user to reduce latency.</p>
+
+  <p><strong>Enable compression by default for all responses:</strong> This reduces the total payload size and network packets.</p>
+
+  {# ── Implementation Guidance ── #}
+  <h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400">Implementation Guidance</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Measure payload size and optimise critical endpoints</li>
+    <li class="vf-list__item">Set default pagination limits for all list APIs</li>
+    <li class="vf-list__item">Enable server-side compression (Brotli/Gzip)</li>
+    <li class="vf-list__item">Configure caching headers (Cache-Control, ETags)</li>
+    <li class="vf-list__item">Optimise database queries using indexing and caching</li>
+    <li class="vf-list__item">Use connection pooling and read replicas to reduce latency</li>
+    <li class="vf-list__item">Implement query timeouts and circuit breakers</li>
+    <li class="vf-list__item">Use denormalisation for frequently accessed views</li>
+  </ul>
+
+  <h3>Caching Headers Example</h3>
+
+  <pre class="vf-code-example__pre"><code>// Static Data
+Cache-Control: public, max-age=31536000, immutable
+
+// Dynamic Data
+Cache-Control: public, max-age=3600, stale-while-revalidate=86400</code></pre>
+
+  {# ── Do / Don't ── #}
+  <h2 id="dos-dont" class="vf-u-margin--0 vf-u-padding__top--400 vf-search-client-side--no-index">Do / Don't</h2>
+
+  <h3>Do</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Paginate all large datasets</li>
+    <li class="vf-list__item">Compress every response</li>
+    <li class="vf-list__item">Cache frequently accessed data</li>
+    <li class="vf-list__item">Aggregate related API calls</li>
+    <li class="vf-list__item">Design for offline and intermittent connectivity</li>
+  </ul>
+
+  <h3>Don't</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Return full records by default</li>
+    <li class="vf-list__item">Require multiple sequential API calls</li>
+    <li class="vf-list__item">Send uncompressed payloads</li>
+    <li class="vf-list__item">Ignore caching strategies</li>
+    <li class="vf-list__item">Assume stable or high-speed connectivity</li>
+  </ul>
+
+  {# ── Checklist ── #}
+  <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400">Checklist</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Are payload sizes minimised and compressed</li>
+    <li class="vf-list__item">Is pagination implemented by default</li>
+    <li class="vf-list__item">Are unnecessary API calls avoided</li>
+    <li class="vf-list__item">Is caching enabled and effective</li>
+    <li class="vf-list__item">Is backend latency optimised</li>
+    <li class="vf-list__item">Are APIs resilient to network failures</li>
+  </ul>
+
+  {# ── Metrics and Tools ── #}
+  <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400">Metrics and Tools</h2>
+
+  <p><strong>Key metrics:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">API payload size kept minimal (e.g. &lt;100KB where possible)</li>
+    <li class="vf-list__item">API latency reduced (target low server response times)</li>
+    <li class="vf-list__item">API calls per page minimised</li>
+    <li class="vf-list__item">Time to first byte optimised</li>
+  </ul>
+
+  {# ── Further Reading ── #}
+  <h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400">Further Reading</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="https://martinfowler.com/articles/api-strategies.html" target="_blank" rel="noopener noreferrer">API Strategies | Martin Fowler</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://graphql.org/" target="_blank" rel="noopener noreferrer">GraphQL Official Documentation</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/api-design/" target="_blank" rel="noopener noreferrer">API Design Best Practices | web.dev</a></li>
+  </ul>
+
 </article>

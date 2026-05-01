@@ -6,5 +6,441 @@ templateEngineOverride: njk
 ---
 
 <article class="vf-content">
-  <p class="vf-lede">This page is currently being developed.</p>
+
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400 vf-search-client-side--no-index">Contents</h2>
+
+  {# ── Table of contents ── #}
+  <nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+    <ul class="vf-list vf-list--unordered">
+      <li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+      <li class="vf-list__item"><a href="#why-lro" class="vf-link">Why does this matter for LRO?</a></li>
+      <li class="vf-list__item"><a href="#how-browsers" class="vf-link">How browsers process CSS?</a></li>
+      <li class="vf-list__item"><a href="#common-problems" class="vf-link">Common Problems</a></li>
+      <li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation Guidance</a></li>
+      <li class="vf-list__item"><a href="#benchmarks" class="vf-link">CSS Performance Benchmarks</a></li>
+      <li class="vf-list__item"><a href="#dos-dont" class="vf-link">Do / Don't</a></li>
+      <li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+      <li class="vf-list__item"><a href="#metrics" class="vf-link">Metrics and Tools</a></li>
+      <li class="vf-list__item"><a href="#further-reading" class="vf-link">Further reading</a></li>
+    </ul>
+  </nav>
+
+  {# ── Overview ── #}
+  <h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Overview</h2>
+
+  <p>CSS controls the website's layout, typography, colours, and responsiveness. Although smaller than JavaScript or images, it has a major performance impact because it is render-blocking, meaning the browser must load and process CSS before displaying content.</p>
+
+  <p>Large or poorly structured stylesheets can delay rendering, causing blank screens while the page loads.</p>
+
+  <p>This is more pronounced in low-resource environments due to:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Slow networks and high latency</li>
+    <li class="vf-list__item">Low-memory devices</li>
+    <li class="vf-list__item">Higher relative data costs</li>
+  </ul>
+
+  <p>A good CSS strategy prioritises critical styles first, allowing content to appear quickly, while deferring non-essential styling. The goal is to balance visual design with fast, reliable access to content.</p>
+
+  {# ── Why does this matter for LRO? ── #}
+  <h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Why does this matter for LRO?</h2>
+
+  <p>Because CSS blocks rendering, inefficient stylesheets can cause:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Blank screens for several seconds</li>
+    <li class="vf-list__item">Slow page rendering</li>
+    <li class="vf-list__item">Higher data usage</li>
+    <li class="vf-list__item">Increased CPU load</li>
+    <li class="vf-list__item">Poor usability on low-end devices</li>
+  </ul>
+
+  <p>For data-heavy platforms like EMBL-EBI's biodata resources, fast content visibility is critical. Users need immediate access to tables, datasets, and key information, even on slow networks or limited devices.</p>
+
+  {# ── How browsers process CSS? ── #}
+  <h2 id="how-browsers" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">How browsers process CSS?</h2>
+
+  <p>CSS is part of the Critical Rendering Path. Before content can render, the browser must:</p>
+  <ol class="vf-list vf-list--ordered">
+    <li class="vf-list__item">Download the HTML</li>
+    <li class="vf-list__item">Build the DOM</li>
+    <li class="vf-list__item">Download CSS files</li>
+    <li class="vf-list__item">Build the CSSOM</li>
+    <li class="vf-list__item">Combine the DOM and CSSOM into a render tree</li>
+    <li class="vf-list__item">Calculate layout</li>
+    <li class="vf-list__item">Paint the page</li>
+  </ol>
+
+  <p>Because CSS must be processed before rendering begins, large or inefficient stylesheets delay everything.</p>
+
+  <h3>Poor CSS Strategy</h3>
+  <p>Large stylesheets block rendering.</p>
+
+	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.3a.avif' | url }}" alt="" loading="lazy">
+		<figcaption class="vf-figure__caption"></figcaption>
+	</figure>
+  
+  <h4>Result</h4>
+  <p>If CSS files are large or slow to download:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">The browser must wait</li>
+    <li class="vf-list__item">Rendering is delayed</li>
+    <li class="vf-list__item">Users see a blank screen</li>
+  </ul>
+
+  <p>This effect is especially noticeable on slow networks.</p>
+
+  <h3>Optimised CSS Strategy</h3>
+  <p>An improved strategy ensures that only the critical styles required for the visible part of the page are loaded first.</p>
+
+	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.3.b.avif' | url }}" alt="" loading="lazy">
+		<figcaption class="vf-figure__caption"></figcaption>
+	</figure>
+  {# ── Common Problems ── #}
+  <h2 id="common-problems" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Common Problems</h2>
+
+  <p>Many modern websites unintentionally ship excessive CSS due to frameworks, legacy code, or design system accumulation.</p>
+
+  <h3>Large Unused Stylesheets</h3>
+  <p>Over time, CSS files often accumulate styles that are no longer used. Browsers still download and process these rules, slowing page rendering.</p>
+
+  <p>In many sites, a significant portion of CSS is unused on the current page.</p>
+
+  <h3>CSS Framework Bloat</h3>
+  <p>Frameworks such as Bootstrap or large utility libraries may include thousands of styles, even if only a small subset is required. e.g:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Full CSS framework: 250 KB</li>
+    <li class="vf-list__item">Styles actually used: 20 KB</li>
+  </ul>
+  <p>This unnecessarily increases download time and processing cost.</p>
+
+  <h3>Render-Blocking Stylesheets</h3>
+  <p>External CSS files block page rendering until they are fully downloaded and parsed. Large stylesheets can cause users to see a blank or partially rendered page, especially on slow networks.</p>
+
+  <p><strong>Example:</strong></p>
+  <pre class="vf-code-example__pre"><code>&lt;!-- Browser must download and parse this CSS before rendering content --&gt;
+&lt;link rel="stylesheet" href="styles.css"&gt;</code></pre>
+
+  <p>Heavy or render-blocking CSS increases time to first paint, delaying when users can see and interact with content. Optimising CSS—by splitting critical styles, inlining above-the-fold CSS, or using media attributes—improves perceived performance on low-resource devices and slow connections.</p>
+
+  <h3>Too Many CSS Files</h3>
+  <p>Each stylesheet requires an additional network request. On slow networks, multiple requests significantly increase page load time.</p>
+
+  <p><strong>Example:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">styles.css</li>
+    <li class="vf-list__item">layout.css</li>
+    <li class="vf-list__item">theme.css</li>
+    <li class="vf-list__item">components.css</li>
+  </ul>
+
+  <h3>Complex CSS Selectors</h3>
+  <p>Highly nested or overly complex selectors increase the browser's style calculation cost, slowing rendering—especially on low-end devices. Simpler selectors are faster to match and apply.</p>
+
+  <p><strong>Problem Pattern (Inefficient Selector):</strong></p>
+  <pre class="vf-code-example__pre"><code>/* Highly nested selector increases style calculation work */
+div ul li a.button:hover {
+  background-color: blue;
+  color: white;
+}</code></pre>
+
+  <p><strong>Optimised Approach (Simple Selector):</strong></p>
+  <pre class="vf-code-example__pre"><code>/* Single-class selector is simpler and faster for the browser to process */
+.button:hover {
+  background-color: blue;
+  color: white;
+}</code></pre>
+
+  <p>Using simpler, less specific selectors reduces style computation, improving rendering performance and keeping the UI responsive—critical for low-end devices and constrained environments.</p>
+
+  {# ── Implementation Guidance ── #}
+  <h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Implementation Guidance</h2>
+
+  <p>An LRO-friendly CSS strategy focuses on delivering styles efficiently so content appears quickly, even on slow networks.</p>
+
+  <h3>Core Principles</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Load only what's needed:</strong> Avoid large global stylesheets; load CSS per page or component</li>
+    <li class="vf-list__item"><strong>Prioritise visible content:</strong> Ensure above-the-fold styles load first, so users see meaningful information quickly.</li>
+    <li class="vf-list__item"><strong>Keep CSS lightweight:</strong> Remove unused rules, minify files, and enable compression</li>
+    <li class="vf-list__item"><strong>Support progressive enhancement:</strong> Content should remain readable even if CSS is delayed and should rely on semantic HTML</li>
+    <li class="vf-list__item"><strong>Use modular styles:</strong> Organise CSS by component or page for better control and selective loading</li>
+  </ul>
+
+  <h3>Key Optimisation Techniques</h3>
+
+  <h4>Don't embed images or fonts in your CSS code</h4>
+  <p>It's possible to use data URLs and Base64 encoding to embed images and other resources in your CSS code:</p>
+  <pre class="vf-code-example__pre"><code>background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lv...");</code></pre>
+
+  <p>Image files are often large and take more time to download. Normally, they are not render-blocking, but if they are embedded in a stylesheet, they do block rendering, causing content to take longer to appear to users.</p>
+
+  <p>With modern front-end tooling, it can be easy to accidentally embed a large image without noticing. <a class="vf-link" href="https://www.debugbear.com/blog/css-size-analyzer">CSS Size Analyser</a> can detect embedded resources automatically.</p>
+
+  <h4>Analyse using the CSS Size Analyzer</h4>
+  <p>The CSS Size Analyzer is a free tool that finds the largest CSS rules in your stylesheets and highlights common issues like embedded images. You can then use this information to fix large CSS files on your website.</p>
+
+  <p>This improves maintainability and enables selective loading.</p>
+
+  <h4>Load CSS code from your own domain</h4>
+  <p>To load a resource from a server, browsers first need to establish a connection to that server. This takes time and will be slower on a high-latency network connection.</p>
+
+  <p>Loading CSS from the same domain as the HTML will be quicker, as the existing server connection can be reused.</p>
+
+  <h4>Avoid @import rules</h4>
+  <p>@import rules are a way to reference a CSS file from within a CSS file:</p>
+  <pre class="vf-code-example__pre"><code>@import "file2.css";</code></pre>
+
+  <p>However, this is not advisable from a page-speed perspective, as @import creates sequential render-blocking request chains.</p>
+
+  <h4>Remove Unused CSS</h4>
+  <p>Regularly audit stylesheets to identify unused selectors. Tools such as browser coverage analysis or build-time optimisation tools can automatically remove unused styles.</p>
+
+  <h4>Implement Critical CSS</h4>
+  <p>Critical CSS includes only the styles required to render above-the-fold content immediately. By inlining these styles, the browser can paint visible content faster, improving perceived load time. The remaining styles can be loaded asynchronously to avoid blocking rendering.</p>
+
+  <p><strong>Example: Inline Critical CSS:</strong></p>
+  <pre class="vf-code-example__pre"><code>&lt;head&gt;
+  &lt;!-- Inline only the CSS needed for immediate content --&gt;
+  &lt;style&gt;
+    /* Basic typography and layout for visible content */
+    body {
+      font-family: sans-serif;
+    }
+    header {
+      padding: 1rem;
+    }
+    
+    /* Styles for hero section and summary content */
+    .hero-title {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+    .summary {
+      margin: 1rem 0;
+    }
+  &lt;/style&gt;
+  &lt;!-- Load the remaining styles asynchronously to avoid blocking rendering --&gt;
+  &lt;link 
+    rel="preload" 
+    href="main.css" 
+    as="style" 
+    onload="this.rel='stylesheet'"&gt;
+&lt;/head&gt;</code></pre>
+
+  <p>Inlining critical CSS allows the page to display key content immediately, reducing blank screens on slow networks. Asynchronous loading of remaining styles ensures that non-critical CSS does not block the main thread or delay rendering, which is especially important for low-resource devices.</p>
+
+  <h4>Defer Non-Critical Styles</h4>
+  <p>Load secondary styles after the page has rendered.</p>
+
+  <p><strong>Example:</strong></p>
+  <pre class="vf-code-example__pre"><code>&lt;link rel="preload" href="styles.css" as="style" onload="this.rel='stylesheet'"&gt;</code></pre>
+
+  <h4>Minify CSS</h4>
+  <p>Minification removes unnecessary characters such as whitespace and comments.</p>
+
+  <p><strong>Example:</strong></p>
+  <p><strong>Before:</strong></p>
+  <pre class="vf-code-example__pre"><code>body {
+  margin: 0;
+  padding: 0;
+}</code></pre>
+
+  <p><strong>After:</strong></p>
+  <pre class="vf-code-example__pre"><code>body{margin:0;padding:0}</code></pre>
+
+  <h4>Enable Compression</h4>
+  <p>Server compression, such as Brotli or GZIP, can significantly reduce CSS file sizes.</p>
+
+  <h4>Enable Browser Caching</h4>
+  <p>CSS files should be cached so returning users do not need to download them again.</p>
+
+  <p><strong>Example:</strong></p>
+  <pre class="vf-code-example__pre"><code>Cache-Control: public, max-age=31536000</code></pre>
+
+  <h4>Split CSS by Page or Component</h4>
+  <p>Large applications should load styles only when needed.</p>
+
+  <p><strong>Example:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">home.css</li>
+    <li class="vf-list__item">search.css</li>
+    <li class="vf-list__item">dashboard.css</li>
+  </ul>
+
+  <p>This avoids downloading styles that are not used on the page.</p>
+
+  <h4>Deliver CSS with HTTP preload or HTTP/2 push</h4>
+
+  <p><strong>HTTP Preload:</strong></p>
+  <p>Using preload, a newer feature in HTTP, allows styles to load earlier because the browser requests them earlier, as soon as HTML parsing begins. Preloading can be denoted in markup or in the HTTP header.</p>
+
+  <p><strong>Example 1: Preload in HTML:</strong></p>
+  <pre class="vf-code-example__pre"><code>&lt;!-- Preload a stylesheet to start downloading it early --&gt;
+&lt;link rel="preload" href="/styles/other.css" as="style"&gt;</code></pre>
+
+  <p>rel="preload" signals the browser to fetch the resource immediately. as="style" specifies the type of resource being preloaded, allowing the browser to prioritise it correctly.</p>
+
+  <p><strong>Example 2: Preload via HTTP Response Header:</strong></p>
+  <pre class="vf-code-example__pre"><code>Link: &lt;https://example.com/styles/other.css&gt;; rel=preload; as=style</code></pre>
+
+  <p>Preloading via HTTP headers achieves the same effect as the HTML tag. Useful when you want to control preloading from the server rather than modifying HTML.</p>
+
+  <p>Preloading doesn't cause blocking behaviour either, and can be used for third-party content, allowing you to control how the resource is used. For example, you could fetch a stylesheet for a third-party component that isn't necessary for the initial rendering of the page, but that will be used a little later on in the page load.</p>
+
+  <p><strong>HTTP/2 push:</strong></p>
+  <p>HTTP/2 push is a little different. In effect, they accomplish many of the same goals, and preload actually uses the push API when it's available by default. To prevent this, you can include "nopush" in the HTTP response header, like this:</p>
+  <pre class="vf-code-example__pre"><code>Link: &lt;/styles/other.css&gt;; rel=preload; as=style; nopush</code></pre>
+
+  <p>When HTTP/2 push is used, the server does the pushing, rather than the browser in preload. This important distinction means that the CSS file gets pushed immediately, along with the HTML and other essential files. As a result, push can load resources even faster than preload. Using push risks overriding the use of cached resources and increasing the amount of data sent, so be careful with implementation.</p>
+
+  {# ── CSS Performance Benchmarks ── #}
+  <h2 id="benchmarks" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">CSS Performance Benchmarks</h2>
+
+  <p>Standard web performance targets often assume fast broadband connections. For LRO environments, stricter limits are recommended.</p>
+
+  <h3>Recommended CSS Budgets</h3>
+
+  <table class="vf-table vf-table--striped">
+    <thead class="vf-table__header">
+      <tr class="vf-table__row">
+        <th class="vf-table__heading" scope="col">Metric</th>
+        <th class="vf-table__heading" scope="col">Ideal</th>
+        <th class="vf-table__heading" scope="col">Acceptable</th>
+        <th class="vf-table__heading" scope="col">Poor</th>
+      </tr>
+    </thead>
+    <tbody class="vf-table__body">
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Total CSS size</td>
+        <td class="vf-table__cell">&lt; 50 KB</td>
+        <td class="vf-table__cell">&lt; 100 KB</td>
+        <td class="vf-table__cell">&gt; 100 KB</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Critical CSS size</td>
+        <td class="vf-table__cell">&lt; 15 KB</td>
+        <td class="vf-table__cell">&lt; 30 KB</td>
+        <td class="vf-table__cell">&gt; 30 KB</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">CSS files per page</td>
+        <td class="vf-table__cell">1–2</td>
+        <td class="vf-table__cell">≤ 3</td>
+        <td class="vf-table__cell">&gt; 4</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Unused CSS</td>
+        <td class="vf-table__cell">&lt; 10%</td>
+        <td class="vf-table__cell">&lt; 20%</td>
+        <td class="vf-table__cell">&gt; 40%</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Render-blocking stylesheets</td>
+        <td class="vf-table__cell">0</td>
+        <td class="vf-table__cell">1</td>
+        <td class="vf-table__cell">&gt; 2</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">CSS download time (3G)</td>
+        <td class="vf-table__cell">&lt; 200 ms</td>
+        <td class="vf-table__cell">&lt; 500 ms</td>
+        <td class="vf-table__cell">&gt; 1 s</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">CSS parsing time</td>
+        <td class="vf-table__cell">&lt; 50 ms</td>
+        <td class="vf-table__cell">&lt; 100 ms</td>
+        <td class="vf-table__cell">&gt; 200 ms</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Identifying Unused CSS</h3>
+
+  <p><strong>Using Chrome DevTools:</strong></p>
+  <ol class="vf-list vf-list--ordered">
+    <li class="vf-list__item">Open DevTools</li>
+    <li class="vf-list__item">Go to Coverage tab</li>
+    <li class="vf-list__item">Reload the page</li>
+    <li class="vf-list__item">Review unused CSS rules</li>
+  </ol>
+
+  <p>This helps identify styles that can be removed.</p>
+
+  <h3>Result</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Content appears quickly</li>
+    <li class="vf-list__item">Remaining styles load progressively</li>
+    <li class="vf-list__item">Rendering is no longer blocked</li>
+  </ul>
+
+  {# ── Do / Don't ── #}
+  <h2 id="dos-dont" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Do / Don't</h2>
+
+  <h4>Do</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Inline critical CSS</li>
+    <li class="vf-list__item">Remove unused styles</li>
+    <li class="vf-list__item">Use compression and caching</li>
+    <li class="vf-list__item">Keep selectors simple</li>
+    <li class="vf-list__item">Split CSS by component or page</li>
+  </ul>
+
+  <h4>Don't</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Load large frameworks unnecessarily</li>
+    <li class="vf-list__item">Block rendering with non-critical CSS</li>
+    <li class="vf-list__item">Maintain large unused stylesheets</li>
+    <li class="vf-list__item">Use overly complex selectors</li>
+  </ul>
+
+  {# ── Checklist ── #}
+  <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Checklist</h2>
+
+  <p>Before deploying a page:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Critical CSS implemented</li>
+    <li class="vf-list__item">Unused CSS removed</li>
+    <li class="vf-list__item">CSS minified</li>
+    <li class="vf-list__item">Compression enabled</li>
+    <li class="vf-list__item">Browser caching configured</li>
+    <li class="vf-list__item">CSS within performance budget</li>
+    <li class="vf-list__item">Page tested under slow network conditions</li>
+  </ul>
+
+  {# ── Metrics and Tools ── #}
+  <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Metrics and Tools</h2>
+
+  <p>Key metrics influenced by CSS performance:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">First Contentful Paint (FCP)</li>
+    <li class="vf-list__item">Largest Contentful Paint (LCP)</li>
+    <li class="vf-list__item">Speed Index</li>
+    <li class="vf-list__item">Layout stability (CLS)</li>
+    <li class="vf-list__item">Main thread processing time</li>
+  </ul>
+
+  <p>Recommended tools:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Chrome DevTools</li>
+    <li class="vf-list__item">Lighthouse</li>
+    <li class="vf-list__item">WebPageTest</li>
+    <li class="vf-list__item">DebugBear</li>
+  </ul>
+
+  {# ── Further reading ── #}
+  <h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Further reading</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/optimize-css-for-faster-page-loads/" target="_blank" rel="noopener noreferrer">Optimize resource loading | web.dev</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://developer.mozilla.org/en-US/docs/Learn/Performance/CSS" target="_blank" rel="noopener noreferrer">CSS performance optimization - Learn web development | MDN</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.debugbear.com/blog/optimize-css" target="_blank" rel="noopener noreferrer">The Complete Guide to Optimizing CSS for Fast Page Loads</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.namastedev.com/" target="_blank" rel="noopener noreferrer">Optimize CSS for faster page loads | Ministry of Programming — Technology</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.debugbear.com/blog/optimize-css-guide" target="_blank" rel="noopener noreferrer">CSS Optimization Guide 2025: Speed Up Your Website | Best Practices &amp; Code Examples</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.debugbear.com/blog/css-performance" target="_blank" rel="noopener noreferrer">How to Optimize CSS for Better Web Performance</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.namastedev.com/" target="_blank" rel="noopener noreferrer">Applying Best Practices to Large-Scale Codebases - NamasteDev Blogs</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.debugbear.com/blog/web-performance" target="_blank" rel="noopener noreferrer">Optimizing Website Performance: Strategies for Faster Loading Times</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.debugbear.com/blog/css-page-speed" target="_blank" rel="noopener noreferrer">Why Optimizing CSS Stylesheets Matters For Page Speed | DebugBear</a></li>
+  </ul>
+
 </article>
