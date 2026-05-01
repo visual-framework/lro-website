@@ -1,6 +1,7 @@
 const FEEDBACK_TO = "embldev@service-now.com";
 const INDEX_URL = "https://wwwdev.ebi.ac.uk/web-optimisation-framework/";
 const HCAPTCHA_SCRIPT_URL = "https://cdn.jsdelivr.net/npm/@hcaptcha/vanilla-hcaptcha";
+const FEEDBACK_API_URL = "/api/send-feedback.php";
 
 function text(el) {
   return (el && el.textContent ? el.textContent : "").trim();
@@ -73,13 +74,28 @@ function ensureHcaptchaLoaded() {
 }
 
 function postFeedback(payload) {
-  const subject = encodeURIComponent(payload.subject || "Feedback");
-  const body = encodeURIComponent(payload.message || "");
-  const to = encodeURIComponent(payload.to || FEEDBACK_TO);
-  const mailtoUrl = "mailto:" + to + "?subject=" + subject + "&body=" + body;
-
-  window.location.href = mailtoUrl;
-  return Promise.resolve();
+  return fetch(FEEDBACK_API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      to: payload.to || FEEDBACK_TO,
+      subject: payload.subject || "Feedback",
+      message: payload.message || "",
+      type: payload.type || "general"
+    })
+  }).then(function (response) {
+    if (!response.ok) {
+      throw new Error("Failed to submit feedback.");
+    }
+    return response.json();
+  }).then(function (data) {
+    if (!data || data.success !== true) {
+      throw new Error("Failed to submit feedback.");
+    }
+    return data;
+  });
 }
 
 function initFrameworkFeedback() {
