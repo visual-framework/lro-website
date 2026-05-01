@@ -42,7 +42,7 @@ if (!is_array($payload)) {
 $defaultRecipient = 'embldev@service-now.com';
 $allowedRecipients = [$defaultRecipient];
 
-$to = isset($payload['to']) ? trim((string) $payload['to']) : $defaultRecipient;
+$to = ["embldev@service-now.com", "es-wwwdev@ebi.ac.uk"]; // Default recipient(s)
 $subject = isset($payload['subject']) ? trim((string) $payload['subject']) : 'Feedback';
 $message = isset($payload['message']) ? trim((string) $payload['message']) : '';
 
@@ -58,6 +58,7 @@ if ($to === '' || !in_array($to, $allowedRecipients, true)) {
     // Never fail user submissions on recipient mismatch; route to default mailbox.
     $to = $defaultRecipient;
 }
+
 
 if ($subject === '') {
     $subject = 'Feedback';
@@ -83,6 +84,9 @@ $headers = [
     'From: LRO Website <' . $fromAddress . '>'
 ];
 
+$mailto = implode(',', $to);
+
+// Send email
 $sent = mail($to, $sanitizedSubject, $message, implode("\r\n", $headers));
 
 if (!$sent) {

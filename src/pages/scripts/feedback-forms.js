@@ -6,11 +6,9 @@ const IS_LOCALHOST = typeof window !== "undefined" && (
   window.location.hostname.startsWith("localhost:")
 );
 
-const FEEDBACK_TO = "embldev@service-now.com";
 const INDEX_URL = "https://wwwdev.ebi.ac.uk/web-optimisation-framework/";
 const HCAPTCHA_SCRIPT_URL = "https://cdn.jsdelivr.net/npm/@hcaptcha/vanilla-hcaptcha";
-const FEEDBACK_API_URL = IS_LOCALHOST ? "http://localhost:3333/api/send-feedback.php" : "/api/send-feedback.php";
-
+const FEEDBACK_API_URL = "/api/send-feedback.php";
 
 function text(el) {
   return (el && el.textContent ? el.textContent : "").trim();
@@ -90,7 +88,6 @@ function postFeedback(payload) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      to: payload.to || FEEDBACK_TO,
       subject: payload.subject || "Feedback",
       message: payload.message || "",
       type: payload.type || "general"
@@ -203,7 +200,6 @@ function initFrameworkFeedback() {
 
     try {
       await postFeedback({
-        to: FEEDBACK_TO,
         subject: pendingSubmission.subject,
         message: pendingSubmission.message,
         type: "framework"
@@ -299,7 +295,6 @@ function initArticleFeedback() {
 
     try {
       await postFeedback({
-        to: FEEDBACK_TO,
         subject: pendingSubmission.subject,
         message: pendingSubmission.message,
         type: "article"
