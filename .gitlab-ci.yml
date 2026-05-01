@@ -6,7 +6,6 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
   DOCKER_DRIVER: overlay2
   GIT_STRATEGY: fetch
-  CS_DOCKERFILE_PATH: $CI_PROJECT_DIR/Dockerfile
 
 before_script:
   - echo "Loading .env file..."     # Inform about loading environment variables
@@ -16,6 +15,7 @@ before_script:
   - export DOCKER_PROJECT_NAME="${PROJECT_NAME//./-}" # Replace dots with dashes for Docker image naming
   - export CI_COMMIT_SHA_SHORT=${CI_COMMIT_SHA::8}    # Shorten commit SHA for tagging
   - export IMAGE_NGINX=$CI_REGISTRY/$CI_PROJECT_PATH:$DOCKER_PROJECT_NAME-nginx-$CI_COMMIT_SHORT_SHA-$CI_PIPELINE_ID     # Tag for NGINX image
+  - export IMAGE_PHP_FPM=$CI_REGISTRY/$CI_PROJECT_PATH:$DOCKER_PROJECT_NAME-php-fpm-$CI_COMMIT_SHORT_SHA-$CI_PIPELINE_ID # Tag for PHP-FPM image
 
 stages:
   - build
@@ -29,9 +29,12 @@ stages:
   tags: [dind] # Docker-in-Docker runner
   script:
     - echo "Building images with the following variables:"
+    - echo "IMAGE_PHP_FPM - $IMAGE_PHP_FPM"
     - echo "IMAGE_NGINX - $IMAGE_NGINX"
     - echo "$CI_JOB_TOKEN" | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY # Authenticate to Docker registry using token
-    - docker build -t $IMAGE_NGINX --build-arg ENV=$ENVIRONMENT -f Dockerfile . # Build NGINX image
+    - docker build -t $IMAGE_PHP_FPM --build-arg ENV=$ENVIRONMENT -f Dockerfile_php . # Build PHP-FPM image
+    - docker build -t $IMAGE_NGINX --build-arg ENV=$ENVIRONMENT -f Dockerfile_nginx . # Build NGINX image
+    - docker push $IMAGE_PHP_FPM # Push PHP-FPM image
     - docker push $IMAGE_NGINX   # Push NGINX image
 
 build_dev:
@@ -58,38 +61,67 @@ build_prod:
   script:
     - mkdir -p $HOME/.kube # Prepare kube config directory
     - echo -n $KUBE_CONFIG | base64 -d > $HOME/.kube/config # Decode and write kube config
-    # Inject environment variables and prepare k8s overlays
-    - cp ./.env k8s/overlays/$ENVIRONMENT/.env # Copy .env to k8s overlay
-    - mkdir -p k8s/base/config # Create config directory if it doesn't exist
-    # Select appropriate Database config file based on environment and DB datacenter
-    - echo "Env - $ENVIRONMENT"
+    # Dynamically set NFS server and paths based on datacenter, variables defined in Gitlab CI/CD settings
     - |
-      if [ "$ENVIRONMENT" = "dev" ]; then
-        NAMESPACE="$PROJECT_NAMESPACE_DEV"
-      elif [ "$ENVIRONMENT" = "prod" ]; then
-        NAMESPACE="$PROJECT_NAMESPACE_PROD"
-      else
-        echo "Invalid configuration"; exit 1
-      fi
-      echo "Using Kubernetes namespace: $NAMESPACE"
+      echo "Env: $ENVIRONMENT | DC: $DATACENTER | DB DC: $DB_DATACENTER"
+
+      ####################################
+      # ENV + DC MAPPING (SINGLE SOURCE)
+      ####################################
+      case "$ENVIRONMENT-$DATACENTER" in
+
+        dev-hh)
+          NAMESPACE="$PROJECT_NAMESPACE_DEV"
+          OVERLAY_DIR="dev"
+          ;;
+
+        prod-hh)
+          NAMESPACE="$PROJECT_NAMESPACE_PROD"
+          OVERLAY_DIR="prod-hh"
+          ;;
+
+        prod-hx)
+          NAMESPACE="$PROJECT_NAMESPACE_PROD"
+          OVERLAY_DIR="prod-hx"
+          ;;
+
+        *)
+          echo "❌ Invalid combination: ENV=$ENVIRONMENT, DATACENTER=$DATACENTER"
+          exit 1
+          ;;
+      esac
+
+      ####################################
+      # DEBUG OUTPUT (VERY USEFUL)
+      ####################################
+      echo "Namespace: $NAMESPACE"
+      echo "Overlay: $OVERLAY_DIR"
+    # Inject environment variables and prepare k8s overlays
+    - cp ./.env k8s/overlays/$OVERLAY_DIR/.env # Copy .env to k8s overlay
+    - mkdir -p k8s/base/config # Create config directory if it doesn't exist
     # Update Kubernetes manifests with built image tags and NFS paths
     - |
       for file in k8s/base/*.yaml; do
         sed -i \
           -e "s|{{PROJECT_NAME}}|${PROJECT_NAME}|g" \
           -e "s|{{NGINX_IMAGE}}|$IMAGE_NGINX|g" \
+          -e "s|{{PHP_FPM_IMAGE}}|$IMAGE_PHP_FPM|g" \
           "$file"
       done
     - echo "🚀 Deploying application"
-    - kubectl kustomize k8s/overlays/$ENVIRONMENT | envsubst | kubectl --namespace=$NAMESPACE apply -f - # Deploy application
-  
+    - kubectl kustomize k8s/overlays/$OVERLAY_DIR | envsubst | kubectl --namespace=$NAMESPACE apply -f - # Deploy application
+    - echo "⏳ Waiting for PHP-FPM rollout"
+    - sleep 30 # Initial wait for 30 seconds before checking rollout status
+ 
 deploy_dev:
   stage: deploy
   rules:
     - if: '$CI_COMMIT_REF_NAME == "master"' # Only run on dev branch
   variables:
     KUBE_CONFIG: $HH_EBIWD_STATIC_KUBE_CONFIG # Kube config secret for dev
+    DATACENTER: hh
     ENVIRONMENT: dev
+    DB_DATACENTER: ''
   needs: [build_dev]
   <<: *deploy
 
@@ -100,6 +132,8 @@ deploy_prod_hh:
   variables:
     KUBE_CONFIG: $HH_EBIWD_STATIC_KUBE_CONFIG # Kube config secret for prod (hh)
     ENVIRONMENT: prod
+    DATACENTER: hh
+    DB_DATACENTER: pg
   needs: [build_prod]
   <<: *deploy
 
@@ -110,5 +144,7 @@ deploy_prod_hx:
   variables:
     KUBE_CONFIG: $HX_EBIWD_STATIC_KUBE_CONFIG # Kube config secret for prod (hx)
     ENVIRONMENT: prod
+    DATACENTER: hx
+    DB_DATACENTER: fb
   needs: [build_prod]
   <<: *deploy

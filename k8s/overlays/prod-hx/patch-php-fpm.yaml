@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-fpm
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      component: php-fpm
+  template:
+    metadata:
+      labels:
+        component: php-fpm
+    spec:
+      containers:
+        - name: php-fpm
+          env:
+            - name: ENV
+              value: "prod"
+            - name: DATACENTER
+              value: "hx"
+            - name: DB_DATACENTER
+              value: "fb"
+            - name: SMTP_HOST
+              value: "hx-smtp.ebi.ac.uk"
+            - name: HTTP_PROXY
+              value: "http://hx-wwwcache.ebi.ac.uk:3128"
+            - name: HTTPS_PROXY
+              value: "http://hx-wwwcache.ebi.ac.uk:3128"

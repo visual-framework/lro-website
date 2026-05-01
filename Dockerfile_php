@@ -1,0 +1,41 @@
+ARG PHP_TAG
+FROM ebiwd/php-fpm:${PHP_TAG:-8.3}-alpine
+
+# ------------------------------------------
+# Build arguments and Environment variables
+# ------------------------------------------
+ARG DOCUMENT_ROOT_PATH="/var/www/html"
+ARG USERNAME="k8s_user"
+ARG GROUPNAME="wd_pub"
+ARG UID=4037
+ARG GID=1222
+ENV TZ=Europe/London
+ENV DOCUMENT_ROOT_PATH="${DOCUMENT_ROOT_PATH}"
+
+# Working directory
+WORKDIR $DOCUMENT_ROOT_PATH
+
+# ------------------------------
+# APP CODE
+# ------------------------------
+COPY ./api/ ${DOCUMENT_ROOT_PATH}/api
+
+# PHP settings
+COPY ./docker-assets/custom-php.ini /usr/local/etc/php/conf.d/99-custom-php.ini
+
+# SMTP template only (NO sed during build)
+COPY ./docker-assets/conf.d/msmtprc.template /etc/msmtprc.template
+# create writable runtime directory
+RUN touch /etc/msmtprc \
+ && chown ${USERNAME}:${GROUPNAME} /etc/msmtprc \
+ && chmod 640 /etc/msmtprc
+
+RUN chown -R $USERNAME:$GROUPNAME $DOCUMENT_ROOT_PATH
+
+USER $USERNAME
+EXPOSE 9000
+# 🔥 Render runtime config here
+CMD ["/bin/sh", "-c", "\
+  sed \"s|{{SMTP_HOST}}|$SMTP_HOST|g\" /etc/msmtprc.template > /etc/msmtprc && \
+  php-fpm --nodaemonize \
+"]

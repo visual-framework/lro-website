@@ -75,6 +75,7 @@ if ($message === '') {
 $sanitizedSubject = preg_replace('/[\r\n]+/', ' ', $subject);
 $siteHost = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^A-Za-z0-9.-]/', '', $_SERVER['HTTP_HOST']) : 'localhost';
 $fromAddress = 'no-reply@' . ($siteHost !== '' ? $siteHost : 'localhost');
+$fromAddress = "no-reply@ebi.ac.uk";
 
 $headers = [
     'MIME-Version: 1.0',

@@ -11,6 +11,8 @@ labels:
 
 resources:
   - deployment-nginx.yaml
+  - deployment-php-fpm.yaml
+  - service-php-fpm.yaml
   - service-nginx.yaml
   - hpa-nginx.yaml # This HPA will scale the Nginx deployment based on CPU usage. You can adjust the target CPU utilization and the minimum/maximum number of replicas as needed.
   

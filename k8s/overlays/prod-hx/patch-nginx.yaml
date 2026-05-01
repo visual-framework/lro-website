@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: nginx
 spec:
-  replicas: 1 # Add one replica for dev
+  replicas: 2
   selector:
     matchLabels:
       component: nginx
@@ -16,14 +16,14 @@ spec:
         - name: nginx
           env:
             - name: ENV
-              value: "dev"
+              value: "prod"
             - name: DATACENTER
-              value: "hh"
+              value: "hx"
             - name: DB_DATACENTER
-              value: "pg"
+              value: "fb"
             - name: SMTP_HOST
-              value: "hh-smtp.ebi.ac.uk"
+              value: "hx-smtp.ebi.ac.uk"
             - name: HTTP_PROXY
-              value: "http://pg-wwwcache.ebi.ac.uk:3128"
+              value: "http://hx-wwwcache.ebi.ac.uk:3128"
             - name: HTTPS_PROXY
-              value: "http://pg-wwwcache.ebi.ac.uk:3128"
+              value: "http://hx-wwwcache.ebi.ac.uk:3128"

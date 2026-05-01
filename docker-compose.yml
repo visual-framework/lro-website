@@ -1,8 +1,26 @@
 services:
   nginx:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile_nginx
+    container_name: ${PROJECT_NAME_SANITISED}-nginx-service
     volumes:
       - ./build/:/usr/share/nginx/html/web-optimisation-framework:rw
       - ./docker-assets/nginx.conf:/etc/nginx/conf.d/default.conf
+      # API (PHP files)
+      - ./api/:/usr/share/nginx/html/api:rw
     ports:
       - "8080:8080"
+    depends_on:
+      - php-fpm
+  
+  php-fpm:
+    build:
+      context: .
+      dockerfile: Dockerfile_php
+    container_name: ${PROJECT_NAME_SANITISED}-phpfpm-service
+    volumes:
+      # Same API directory mounted here
+      - ./api/:/var/www/html/api:rw
+    expose:
+      - "9000"

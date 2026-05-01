@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx
+  name: php-fpm
 spec:
   replicas: 1 # Add one replica for dev
   selector:
     matchLabels:
-      component: nginx
+      component: php-fpm
   template:
     metadata:
       labels:
-        component: nginx
+        component: php-fpm
     spec:
       containers:
-        - name: nginx
+        - name: php-fpm
           env:
             - name: ENV
               value: "dev"

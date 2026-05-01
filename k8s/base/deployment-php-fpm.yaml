@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-fpm
+spec:
+  selector:
+    matchLabels:
+      component: php-fpm
+  template:
+    metadata:
+      labels:
+        component: php-fpm
+    spec:
+      securityContext:
+        fsGroup: 1222
+      containers:
+        - name: php-fpm
+          image: {{PHP_FPM_IMAGE}}
+          ports:
+            - containerPort: 9000
+          env: []
+          readinessProbe:
+            exec:
+              command:
+              - php
+              - -r
+              - echo 'pong';
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512Mi
+            limits:
+              cpu: 1500m
+              memory: 1024Mi
+          securityContext:
+            runAsGroup: 1222
+          volumeMounts:
+            # Mount same codebase as nginx
+            - name: html
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: html
+          emptyDir: {}  
+      imagePullSecrets:
+        - name: gitlab
