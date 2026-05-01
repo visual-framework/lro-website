@@ -16,13 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $rawInput = file_get_contents('php://input');
 $payload = json_decode($rawInput ?: '', true);
 
+// Be tolerant in production: if JSON parsing fails, fall back to form-encoded payloads.
 if (!is_array($payload)) {
-    http_response_code(400);
-    echo json_encode([
-        'success' => false,
-        'error' => 'Invalid JSON payload.'
-    ]);
-    exit;
+    $payload = $_POST;
+}
+
+if (!is_array($payload)) {
+    $payload = [];
 }
 
 $defaultRecipient = 'embldev@service-now.com';
@@ -32,20 +32,28 @@ $to = isset($payload['to']) ? trim((string) $payload['to']) : $defaultRecipient;
 $subject = isset($payload['subject']) ? trim((string) $payload['subject']) : 'Feedback';
 $message = isset($payload['message']) ? trim((string) $payload['message']) : '';
 
-if ($to === '' || !in_array($to, $allowedRecipients, true)) {
-    http_response_code(400);
-    echo json_encode([
-        'success' => false,
-        'error' => 'Recipient is not allowed.'
-    ]);
-    exit;
+// Accept common alternate field names from clients/proxies.
+if ($message === '' && isset($payload['body'])) {
+    $message = trim((string) $payload['body']);
+}
+if ($message === '' && isset($payload['feedback'])) {
+    $message = trim((string) $payload['feedback']);
 }
 
-if ($subject === '' || $message === '') {
+if ($to === '' || !in_array($to, $allowedRecipients, true)) {
+    // Never fail user submissions on recipient mismatch; route to default mailbox.
+    $to = $defaultRecipient;
+}
+
+if ($subject === '') {
+    $subject = 'Feedback';
+}
+
+if ($message === '') {
     http_response_code(400);
     echo json_encode([
         'success' => false,
-        'error' => 'Subject and message are required.'
+        'error' => 'Message is required.'
     ]);
     exit;
 }
