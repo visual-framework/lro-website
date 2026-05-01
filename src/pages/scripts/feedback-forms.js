@@ -8,7 +8,7 @@ const IS_LOCALHOST = typeof window !== "undefined" && (
 
 const INDEX_URL = "https://wwwdev.ebi.ac.uk/web-optimisation-framework/";
 const HCAPTCHA_SCRIPT_URL = "https://cdn.jsdelivr.net/npm/@hcaptcha/vanilla-hcaptcha";
-const FEEDBACK_API_URL = "/api/send-feedback.php";
+const FEEDBACK_API_URL = "/web-optimisation-framework/api/send-feedback.php";
 
 function text(el) {
   return (el && el.textContent ? el.textContent : "").trim();
