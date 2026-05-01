@@ -54,10 +54,10 @@ if ($message === '' && isset($payload['feedback'])) {
     $message = trim((string) $payload['feedback']);
 }
 
-if ($to === '' || !in_array($to, $allowedRecipients, true)) {
-    // Never fail user submissions on recipient mismatch; route to default mailbox.
-    $to = $defaultRecipient;
-}
+// if ($to === '' || !in_array($to, $allowedRecipients, true)) {
+//     // Never fail user submissions on recipient mismatch; route to default mailbox.
+//     $to = $defaultRecipient;
+// }
 
 
 if ($subject === '') {
@@ -87,7 +87,7 @@ $headers = [
 $mailto = implode(',', $to);
 
 // Send email
-$sent = mail($to, $sanitizedSubject, $message, implode("\r\n", $headers));
+$sent = mail($mailto, $sanitizedSubject, $message, implode("\r\n", $headers));
 
 if (!$sent) {
     http_response_code(500);

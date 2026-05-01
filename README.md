@@ -16,11 +16,9 @@ Prerequisites
 - (Optional) kind or minikube for local k8s testing
 
 ### Quickstart — Local (Docker Compose)
-1. Build and run:
-  docker-compose up
+1. Build and run: `docker-compose up -d --build`
 2. Open: http://localhost:8080/web-optimisation-framework/
-3. Stop:
-  docker-compose down
+3. Stop: `docker-compose down`
 
 ### Local build using gulp
 #### `gulp dev`
