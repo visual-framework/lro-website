@@ -22,25 +22,24 @@
   </div>
 </footer>
 
-{% if serverInfo.environment == "production" %}
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-7D873YGZNY"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-7D873YGZNY');
+  (function () {
+    var host = (window.location && window.location.hostname ? window.location.hostname : "").toLowerCase();
+    var isDevHost = host === "localhost" || host.indexOf("wwwdev") !== -1;
+    var gaId = isDevHost ? "G-SJYQ3Y808H" : "G-7D873YGZNY";
+
+    var gtagScript = document.createElement("script");
+    gtagScript.async = true;
+    gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=" + gaId;
+    document.head.appendChild(gtagScript);
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+    window.gtag("js", new Date());
+    window.gtag("config", gaId);
+  })();
 </script>
-{% else %}
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SJYQ3Y808H"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-SJYQ3Y808H');
-</script>
-{% endif %}
 
 {% render '@vf-polyfill-js' %}
 <script src="{{ '/scripts/scripts.js' | url }}"></script>
