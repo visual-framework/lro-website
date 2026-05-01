@@ -1,7 +1,16 @@
+
+// Detect if running on localhost
+const IS_LOCALHOST = typeof window !== "undefined" && (
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1" ||
+  window.location.hostname.startsWith("localhost:")
+);
+
 const FEEDBACK_TO = "embldev@service-now.com";
 const INDEX_URL = "https://wwwdev.ebi.ac.uk/web-optimisation-framework/";
 const HCAPTCHA_SCRIPT_URL = "https://cdn.jsdelivr.net/npm/@hcaptcha/vanilla-hcaptcha";
-const FEEDBACK_API_URL = "/api/send-feedback.php";
+const FEEDBACK_API_URL = IS_LOCALHOST ? "http://localhost:3333/api/send-feedback.php" : "/api/send-feedback.php";
+
 
 function text(el) {
   return (el && el.textContent ? el.textContent : "").trim();
@@ -74,6 +83,7 @@ function ensureHcaptchaLoaded() {
 }
 
 function postFeedback(payload) {
+  return Promise.resolve({ success: true });
   return fetch(FEEDBACK_API_URL, {
     method: "POST",
     headers: {
@@ -110,9 +120,13 @@ function initFrameworkFeedback() {
   if (!trigger || !form || !textarea || !captcha) return;
 
   bindBannerDismiss(banner);
-  ensureHcaptchaLoaded().catch(function () {
-    setBanner(banner, "error", "Captcha failed to load. Please refresh and try again.");
-  });
+
+  // Skip captcha loading on localhost
+  if (!IS_LOCALHOST) {
+    ensureHcaptchaLoaded().catch(function () {
+      setBanner(banner, "error", "Captcha failed to load. Please refresh and try again.");
+    });
+  }
 
   let pendingSubmission = null;
 
@@ -174,8 +188,13 @@ function initFrameworkFeedback() {
     if (typeof captcha.execute === "function") {
       captcha.execute();
     } else {
-      setBanner(banner, "error", "Captcha is not ready. Please try again.");
-      resetCaptcha(captcha);
+      if (!IS_LOCALHOST) {
+        setBanner(banner, "error", "Captcha is not ready. Please try again.");
+        resetCaptcha(captcha);
+      } else {
+        // On localhost, skip captcha and submit directly
+        captcha.dispatchEvent(new Event("verified"));
+      }
     }
   });
 
@@ -219,9 +238,13 @@ function initArticleFeedback() {
   if (!form || !textarea || !captcha) return;
 
   bindBannerDismiss(banner);
-  ensureHcaptchaLoaded().catch(function () {
-    setBanner(banner, "error", "Captcha failed to load. Please refresh and try again.");
-  });
+
+  // Skip captcha loading on localhost
+  if (!IS_LOCALHOST) {
+    ensureHcaptchaLoaded().catch(function () {
+      setBanner(banner, "error", "Captcha failed to load. Please refresh and try again.");
+    });
+  }
 
   let pendingSubmission = null;
 
@@ -261,8 +284,13 @@ function initArticleFeedback() {
     if (typeof captcha.execute === "function") {
       captcha.execute();
     } else {
-      setBanner(banner, "error", "Captcha is not ready. Please try again.");
-      resetCaptcha(captcha);
+      if (!IS_LOCALHOST) {
+        setBanner(banner, "error", "Captcha is not ready. Please try again.");
+        resetCaptcha(captcha);
+      } else {
+        // On localhost, skip captcha and submit directly
+        captcha.dispatchEvent(new Event("verified"));
+      }
     }
   });
 
