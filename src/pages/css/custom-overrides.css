@@ -107,6 +107,10 @@ html {
         height: 100%;
         width: 100%;
       }
+
+      .toc .vf-list__item {
+        margin-bottom: 0;
+      }
       
       .toc .vf-list__item::marker, .fr .vf-list__item::marker {
         color: #3B6FB6;
@@ -373,7 +377,13 @@ html {
         min-width: 0;
         overflow: hidden;
       }
-
+      .vf-banner {
+        height: 3rem;
+        text-align: center;
+      }
+      .vf-banner__content {
+        display: flex;
+      }
       .vf-minimal-footer .vf-logo__image {
         display: block;
         height: auto;
