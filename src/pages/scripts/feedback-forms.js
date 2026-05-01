@@ -81,7 +81,9 @@ function ensureHcaptchaLoaded() {
 }
 
 function postFeedback(payload) {
-  return Promise.resolve({ success: true });
+  // 🚨 Remove mock early return (it bypasses real API call)
+  // return Promise.resolve({ success: true });
+
   return fetch(FEEDBACK_API_URL, {
     method: "POST",
     headers: {
@@ -92,12 +94,16 @@ function postFeedback(payload) {
       message: payload.message || "",
       type: payload.type || "general"
     })
-  }).then(function (response) {
+  })
+  .then(function (response) {
+    // ❗ Ensure HTTP-level success
     if (!response.ok) {
       throw new Error("Failed to submit feedback.");
     }
     return response.json();
-  }).then(function (data) {
+  })
+  .then(function (data) {
+    // ❗ Ensure API-level success flag
     if (!data || data.success !== true) {
       throw new Error("Failed to submit feedback.");
     }
