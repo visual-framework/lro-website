@@ -148,7 +148,6 @@ function vfSearchClientSide() {
           renderedResults += "<article class='vf-search-result' data-vf-search-result-item>";
           renderedResults += "<a class='result' href='" + searchDestinationPrefix + element.url + "'><h3>" + element.title + "</h3></a>";
           renderedResults += "<p class='snippet'>" + element.text.substring(0, 200) + "</p>";
-          renderedResults += "<p><code>" + element.url + "</code></p>";
           renderedResults += "</article>";
         }
       });
