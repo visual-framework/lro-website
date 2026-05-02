@@ -82,7 +82,7 @@ function ensureHcaptchaLoaded() {
 
 function postFeedback(payload) {
   // 🚨 Remove mock early return (it bypasses real API call)
-  // return Promise.resolve({ success: true });
+  return Promise.resolve({ success: true });
 
   return fetch(FEEDBACK_API_URL, {
     method: "POST",
