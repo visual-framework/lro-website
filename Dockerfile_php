@@ -36,13 +36,9 @@ RUN chown -R $USERNAME:$GROUPNAME $DOCUMENT_ROOT_PATH
 
 USER $USERNAME
 EXPOSE 9000
+
 # 🔥 Render runtime config here
 CMD ["/bin/sh", "-c", "\
-  if [ \"$ENV\" = \"prod\" ]; then \
-    echo 'Configuring SMTP for production...' && \
-    sed \"s|{{SMTP_HOST}}|$SMTP_HOST|g\" /etc/msmtprc.template > /etc/msmtprc; \
-  else \
-    echo 'Skipping SMTP config (non-prod)'; \
-  fi && \
+  sed \"s|{{SMTP_HOST}}|$SMTP_HOST|g\" /etc/msmtprc.template > /etc/msmtprc && \
   php-fpm --nodaemonize \
 "]
