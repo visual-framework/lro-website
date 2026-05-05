@@ -72,10 +72,11 @@
   },
   {
     title: "Case studies and resources",
-    activePaths: ["/applications/", "/reference/"],
+    activePaths: ["/resources/", "/reference/"],
     links: [
-      { label: "Real-world examples", href: "/applications/real-world-examples/" },
-      { label: "Glossary",   href: "/applications/glossary/"              }
+      { label: "Real-world examples", href: "/resources/real-world-examples/" },
+      { label: "Glossary",   href: "/resources/glossary/"              },
+      { label: "LRO Beyond Web Services - Look ahead",   href: "/resources/lro-beyond-web-services/"              }
     ]
   }
 ] %}
@@ -94,7 +95,7 @@
       {% endif %}
     </title>
     <link href="{{ siteConfig.siteInformation.url }}feed.xml" type="application/rss+xml" rel="alternate" title="{{ siteConfig.siteInformation.title }} RSS Feed">
-    {% render '@vf-favicon' -%}
+    <link rel="icon" type="image/svg+xml" href="{{ '/images/logo.svg' | url }}">
 
     <!-- Descriptive meta -->
     <meta name="title" content="{% if title %}{{ title }} | {% endif %}{{ siteConfig.siteInformation.title }}">
