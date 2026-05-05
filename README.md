@@ -20,6 +20,11 @@ Prerequisites
 2. Open: http://localhost:8080/web-optimisation-framework/
 3. Stop: `docker-compose down`
 
+To check emails in local mailhog
+
+Open: http://localhost:8025/
+
+
 ### Local build using gulp
 #### `gulp dev`
 

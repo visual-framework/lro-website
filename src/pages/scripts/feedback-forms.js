@@ -1,116 +1,136 @@
+// Detect environment once
+const hostname = typeof window !== "undefined" ? window.location.hostname : "";
+const IS_LOCALHOST =
+  hostname === "localhost" ||
+  hostname === "127.0.0.1" ||
+  hostname.startsWith("localhost:");
 
-// Detect if running on localhost
-const IS_LOCALHOST = typeof window !== "undefined" && (
-  window.location.hostname === "localhost" ||
-  window.location.hostname === "127.0.0.1" ||
-  window.location.hostname.startsWith("localhost:")
-);
-
+// Base URL (only used outside localhost)
 const INDEX_URL = "https://wwwdev.ebi.ac.uk/web-optimisation-framework/";
+
+// Build API URL dynamically
+const FEEDBACK_API_URL = IS_LOCALHOST
+  ? `${window.location.origin}/web-optimisation-framework/api/send-feedback.php`
+  : `${INDEX_URL.replace(/\/$/, "")}/api/send-feedback.php`;
+
 const HCAPTCHA_SCRIPT_URL = "https://cdn.jsdelivr.net/npm/@hcaptcha/vanilla-hcaptcha";
-const FEEDBACK_API_URL = "/web-optimisation-framework/api/send-feedback.php";
+console.log("Feedback API URL:", FEEDBACK_API_URL);
 
-function text(el) {
-  return (el && el.textContent ? el.textContent : "").trim();
-}
+// Small utility helpers
+const text = (el) => (el?.textContent || "").trim();
 
-function setValidationMessage(el, message) {
-  if (!el) return;
-  el.textContent = message || "";
-}
+const setValidationMessage = (el, message = "") => {
+  if (el) el.textContent = message;
+};
 
-function setBanner(bannerEl, kind, message) {
+const setBanner = (bannerEl, kind, message) => {
   if (!bannerEl) return;
+
   const textEl = bannerEl.querySelector(".vf-banner__text");
   if (textEl) textEl.textContent = message;
 
   bannerEl.classList.remove("vf-u-display-none", "vf-banner--alert", "vf-banner--success");
   bannerEl.classList.add(kind === "success" ? "vf-banner--success" : "vf-banner--alert");
-}
+};
 
-function hideBanner(bannerEl) {
-  if (!bannerEl) return;
-  bannerEl.classList.add("vf-u-display-none");
-}
+const hideBanner = (el) => el?.classList.add("vf-u-display-none");
 
-function bindBannerDismiss(bannerEl) {
-  if (!bannerEl) return;
-  const closeBtn = bannerEl.querySelector(".vf-banner__button");
-  if (!closeBtn) return;
-  closeBtn.addEventListener("click", function () {
-    hideBanner(bannerEl);
-  });
-}
+const bindBannerDismiss = (bannerEl) => {
+  const btn = bannerEl?.querySelector(".vf-banner__button");
+  btn?.addEventListener("click", () => hideBanner(bannerEl));
+};
 
-function resetCaptcha(captchaEl) {
-  if (!captchaEl || typeof captchaEl.reset !== "function") return;
-  captchaEl.reset();
-}
+const resetCaptcha = (el) => el?.reset?.();
 
+// Load captcha script once
 function ensureHcaptchaLoaded() {
-  if (customElements.get("h-captcha")) {
-    return Promise.resolve();
-  }
+  if (customElements.get("h-captcha")) return Promise.resolve();
 
-  const existing = document.querySelector('script[data-hcaptcha-web-component="true"]');
+  const existing = document.querySelector('[data-hcaptcha-web-component]');
   if (existing) {
-    return new Promise(function (resolve, reject) {
-      existing.addEventListener("load", function () {
-        resolve();
-      }, { once: true });
-      existing.addEventListener("error", function () {
-        reject(new Error("Failed to load captcha script."));
-      }, { once: true });
+    return new Promise((resolve, reject) => {
+      existing.addEventListener("load", resolve, { once: true });
+      existing.addEventListener("error", () => reject(new Error("Captcha load failed")), { once: true });
     });
   }
 
-  return new Promise(function (resolve, reject) {
+  return new Promise((resolve, reject) => {
     const script = document.createElement("script");
     script.src = HCAPTCHA_SCRIPT_URL;
     script.async = true;
     script.defer = true;
-    script.setAttribute("data-hcaptcha-web-component", "true");
-    script.addEventListener("load", function () {
-      resolve();
-    }, { once: true });
-    script.addEventListener("error", function () {
-      reject(new Error("Failed to load captcha script."));
-    }, { once: true });
+    script.dataset.hcaptchaWebComponent = "true";
+
+    script.addEventListener("load", resolve, { once: true });
+    script.addEventListener("error", () => reject(new Error("Captcha load failed")), { once: true });
+
     document.head.appendChild(script);
   });
 }
 
+// API call
 function postFeedback(payload) {
-  // 🚨 Remove mock early return (it bypasses real API call)
-  return Promise.resolve({ success: true });
-
   return fetch(FEEDBACK_API_URL, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       subject: payload.subject || "Feedback",
       message: payload.message || "",
       type: payload.type || "general"
     })
   })
-  .then(function (response) {
-    // ❗ Ensure HTTP-level success
-    if (!response.ok) {
-      throw new Error("Failed to submit feedback.");
-    }
-    return response.json();
-  })
-  .then(function (data) {
-    // ❗ Ensure API-level success flag
-    if (!data || data.success !== true) {
-      throw new Error("Failed to submit feedback.");
-    }
-    return data;
-  });
+    .then((res) => {
+      if (!res.ok) throw new Error("Request failed");
+      return res.json();
+    })
+    .then((data) => {
+      if (!data?.success) throw new Error("API failure");
+      return data;
+    });
 }
 
+// Shared submit handler creator (reduces duplication)
+function handleCaptchaFlow({ captcha, banner, onSuccess, onError }) {
+  let pending = null;
+
+  return {
+    set(data) {
+      pending = data;
+    },
+    trigger() {
+      if (typeof captcha.execute === "function") {
+        captcha.execute();
+      } else if (IS_LOCALHOST) {
+        captcha.dispatchEvent(new Event("verified"));
+      } else {
+        setBanner(banner, "error", "Captcha not ready. Try again.");
+        resetCaptcha(captcha);
+      }
+    },
+    bind(type) {
+      captcha.addEventListener("verified", async () => {
+        if (!pending) return;
+
+        try {
+          await postFeedback(pending);
+          onSuccess();
+        } catch {
+          onError();
+        } finally {
+          pending = null;
+        }
+      });
+
+      captcha.addEventListener("error", () => {
+        setBanner(banner, "error", "Captcha verification failed.");
+        pending = null;
+        resetCaptcha(captcha);
+      });
+    }
+  };
+}
+
+// Framework feedback
 function initFrameworkFeedback() {
   const trigger = document.getElementById("framework-feedback-trigger");
   const form = document.getElementById("framework-feedback-form");
@@ -124,112 +144,68 @@ function initFrameworkFeedback() {
 
   bindBannerDismiss(banner);
 
-  // Skip captcha loading on localhost
   if (!IS_LOCALHOST) {
-    ensureHcaptchaLoaded().catch(function () {
-      setBanner(banner, "error", "Captcha failed to load. Please refresh and try again.");
-    });
+    ensureHcaptchaLoaded().catch(() =>
+      setBanner(banner, "error", "Captcha failed to load.")
+    );
   }
 
-  let pendingSubmission = null;
+  const flow = handleCaptchaFlow({
+    captcha,
+    banner,
+    onSuccess: () => {
+      setBanner(banner, "success", "Feedback submitted successfully.");
+      form.reset();
+      resetCaptcha(captcha);
+      trigger.classList.remove("vf-u-display-none");
+      form.classList.add("vf-u-display-none");
+    },
+    onError: () => {
+      setBanner(banner, "error", "Submission failed. Try again.");
+      resetCaptcha(captcha);
+    }
+  });
 
-  function showForm() {
+  flow.bind();
+
+  trigger.addEventListener("click", (e) => {
+    e.preventDefault();
+    hideBanner(banner);
     trigger.classList.add("vf-u-display-none");
     form.classList.remove("vf-u-display-none");
     textarea.focus();
-  }
+  });
 
-  function showTrigger() {
+  cancel.addEventListener("click", () => {
+    form.reset();
+    setValidationMessage(validation);
+    resetCaptcha(captcha);
     form.classList.add("vf-u-display-none");
     trigger.classList.remove("vf-u-display-none");
-  }
-
-  function resetFormState() {
-    form.reset();
-    setValidationMessage(validation, "");
-    resetCaptcha(captcha);
-    pendingSubmission = null;
-  }
-
-  trigger.addEventListener("click", function (e) {
-    e.preventDefault();
-    hideBanner(banner);
-    showForm();
   });
 
-  cancel.addEventListener("click", function () {
-    resetFormState();
-    showTrigger();
-  });
-
-  form.addEventListener("submit", function (e) {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
     hideBanner(banner);
 
     const feedback = textarea.value.trim();
     if (!feedback) {
-      setValidationMessage(validation, "Comments are required.");
-      return;
+      return setValidationMessage(validation, "Comments are required.");
     }
 
-    setValidationMessage(validation, "");
-    pendingSubmission = {
+    setValidationMessage(validation);
+
+    flow.set({
       subject: "LRO : Framework feedback",
-      message: [
-        "Dear Team,",
-        "",
-        "Following feedback received from user:",
-        "",
-        "URL - " + INDEX_URL,
-        "Feedback - " + feedback,
-        "",
-        "Thanks,",
-        "LRO team"
-      ].join("\n")
-    };
+      message: `Dear Team,\n\nFollowing feedback received:\n\nURL - ${INDEX_URL}\nFeedback - ${feedback}\n\nThanks,\nLRO team`,
+      type: "framework"
+    });
 
-    if (typeof captcha.execute === "function") {
-      captcha.execute();
-    } else {
-      if (!IS_LOCALHOST) {
-        setBanner(banner, "error", "Captcha is not ready. Please try again.");
-        resetCaptcha(captcha);
-      } else {
-        // On localhost, skip captcha and submit directly
-        captcha.dispatchEvent(new Event("verified"));
-      }
-    }
-  });
-
-  captcha.addEventListener("verified", async function () {
-    if (!pendingSubmission) return;
-
-    try {
-      await postFeedback({
-        subject: pendingSubmission.subject,
-        message: pendingSubmission.message,
-        type: "framework"
-      });
-
-      setBanner(banner, "success", "Thanks for your feedback. It was submitted successfully.");
-      resetFormState();
-      showTrigger();
-    } catch (error) {
-      setBanner(banner, "error", "Feedback could not be submitted. Please try again.");
-      resetCaptcha(captcha);
-      showTrigger();
-    } finally {
-      pendingSubmission = null;
-    }
-  });
-
-  captcha.addEventListener("error", function () {
-    setBanner(banner, "error", "Captcha verification failed. Please try again.");
-    pendingSubmission = null;
-    resetCaptcha(captcha);
+    flow.trigger();
   });
 }
 
+// Article feedback (same pattern, less duplication)
 function initArticleFeedback() {
   const form = document.getElementById("article-feedback-form");
   const textarea = document.getElementById("article-feedback");
@@ -241,90 +217,57 @@ function initArticleFeedback() {
 
   bindBannerDismiss(banner);
 
-  // Skip captcha loading on localhost
   if (!IS_LOCALHOST) {
-    ensureHcaptchaLoaded().catch(function () {
-      setBanner(banner, "error", "Captcha failed to load. Please refresh and try again.");
-    });
+    ensureHcaptchaLoaded().catch(() =>
+      setBanner(banner, "error", "Captcha failed to load.")
+    );
   }
 
-  let pendingSubmission = null;
+  const flow = handleCaptchaFlow({
+    captcha,
+    banner,
+    onSuccess: () => {
+      setBanner(banner, "success", "Feedback submitted successfully.");
+      form.reset();
+      resetCaptcha(captcha);
+    },
+    onError: () => {
+      setBanner(banner, "error", "Submission failed. Try again.");
+      resetCaptcha(captcha);
+    }
+  });
 
-  form.addEventListener("submit", function (e) {
+  flow.bind();
+
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
     hideBanner(banner);
 
     const feedback = textarea.value.trim();
     if (!feedback) {
-      setValidationMessage(validation, "Comments are required.");
-      return;
+      return setValidationMessage(validation, "Comments are required.");
     }
 
     const pageTitle = text(document.querySelector("h1.vf-intro__heading"));
-    const category = text(document.querySelector("nav[aria-label='Breadcrumb'] .vf-intro__kicker span"));
-    const pageUrl = window.location.href;
+    const category = text(document.querySelector("nav[aria-label='Breadcrumb'] span"));
 
-    setValidationMessage(validation, "");
-    pendingSubmission = {
+    flow.set({
       subject: "LRO : Article Feedback",
-      message: [
-        "Dear Team,",
-        "",
-        "Following feedback received from user:",
-        "",
-        "URL - " + pageUrl,
-        "Category - " + category,
-        "Title - " + pageTitle,
-        "",
-        "Feedback - " + feedback,
-        "",
-        "Thanks,",
-        "LRO team"
-      ].join("\n")
-    };
+      message: `Dear Team\n\nURL - ${location.href}\nCategory - ${category}\nTitle - ${pageTitle}\n\nFeedback - ${feedback}\n\nThanks,\nLRO team`,
+      type: "article"
+    });
 
-    if (typeof captcha.execute === "function") {
-      captcha.execute();
-    } else {
-      if (!IS_LOCALHOST) {
-        setBanner(banner, "error", "Captcha is not ready. Please try again.");
-        resetCaptcha(captcha);
-      } else {
-        // On localhost, skip captcha and submit directly
-        captcha.dispatchEvent(new Event("verified"));
-      }
-    }
-  });
-
-  captcha.addEventListener("verified", async function (event) {
-    if (!pendingSubmission) return;
-
-    try {
-      await postFeedback({
-        subject: pendingSubmission.subject,
-        message: pendingSubmission.message,
-        type: "article"
-      });
-
-      setBanner(banner, "success", "Thanks for your feedback. It was submitted successfully.");
-      form.reset();
-      resetCaptcha(captcha);
-    } catch (error) {
-      setBanner(banner, "error", "Feedback could not be submitted. Please try again.");
-      resetCaptcha(captcha);
-    } finally {
-      pendingSubmission = null;
-    }
-  });
-
-  captcha.addEventListener("error", function () {
-    setBanner(banner, "error", "Captcha verification failed. Please try again.");
-    pendingSubmission = null;
-    resetCaptcha(captcha);
+    flow.trigger();
   });
 }
 
+// Init
+let initialized = false;
+
 export function initFeedbackForms() {
+  if (initialized) return;
+  initialized = true;
+
   initFrameworkFeedback();
   initArticleFeedback();
 }

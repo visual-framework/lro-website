@@ -4,8 +4,10 @@ services:
       context: .
       dockerfile: Dockerfile_nginx
     container_name: ${PROJECT_NAME_SANITISED}-nginx-service
+    environment:
+      ENV: ${ENVIRONMENT:-dev}
     volumes:
-      - ./build/:/usr/share/nginx/html/web-optimisation-framework:rw
+      # - ./build/:/usr/share/nginx/html/web-optimisation-framework:rw
       - ./docker-assets/nginx.conf:/etc/nginx/conf.d/default.conf
       # API (PHP files)
       - ./api/:/usr/share/nginx/html/api:rw
@@ -19,8 +21,21 @@ services:
       context: .
       dockerfile: Dockerfile_php
     container_name: ${PROJECT_NAME_SANITISED}-phpfpm-service
+    environment:
+      PHP_SENDMAIL_PATH: '"/usr/bin/dos2unix -u | /usr/sbin/ssmtp -t -f"'
+      SSMTP_MAILHUB: mailhog:1025
+      ENV: ${ENVIRONMENT:-dev}
     volumes:
       # Same API directory mounted here
       - ./api/:/var/www/html/api:rw
+      - ./docker-assets/conf.d/msmtprc:/etc/msmtprc:rw
     expose:
       - "9000"
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: "${PROJECT_NAME_SANITISED}_mailhog"
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    restart: unless-stopped

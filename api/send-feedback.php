@@ -54,12 +54,6 @@ if ($message === '' && isset($payload['feedback'])) {
     $message = trim((string) $payload['feedback']);
 }
 
-// if ($to === '' || !in_array($to, $allowedRecipients, true)) {
-//     // Never fail user submissions on recipient mismatch; route to default mailbox.
-//     $to = $defaultRecipient;
-// }
-
-
 if ($subject === '') {
     $subject = 'Feedback';
 }
@@ -75,7 +69,7 @@ if ($message === '') {
 
 $sanitizedSubject = preg_replace('/[\r\n]+/', ' ', $subject);
 $siteHost = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^A-Za-z0-9.-]/', '', $_SERVER['HTTP_HOST']) : 'localhost';
-$fromAddress = 'no-reply@' . ($siteHost !== '' ? $siteHost : 'localhost');
+// $fromAddress = 'no-reply@' . ($siteHost !== '' ? $siteHost : 'localhost');
 $fromAddress = "no-reply@ebi.ac.uk";
 
 $headers = [
@@ -88,7 +82,6 @@ $mailto = implode(',', $to);
 
 // Send email
 $sent = mail($mailto, $sanitizedSubject, $message, implode("\r\n", $headers));
-
 if (!$sent) {
     http_response_code(500);
     echo json_encode([

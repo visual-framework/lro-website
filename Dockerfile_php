@@ -11,7 +11,9 @@ ARG UID=4037
 ARG GID=1222
 ENV TZ=Europe/London
 ENV DOCUMENT_ROOT_PATH="${DOCUMENT_ROOT_PATH}"
-
+ARG ENV=dev
+# expose it as an env var too
+ENV ENV=${ENV}
 # Working directory
 WORKDIR $DOCUMENT_ROOT_PATH
 
@@ -36,6 +38,11 @@ USER $USERNAME
 EXPOSE 9000
 # 🔥 Render runtime config here
 CMD ["/bin/sh", "-c", "\
-  sed \"s|{{SMTP_HOST}}|$SMTP_HOST|g\" /etc/msmtprc.template > /etc/msmtprc && \
+  if [ \"$ENV\" = \"prod\" ]; then \
+    echo 'Configuring SMTP for production...' && \
+    sed \"s|{{SMTP_HOST}}|$SMTP_HOST|g\" /etc/msmtprc.template > /etc/msmtprc; \
+  else \
+    echo 'Skipping SMTP config (non-prod)'; \
+  fi && \
   php-fpm --nodaemonize \
 "]
