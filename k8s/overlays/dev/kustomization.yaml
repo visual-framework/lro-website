@@ -22,3 +22,5 @@ configMapGenerator:
 # Patches to modify the base resources for the dev environment, such as adjusting resource limits, adding environment variables, or modifying the Nginx configuration for development purposes.
 patches:
   - path: ./patch-nginx.yaml
+  - path: ./patch-php-fpm.yaml
+

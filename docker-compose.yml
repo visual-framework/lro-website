@@ -28,7 +28,7 @@ services:
     volumes:
       # Same API directory mounted here
       - ./api/:/var/www/html/api:rw
-      - ./docker-assets/conf.d/msmtprc:/etc/msmtprc:rw
+      - ./docker-assets/conf.d/msmtprc:/etc/msmtprc
     expose:
       - "9000"
 
