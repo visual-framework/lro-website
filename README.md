@@ -24,6 +24,11 @@ To check emails in local mailhog
 
 Open: http://localhost:8025/
 
+### Feedback captcha configuration
+- Production feedback submissions require the `HCAPTCHA_SECRET` environment variable to be set for `api/send-feedback.php`.
+- Localhost requests bypass captcha verification to keep local development simple.
+- The hCaptcha site key used by the frontend feedback placeholders is currently defined in the Nunjucks templates under `src/pages/`.
+
 
 ### Local build using gulp
 #### `gulp dev`

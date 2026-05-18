@@ -1,0 +1,218 @@
+---
+title: Measurement and testing
+layout: layouts/topic.njk
+isArticlePage: true
+bodyClass: lro-measurement-testing-page
+templateEngineOverride: njk
+---
+
+<article class="vf-content">
+  <p class="vf-lede">Ensure your application truly works in real-world low-resource environments by validating performance, usability, resilience, and efficiency against defined benchmarks.</p>
+
+  <nav class="toc vf-u-padding__bottom--400" aria-label="Page contents">
+    <p><strong>Contents</strong></p>
+    <ul class="vf-list vf-list--unordered vf-u-margin--0">
+      <li class="vf-list__item"><a class="vf-link" href="#overview">Overview</a></li>
+      <li class="vf-list__item"><a class="vf-link" href="#why-this-matters">Why this matters for low-resource users</a></li>
+      <li class="vf-list__item"><a class="vf-link" href="#common-problems">Common problems</a></li>
+      <li class="vf-list__item"><a class="vf-link" href="#benchmarking">Benchmarking</a></li>
+      <li class="vf-list__item"><a class="vf-link" href="#implementation-guidance">Implementation guidance</a></li>
+      <li class="vf-list__item"><a class="vf-link" href="#do-dont">Do / Don't</a></li>
+      <li class="vf-list__item"><a class="vf-link" href="#checklist">Checklist</a></li>
+      <li class="vf-list__item"><a class="vf-link" href="#tools">Tools</a></li>
+      <li class="vf-list__item"><a class="vf-link" href="#related-topics">Related topics</a></li>
+      <li class="vf-list__item"><a class="vf-link" href="#further-reading">Further reading</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="overview" class="vf-u-padding__top--400">Overview</h2>
+  <p>Measurement and testing ensure that applications truly work in real-world low-resource environments by validating performance, usability, resilience, and efficiency against defined benchmarks.</p>
+  <p><strong>Key idea in an LRO context:</strong> The key principle is <em>"test in real constraints, not ideal conditions."</em> Success is defined not by lab performance on fast devices but by consistent usability on slow networks, low-end devices, and constrained environments.</p>
+
+  <h2 id="why-this-matters" class="vf-u-padding__top--400">Why this matters for low-resource users</h2>
+
+  <h3>User impact</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Slow networks amplify performance issues significantly.</li>
+    <li class="vf-list__item">Low-end devices magnify CPU, memory, and rendering inefficiencies.</li>
+    <li class="vf-list__item">Expensive data plans make inefficient pages costly to users.</li>
+    <li class="vf-list__item">Unstable connectivity exposes resilience gaps.</li>
+  </ul>
+
+  <h3>Risks if ignored</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Sites pass internal QA but fail real users.</li>
+    <li class="vf-list__item">Poor performance leads to abandonment and mistrust.</li>
+    <li class="vf-list__item">Hidden inefficiencies increase data and battery usage.</li>
+    <li class="vf-list__item">Accessibility and usability gaps remain undetected.</li>
+  </ul>
+
+  <h2 id="common-problems" class="vf-u-padding__top--400">Common problems</h2>
+
+  <h3>Typical issues seen</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Testing only on high-speed Wi-Fi and modern devices.</li>
+    <li class="vf-list__item">Ignoring real-user metrics and relying only on lab scores.</li>
+    <li class="vf-list__item">No performance budgets or thresholds defined.</li>
+    <li class="vf-list__item">Missing testing for offline or flaky networks.</li>
+    <li class="vf-list__item">Overlooking low-end Android device performance.</li>
+    <li class="vf-list__item">Measuring only performance but not UX.</li>
+  </ul>
+
+  <h3>Why they fail in LRO contexts</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Real-world constraints are much harsher than lab environments.</li>
+    <li class="vf-list__item">Network latency and packet loss expose hidden inefficiencies.</li>
+    <li class="vf-list__item">Low CPU and RAM amplify JavaScript and rendering costs.</li>
+    <li class="vf-list__item">Lack of holistic measurement ignores usability and resilience.</li>
+  </ul>
+
+  <h2 id="benchmarking" class="vf-u-padding__top--400">Benchmarking</h2>
+  <p>Below is a comprehensive set of key website performance metrics organised by category. Select a tab to explore each metric set.</p>
+
+  <div class="vf-tabs">
+    <ul class="vf-tabs__list" data-vf-js-tabs>
+      <li class="vf-tabs__item">
+        <a class="vf-tabs__link" href="#vf-tabs__section--core-lro-metrics">Core LRO Metrics</a>
+      </li>
+      <li class="vf-tabs__item">
+        <a class="vf-tabs__link" href="#vf-tabs__section--ux-design-metrics">UX &amp; Design Metrics</a>
+      </li>
+      <li class="vf-tabs__item">
+        <a class="vf-tabs__link" href="#vf-tabs__section--additional-lro-metrics">Additional LRO Metrics</a>
+      </li>
+      <li class="vf-tabs__item">
+        <a class="vf-tabs__link" href="#vf-tabs__section--network-device-simulation">Network &amp; Device Simulation</a>
+      </li>
+      <li class="vf-tabs__item">
+        <a class="vf-tabs__link" href="#vf-tabs__section--developer-supplement">Developer Supplement</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="vf-tabs-content" data-vf-js-tabs-content>
+    <section class="vf-tabs__section" id="vf-tabs__section--core-lro-metrics">
+      {% include "./core-lro-metrics.njk" %}
+    </section>
+    <section class="vf-tabs__section" id="vf-tabs__section--ux-design-metrics">
+      {% include "./ux-design-metrics.njk" %}
+    </section>
+    <section class="vf-tabs__section" id="vf-tabs__section--additional-lro-metrics">
+      {% include "./additional-lro-metrics.njk" %}
+    </section>
+    <section class="vf-tabs__section" id="vf-tabs__section--network-device-simulation">
+      {% include "./network-device-simulation.njk" %}
+    </section>
+    <section class="vf-tabs__section" id="vf-tabs__section--developer-supplement">
+      {% include "./developer-supplement.njk" %}
+    </section>
+  </div>
+
+  <h2 id="implementation-guidance" class="vf-u-padding__top--400">Implementation guidance</h2>
+
+  <h3>Practical steps</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Define performance budgets based on LRO benchmarks.</li>
+    <li class="vf-list__item">Integrate measurement into CI/CD pipelines.</li>
+    <li class="vf-list__item">Test on slow networks and low-end devices.</li>
+    <li class="vf-list__item">Monitor real-user metrics continuously.</li>
+    <li class="vf-list__item">Prioritise fixes based on impact and weightage.</li>
+  </ul>
+
+  <h3>Architecture choices</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Use a CDN for faster delivery.</li>
+    <li class="vf-list__item">Implement caching strategies.</li>
+    <li class="vf-list__item">Design APIs for low latency.</li>
+  </ul>
+
+  <h3>Runtime behaviour</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Track performance metrics in real time.</li>
+    <li class="vf-list__item">Detect regressions automatically.</li>
+    <li class="vf-list__item">Adapt experience based on network/device.</li>
+  </ul>
+
+  <h3>Decision guidance</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Fix high-weight metrics first (LCP, page weight, JS size).</li>
+    <li class="vf-list__item">Address usability and resilience next.</li>
+    <li class="vf-list__item">Optimise polish only after core performance is stable.</li>
+  </ul>
+  <p>The <strong>Developer supplement</strong> tab has more details on how to optimise these metrics.</p>
+
+  <h2 id="do-dont" class="vf-u-padding__top--400">Do / Don't</h2>
+
+  <h3>Do</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Test on slow networks and real devices.</li>
+    <li class="vf-list__item">Define clear performance budgets.</li>
+    <li class="vf-list__item">Monitor both lab and real-user metrics.</li>
+    <li class="vf-list__item">Measure UX alongside performance.</li>
+    <li class="vf-list__item">Continuously track regressions.</li>
+  </ul>
+  <h3>Don't</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Rely only on desktop testing.</li>
+    <li class="vf-list__item">Ignore low-end device performance.</li>
+    <li class="vf-list__item">Optimise only for the Lighthouse score.</li>
+    <li class="vf-list__item">Skip accessibility and usability testing.</li>
+    <li class="vf-list__item">Assume one-time testing is enough.</li>
+  </ul>
+
+  <h2 id="checklist" class="vf-u-padding__top--400">Checklist</h2>
+  <div class="vf-form__item vf-form__item--checkbox">
+      <input type="checkbox" id="checklist-item-1" class="vf-form__checkbox">
+      <label for="checklist-item-1" class="vf-form__label">Page size ≤ 500 KB.</label>
+      <input type="checkbox" id="checklist-item-2" class="vf-form__checkbox">
+      <label for="checklist-item-2" class="vf-form__label">HTTP requests ≤ 50.</label>
+      <input type="checkbox" id="checklist-item-3" class="vf-form__checkbox">
+      <label for="checklist-item-3" class="vf-form__label">LCP ≤ 2.5s and FCP ≤ 2s.</label>
+      <input type="checkbox" id="checklist-item-4" class="vf-form__checkbox">
+      <label for="checklist-item-4" class="vf-form__label">JS bundle ≤ 150 KB.</label>
+      <input type="checkbox" id="checklist-item-5" class="vf-form__checkbox">
+      <label for="checklist-item-5" class="vf-form__label">Works on slow 3G.</label>
+      <input type="checkbox" id="checklist-item-6" class="vf-form__checkbox">
+      <label for="checklist-item-6" class="vf-form__label">Works on low-end Android devices.</label>
+      <input type="checkbox" id="checklist-item-7" class="vf-form__checkbox">
+      <label for="checklist-item-7" class="vf-form__label">Core features work without JS.</label>
+      <input type="checkbox" id="checklist-item-8" class="vf-form__checkbox">
+      <label for="checklist-item-8" class="vf-form__label">Offline and fallback scenarios tested.</label>
+      <input type="checkbox" id="checklist-item-9" class="vf-form__checkbox">
+      <label for="checklist-item-9" class="vf-form__label">Accessibility and readability validated.</label>
+      <input type="checkbox" id="checklist-item-10" class="vf-form__checkbox">
+      <label for="checklist-item-10" class="vf-form__label">Real-user metrics monitored.</label>
+  </div>
+
+  <h2 id="tools" class="vf-u-padding__top--400">Tools</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="https://developer.chrome.com/docs/lighthouse/overview/" rel="noopener noreferrer">Lighthouse</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://developer.chrome.com/docs/devtools/" rel="noopener noreferrer">Chrome DevTools</a> (Network, Performance, Memory)</li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.webpagetest.org/" rel="noopener noreferrer">WebPageTest</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://pagespeed.web.dev/" rel="noopener noreferrer">PageSpeed Insights</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://search.google.com/search-console/" rel="noopener noreferrer">Search Console</a> (Core Web Vitals)</li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.deque.com/axe/" rel="noopener noreferrer">Axe</a> (accessibility testing)</li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.browserstack.com/" rel="noopener noreferrer">BrowserStack</a> (device testing)</li>
+  </ul>
+
+  <h2 id="related-topics" class="vf-u-padding__top--400">Related topics</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="{{ '/system-architecture/network-delivery-optimisation/' | url }}">Network optimisation</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="{{ '/system-architecture/' | url }}">Caching strategies</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="{{ '/frontend/javascript-usage/' | url }}">JavaScript strategy</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="{{ '/frontend/rendering-strategies/' | url }}">Rendering strategies</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="{{ '/principles/graceful-degradation/' | url }}">Resilience &amp; offline patterns</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="{{ '/benchmarking/accessibility/' | url }}">Accessibility</a></li>
+  </ul>
+
+  <h2 id="further-reading" class="vf-u-padding__top--400">Further reading</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="https://www.aptivate.org/webguidelines.html" rel="noopener noreferrer">INASP - Web Design Guidelines</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.aptivate.org/loband/" rel="noopener noreferrer">Loband - Low bandwidth simulator</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.gov.uk/service-manual/technology/designing-for-low-bandwidth" rel="noopener noreferrer">Guidelines for Low Bandwidth Websites – GOV.UK</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.clarkstonconsulting.com/insights/designing-for-low-bandwidth-users/" rel="noopener noreferrer">Designing for Low Bandwidth Users – Clarkston Consulting</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://developer.chrome.com/docs/devtools/network/" rel="noopener noreferrer">Chrome DevTools – Network panel</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/explore/learn-core-web-vitals" rel="noopener noreferrer">Learn Core Web Vitals – web.dev</a></li>
+  </ul>
+
+</article>

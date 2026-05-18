@@ -6,5 +6,200 @@ templateEngineOverride: njk
 ---
 
 <article class="vf-content">
-  <p class="vf-lede">This page is currently being developed.</p>
+
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400 vf-search-client-side--no-index">Contents</h2>
+  <nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+    <ul class="vf-list vf-list--unordered">
+      <li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+      <li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for low-resource users</a></li>
+      <li class="vf-list__item"><a href="#common-problems" class="vf-link">Common Problems</a></li>
+      <li class="vf-list__item"><a href="#design-principles" class="vf-link">Design principles</a></li>
+      <li class="vf-list__item"><a href="#strategy-options" class="vf-link">Strategy options</a></li>
+      <li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation guidance</a></li>
+      <li class="vf-list__item"><a href="#dos-dont" class="vf-link">Do / Don't</a></li>
+      <li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+      <li class="vf-list__item"><a href="#metrics" class="vf-link">Metrics and tools</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Overview</h2>
+
+  <p>Network and delivery optimisation focuses on how data travels from servers to users so that essential content arrives quickly and reliably under constrained conditions. It includes compression, caching, content distribution, protocol tuning, and reducing network round-trips.</p>
+
+  <p>The goal is practical: users should still access core information even on slow, expensive, or unstable connections.</p>
+
+  <h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400">Why this matters for low-resource users</h2>
+
+  <p>Users in low-resource environments often face:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Limited bandwidth on 2G/3G networks</li>
+    <li class="vf-list__item">High data costs with pay-per-MB usage</li>
+    <li class="vf-list__item">High latency due to distant infrastructure</li>
+    <li class="vf-list__item">Intermittent connectivity and packet loss</li>
+  </ul>
+
+  <p>Without optimisation, pages time out, data-heavy content becomes unusable, and users abandon services quickly.</p>
+
+  <h2 id="common-problems" class="vf-u-margin--0 vf-u-padding__top--400">Common Problems</h2>
+
+  <h3>Large payload sizes</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Uncompressed images, JavaScript, and stylesheets</li>
+    <li class="vf-list__item">Higher transfer cost and slow first render</li>
+  </ul>
+
+  <h3>Too many network requests</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Multiple API calls and third-party scripts</li>
+    <li class="vf-list__item">Delay is amplified on high-latency networks</li>
+  </ul>
+
+  <h3>No caching strategy</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Same assets re-downloaded repeatedly</li>
+    <li class="vf-list__item">Wasteful on metered data plans</li>
+  </ul>
+
+  <h3>Long-distance delivery and no edge distribution</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Single-region hosting causes avoidable latency</li>
+    <li class="vf-list__item">Users far from origin servers wait significantly longer</li>
+  </ul>
+
+  <h3>No offline resilience</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">App fails completely when connection drops</li>
+    <li class="vf-list__item">Work cannot continue during temporary outages</li>
+  </ul>
+
+  <h2 id="design-principles" class="vf-u-margin--0 vf-u-padding__top--400">Design principles</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Minimise bytes over the wire</li>
+    <li class="vf-list__item">Reduce round-trips and request chains</li>
+    <li class="vf-list__item">Use graceful degradation and progressive enhancement</li>
+    <li class="vf-list__item">Cache aggressively and invalidate predictably</li>
+    <li class="vf-list__item">Serve content as close to users as possible</li>
+    <li class="vf-list__item">Design for reconnect and offline continuity</li>
+  </ul>
+
+  <h2 id="strategy-options" class="vf-u-margin--0 vf-u-padding__top--400">Strategy options</h2>
+
+  <h3>Compression and payload reduction</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Enable Brotli with Gzip fallback</li>
+    <li class="vf-list__item">Minify JS, CSS, and HTML</li>
+    <li class="vf-list__item">Optimise images using modern formats (WebP/AVIF)</li>
+  </ul>
+
+  <h3>Efficient caching</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Use browser caching and cache headers correctly</li>
+    <li class="vf-list__item">Use service worker caching for core resources</li>
+    <li class="vf-list__item">Use CDN edge caching for regional proximity</li>
+  </ul>
+
+  <p><strong>LRO recommendation:</strong> Cache static versioned assets for long durations, for example:</p>
+  <pre class="vf-code-example__pre"><code>Cache-Control: public, max-age=31536000, immutable</code></pre>
+
+  <h3>Reduce request count and critical path weight</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Bundle and prioritise critical assets</li>
+    <li class="vf-list__item">Avoid non-essential third-party scripts</li>
+    <li class="vf-list__item">Defer below-the-fold and non-critical resources</li>
+  </ul>
+
+  <h3>Protocol and connection optimisation</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Use HTTP/2 or HTTP/3 multiplexing</li>
+    <li class="vf-list__item">Reuse connections with keep-alive</li>
+    <li class="vf-list__item">Avoid repeated handshake overhead where possible</li>
+  </ul>
+
+  <h3>Offline support and adaptive delivery</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Use service workers with cache-first fallbacks</li>
+    <li class="vf-list__item">Serve lighter variants under slow network conditions</li>
+    <li class="vf-list__item">Ensure essential content remains available during disruptions</li>
+  </ul>
+
+  <h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400">Implementation guidance</h2>
+
+  <ol class="vf-list vf-list--ordered">
+    <li class="vf-list__item"><strong>Measure first:</strong> baseline with Lighthouse or WebPageTest under slow 3G simulation</li>
+    <li class="vf-list__item"><strong>Shrink payloads:</strong> compress assets and switch to efficient formats</li>
+    <li class="vf-list__item"><strong>Implement caching:</strong> browser, edge, and service-worker cache layers</li>
+    <li class="vf-list__item"><strong>Add CDN distribution:</strong> configure edge locations near target regions</li>
+    <li class="vf-list__item"><strong>Optimise critical path:</strong> inline critical CSS and defer non-essential scripts</li>
+    <li class="vf-list__item"><strong>Test realistically:</strong> throttle bandwidth and simulate unstable connectivity</li>
+  </ol>
+
+  <h3>Illustrative impact</h3>
+  <pre class="vf-code-example__pre"><code>Unoptimised:
+HTML: 200KB
+JS: 2MB
+Images: 3MB
+Total: 5.2MB
+
+Optimised:
+HTML: 50KB
+JS: 500KB
+Images (WebP): 400KB
+Total: ~950KB</code></pre>
+
+  <h2 id="dos-dont" class="vf-u-margin--0 vf-u-padding__top--400 vf-search-client-side--no-index">Do / Don't</h2>
+
+  <h3>Do</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Use compression and caching by default</li>
+    <li class="vf-list__item">Serve content from the nearest practical location</li>
+    <li class="vf-list__item">Prioritise above-the-fold and essential content</li>
+    <li class="vf-list__item">Test under slow and unstable networks</li>
+  </ul>
+
+  <h3>Don't</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Ship large frameworks and payloads unnecessarily</li>
+    <li class="vf-list__item">Depend heavily on blocking third-party scripts</li>
+    <li class="vf-list__item">Assume stable connectivity or low latency</li>
+    <li class="vf-list__item">Ignore cache headers and revalidation strategy</li>
+  </ul>
+
+  <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400">Checklist</h2>
+  <div class="vf-form__item vf-form__item--checkbox">
+      <input type="checkbox" id="checklist-item-1" class="vf-form__checkbox">
+      <label for="checklist-item-1" class="vf-form__label">Assets compressed with Brotli/Gzip</label>
+      <input type="checkbox" id="checklist-item-2" class="vf-form__checkbox">
+      <label for="checklist-item-2" class="vf-form__label">Images optimised for modern formats</label>
+      <input type="checkbox" id="checklist-item-3" class="vf-form__checkbox">
+      <label for="checklist-item-3" class="vf-form__label">CDN configured for target user regions</label>
+      <input type="checkbox" id="checklist-item-4" class="vf-form__checkbox">
+      <label for="checklist-item-4" class="vf-form__label">Cache headers set and versioning in place</label>
+      <input type="checkbox" id="checklist-item-5" class="vf-form__checkbox">
+      <label for="checklist-item-5" class="vf-form__label">Request count reduced and lazy loading applied</label>
+      <input type="checkbox" id="checklist-item-6" class="vf-form__checkbox">
+      <label for="checklist-item-6" class="vf-form__label">Service worker supports core offline continuity</label>
+      <input type="checkbox" id="checklist-item-7" class="vf-form__checkbox">
+      <label for="checklist-item-7" class="vf-form__label">Tested in slow 3G and degraded network scenarios</label>
+  </div>
+
+  <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400">Metrics and tools</h2>
+
+  <h3>Key metrics</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Time to First Byte (TTFB)</li>
+    <li class="vf-list__item">First Contentful Paint (FCP)</li>
+    <li class="vf-list__item">Largest Contentful Paint (LCP)</li>
+    <li class="vf-list__item">Total page size</li>
+    <li class="vf-list__item">Number of network requests</li>
+    <li class="vf-list__item">Cache hit ratio and timeout/error rate</li>
+  </ul>
+
+  <h3>Tools</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Google Lighthouse</li>
+    <li class="vf-list__item">WebPageTest</li>
+    <li class="vf-list__item">Chrome DevTools network throttling</li>
+    <li class="vf-list__item">Cloudflare or CloudFront analytics</li>
+  </ul>
 </article>

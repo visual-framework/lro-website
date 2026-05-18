@@ -1,27 +1,18 @@
-<footer class="vf-minimal-footer vf-footer vf-u-padding__top--600 vf-u-padding__bottom--800">
+<footer class="vf-footer  | vf-u-background-color-ui--dark-grey">
   <div class="vf-footer__inner">
-    <div class="vf-footer__logo-mission | vf-u-grid-gap--400 vf-u-margin__bottom--200">
-      <a href="https://www.ebi.ac.uk" class="vf-logo vf-u-grid__col--span-1--md vf-u-grid__col--span-1--lg">
-        <img class="vf-logo__image" src="{{ '/images/embl-ebi-rgb-all-white.svg' | url }}" alt="EMBL-EBI" loading="eager">
+    <div class="vf-minimal-footer__intro">
+      <a href="https://www.ebi.ac.uk" class="vf-logo">
+        <img class="vf-logo__image" src="{{ '/images/embl-ebi-rgb-all-white.svg' | url }}" alt="EMBL-EBI Logo" loading="eager">
       </a>
-      <div class="vf-footer__mission vf-u-padding__top--200 vf-u-grid__col--span-3--md vf-u-grid__col--span-3--lg">
-        <p class="vf-footer__notice vf-u-margin__bottom--0 vf-color--neutral--300">Low resource optimisation framework is developed and maintained by EMBL-EBI, a world leader in biological data resources.</p>
-      </div>
+      <p class="vf-footer__notice">Low resource optimisation framework is developed and maintained by EMBL-EBI, a world leader in biological data resources.</p>
     </div>
-    <p class="vf-footer__legal">
-      <span class="vf-footer__legal-text">
-        Copyright © EMBL 2026
-      </span>
-      <span class="vf-footer__legal-text">
-        <a class="vf-footer__link" href="//www.ebi.ac.uk/about/contact/">EMBL-EBI contact</a>
-      </span>
-      <span class="vf-footer__legal-text">
-        <a class="vf-footer__link" href="//www.ebi.ac.uk/about/terms-of-use">Terms of use</a>
-      </span>
-    </p>
+    <section class="vf-footer__legal vf-grid__col--span-all | vf-grid vf-grid__col-1">
+      <span class="vf-footer__link vf-u-text-color--grey--lightest">Copyright © EMBL 2026</span>
+      <a class="vf-footer__link vf-u-text-color--white" href="//www.ebi.ac.uk/about/contact/">EMBL-EBI contact</a>
+      <a class="vf-footer__link vf-u-text-color--grey--lightest" href="//www.ebi.ac.uk/about/terms-of-use">Terms of use</a>
+    </section>
   </div>
 </footer>
-
 <!-- Google tag (gtag.js) -->
 <script>
   (function () {
@@ -43,3 +34,53 @@
 
 {% render '@vf-polyfill-js' %}
 <script src="{{ '/scripts/scripts.js' | url }}"></script>
+<script>
+  (function () {
+    var toggles = document.querySelectorAll("[data-lro-mobile-toggle]");
+    var panels = {
+      menu: document.getElementById("lro-mobile-menu-panel"),
+      search: document.getElementById("lro-mobile-search-panel")
+    };
+
+    if (!toggles.length || !panels.menu || !panels.search) {
+      return;
+    }
+
+    function setActivePanel(nextPanel) {
+      toggles.forEach(function (toggle) {
+        var panelName = toggle.getAttribute("data-lro-mobile-toggle");
+        var isActive = panelName === nextPanel;
+        toggle.classList.toggle("is-active", isActive);
+        toggle.setAttribute("aria-expanded", isActive ? "true" : "false");
+      });
+
+      Object.keys(panels).forEach(function (panelName) {
+        panels[panelName].hidden = panelName !== nextPanel;
+      });
+
+      // Prevent body scroll when a panel is open
+      document.body.classList.toggle("lro-mobile-panel-open", !!nextPanel);
+    }
+
+    toggles.forEach(function (toggle) {
+      toggle.addEventListener("click", function () {
+        var panelName = toggle.getAttribute("data-lro-mobile-toggle");
+        var isOpen = toggle.getAttribute("aria-expanded") === "true";
+        setActivePanel(isOpen ? null : panelName);
+
+        if (!isOpen && panelName === "search") {
+          var searchInput = document.getElementById("lro-mobile-search-input");
+          if (searchInput) {
+            searchInput.focus();
+          }
+        }
+      });
+    });
+
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 768) {
+        setActivePanel(null);
+      }
+    });
+  })();
+</script>

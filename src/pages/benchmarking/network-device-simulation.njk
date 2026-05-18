@@ -1,0 +1,144 @@
+<div class="vf-content">
+
+  <p>Use the standardised profiles below for consistent LRO testing across browsers and environments.</p>
+
+  <h3 id="network-profiles" class="vf-u-padding__top--400">Network conditions</h3>
+
+  <div style="overflow-x: auto;">
+    <table class="vf-table vf-table--striped">
+      <thead class="vf-table__header">
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" scope="col">Profile</th>
+          <th class="vf-table__heading" scope="col">Download</th>
+          <th class="vf-table__heading" scope="col">Upload</th>
+          <th class="vf-table__heading" scope="col">Latency</th>
+        </tr>
+      </thead>
+      <tbody class="vf-table__body">
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">2G (Low-end Rural)</td>
+          <td class="vf-table__cell">250 kbps</td>
+          <td class="vf-table__cell">50 kbps</td>
+          <td class="vf-table__cell">400 ms</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Slow 3G (Emerging Market)</td>
+          <td class="vf-table__cell">700 kbps</td>
+          <td class="vf-table__cell">250 kbps</td>
+          <td class="vf-table__cell">300 ms</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Fast 3G (Urban Developing)</td>
+          <td class="vf-table__cell">1,600 kbps</td>
+          <td class="vf-table__cell">750 kbps</td>
+          <td class="vf-table__cell">150 ms</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Low 4G (Budget Phone)</td>
+          <td class="vf-table__cell">4,000 kbps</td>
+          <td class="vf-table__cell">1,500 kbps</td>
+          <td class="vf-table__cell">100 ms</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Public Wi-Fi (Unstable)</td>
+          <td class="vf-table__cell">2,500 kbps</td>
+          <td class="vf-table__cell">1,000 kbps</td>
+          <td class="vf-table__cell">200 ms</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Offline / Flaky Connection</td>
+          <td class="vf-table__cell">0 kbps</td>
+          <td class="vf-table__cell">0 kbps</td>
+          <td class="vf-table__cell">1,000 ms</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="chrome-devtools" class="vf-u-padding__top--400">Chrome DevTools (recommended)</h3>
+
+  <h4>Open DevTools</h4>
+  <p>Right-click → Inspect, or press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd> (Windows) / <kbd>Cmd</kbd>+<kbd>Option</kbd>+<kbd>I</kbd> (Mac)</p>
+
+  <h4>Simulate network conditions</h4>
+  <ol>
+    <li>Go to the <strong>Network</strong> tab.</li>
+    <li>Locate the <strong>Throttling</strong> dropdown (default: No throttling).</li>
+    <li>Click <strong>Add…</strong> or <strong>Custom</strong> and enter the values from the profiles table above.</li>
+    <li>Select your saved profile from the dropdown.</li>
+    <li>Reload the page to test.</li>
+  </ol>
+
+  <h4>Simulate offline mode</h4>
+  <p>In the Network tab, select <strong>Offline</strong> and reload the page. Validate fallback behaviour when no connectivity is available.</p>
+
+  <h4>Simulate CPU throttling (device constraint)</h4>
+  <ol>
+    <li>Go to the <strong>Performance</strong> tab.</li>
+    <li>Click the gear/settings icon.</li>
+    <li>Enable CPU throttling (4× or 6× slowdown).</li>
+    <li>Observe: time to interactive, UI responsiveness, and long tasks.</li>
+  </ol>
+
+  <h4>Simulate low-end devices (device toolbar)</h4>
+  <ol>
+    <li>Toggle device toolbar (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>).</li>
+    <li>Select a device (e.g., low-end Android).</li>
+    <li>Combine with network throttling for a realistic low-resource test.</li>
+  </ol>
+
+  <h3 id="firefox-devtools" class="vf-u-padding__top--400">Firefox DevTools</h3>
+  <ol>
+    <li>Open DevTools → <strong>Network</strong> tab.</li>
+    <li>Use the <strong>Throttling</strong> dropdown — select presets or create a custom profile.</li>
+    <li>Toggle <strong>Offline</strong> mode to test fallback behaviour.</li>
+  </ol>
+
+  <h3 id="safari" class="vf-u-padding__top--400">Safari (Mac)</h3>
+  <ol>
+    <li>Enable developer tools: <strong>Preferences → Advanced → Show Develop menu.</strong></li>
+    <li>Go to <strong>Develop → Network Link Conditioner.</strong></li>
+    <li>Choose a preset or create a custom profile to simulate network conditions.</li>
+  </ol>
+
+  <h3 id="testing-strategy" class="vf-u-padding__top--400">Testing strategy</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Start with <strong>Slow 3G</strong> as the baseline.</li>
+    <li class="vf-list__item">Validate extreme cases (2G and offline).</li>
+    <li class="vf-list__item">Test mid-tier profiles (Fast 3G / Low 4G).</li>
+    <li class="vf-list__item">Include unstable scenarios (Public Wi-Fi).</li>
+    <li class="vf-list__item">Fix issues that break under Slow 3G first; ensure graceful degradation under 2G.</li>
+  </ul>
+
+  <h3 id="network-sim-code-examples" class="vf-u-padding__top--400">Code examples</h3>
+
+  <h4>Detect network type</h4>
+<pre>
+// Check if the Network Information API is available
+if (navigator.connection) {
+  // Log the effective connection type (e.g., '2g', '3g', '4g', 'wifi')
+  console.log('Effective network type:', navigator.connection.effectiveType);
+}
+</pre>
+
+  <h4>Adaptive loading based on network</h4>
+<pre>
+// Load a lightweight version for slow networks
+if (navigator.connection?.effectiveType === '2g') {
+  // User has a slow connection — load a lighter version of the site
+  loadLiteVersion();
+} else {
+  // Faster connection — load full-featured version
+  loadFullVersion();
+}
+
+function loadLiteVersion() {
+  // e.g., load smaller images, defer non-critical scripts
+}
+
+function loadFullVersion() {
+  // e.g., load high-res images, full scripts
+}
+</pre>
+
+</div>

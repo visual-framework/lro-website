@@ -138,8 +138,8 @@ vfMegaMenu();
 // };
 // vfGaIndicateLoaded(vfGaTrackOptions);
 
-// import { vfTabs } from "vf-tabs/vf-tabs";
-// vfTabs();
+import { vfTabs } from "vf-tabs/vf-tabs";
+vfTabs();
 
 // import { vfTree } from "vf-tree/vf-tree";
 // vfTree();
@@ -166,8 +166,8 @@ vfMegaMenu();
 // import { emblBreadcrumbs } from "embl-breadcrumbs-lookup/embl-breadcrumbs-lookup";
 // emblBreadcrumbs();
 
-// import { vfBackToTop } from "vf-back-to-top/vf-back-to-top.js";
-// vfBackToTop();
+import { vfBackToTop } from "vf-back-to-top/vf-back-to-top.js";
+vfBackToTop();
 
 import { vfNavigationOnThisPage } from "vf-navigation/vf-navigation.js";
 vfNavigationOnThisPage();

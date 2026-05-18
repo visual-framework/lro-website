@@ -437,15 +437,22 @@ templateEngineOverride: njk
 
   {# ── Checklist ── #}
   <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Checklist</h2>
-  <ul class="vf-list vf-list--unordered">
-    <li class="vf-list__item">Core content visible without JavaScript</li>
-    <li class="vf-list__item">No blank screen on slow networks</li>
-    <li class="vf-list__item">Page usable on a low-end device</li>
-    <li class="vf-list__item">Interactive parts optional</li>
-    <li class="vf-list__item">Tested with throttling (2G + low CPU)</li>
-    <li class="vf-list__item">Bundle size budget enforced</li>
-    <li class="vf-list__item">Rendering strategy reviewed in LRO design</li>
-  </ul>
+  <div class="vf-form__item vf-form__item--checkbox">
+      <input type="checkbox" id="checklist-item-1" class="vf-form__checkbox">
+      <label for="checklist-item-1" class="vf-form__label">Core content visible without JavaScript</label>
+      <input type="checkbox" id="checklist-item-2" class="vf-form__checkbox">
+      <label for="checklist-item-2" class="vf-form__label">No blank screen on slow networks</label>
+      <input type="checkbox" id="checklist-item-3" class="vf-form__checkbox">
+      <label for="checklist-item-3" class="vf-form__label">Page usable on a low-end device</label>
+      <input type="checkbox" id="checklist-item-4" class="vf-form__checkbox">
+      <label for="checklist-item-4" class="vf-form__label">Interactive parts optional</label>
+      <input type="checkbox" id="checklist-item-5" class="vf-form__checkbox">
+      <label for="checklist-item-5" class="vf-form__label">Tested with throttling (2G + low CPU)</label>
+      <input type="checkbox" id="checklist-item-6" class="vf-form__checkbox">
+      <label for="checklist-item-6" class="vf-form__label">Bundle size budget enforced</label>
+      <input type="checkbox" id="checklist-item-7" class="vf-form__checkbox">
+      <label for="checklist-item-7" class="vf-form__label">Rendering strategy reviewed in LRO design</label>
+  </div>
 
 
   {# ── Metrics & tools ── #}

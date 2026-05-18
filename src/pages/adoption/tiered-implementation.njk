@@ -6,5 +6,188 @@ templateEngineOverride: njk
 ---
 
 <article class="vf-content">
-  <p class="vf-lede">This page is currently being developed.</p>
+
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400 vf-search-client-side--no-index">Contents</h2>
+  <nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+    <ul class="vf-list vf-list--unordered">
+      <li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+      <li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO</a></li>
+      <li class="vf-list__item"><a href="#common-problems" class="vf-link">Common problems</a></li>
+      <li class="vf-list__item"><a href="#design-principles" class="vf-link">Design principles involved</a></li>
+      <li class="vf-list__item"><a href="#strategy-options" class="vf-link">Strategy options</a></li>
+      <li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation guidance</a></li>
+      <li class="vf-list__item"><a href="#examples" class="vf-link">Examples</a></li>
+      <li class="vf-list__item"><a href="#dos-dont" class="vf-link">Do / Don't</a></li>
+      <li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+      <li class="vf-list__item"><a href="#metrics" class="vf-link">Metrics and tools</a></li>
+      <li class="vf-list__item"><a href="#related" class="vf-link">Related topics</a></li>
+      <li class="vf-list__item"><a href="#further-reading" class="vf-link">Further reading</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Overview</h2>
+  <p>The tiered implementation model provides a phased path to LRO adoption so teams can improve progressively without requiring full optimisation from day one.</p>
+  <p><strong>Key idea:</strong> progress over perfection. Start with essentials, then advance based on context, maturity, and impact.</p>
+
+  <h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400">Why this matters for LRO</h2>
+  <h3>User impact</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Early-stage releases can still be usable in constrained environments</li>
+    <li class="vf-list__item">Continuous improvement is built into delivery</li>
+    <li class="vf-list__item">Risk of unusable early implementations is reduced</li>
+  </ul>
+
+  <h3>Risks if ignored</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Over-optimisation attempts stall delivery</li>
+    <li class="vf-list__item">Critical optimisations are delayed or skipped</li>
+    <li class="vf-list__item">No consistent progression model across teams</li>
+  </ul>
+
+  <h2 id="common-problems" class="vf-u-margin--0 vf-u-padding__top--400">Common problems</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">No prioritisation of optimisation efforts</li>
+    <li class="vf-list__item">Attempting advanced techniques before foundations</li>
+    <li class="vf-list__item">No measurable checkpoints for progress</li>
+    <li class="vf-list__item">Inconsistent standards between teams</li>
+    <li class="vf-list__item">Weak benchmarking and validation discipline</li>
+  </ul>
+
+  <h2 id="design-principles" class="vf-u-margin--0 vf-u-padding__top--400">Design principles involved</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Progressive enhancement</li>
+    <li class="vf-list__item">Impact-based prioritisation</li>
+    <li class="vf-list__item">Incremental improvement</li>
+    <li class="vf-list__item">Measurable outcomes and benchmarks</li>
+    <li class="vf-list__item">Standardisation across teams</li>
+    <li class="vf-list__item">Context-aware optimisation</li>
+  </ul>
+
+  <h2 id="strategy-options" class="vf-u-margin--0 vf-u-padding__top--400">Strategy options</h2>
+
+  <h3>Baseline tier</h3>
+  <p>Minimum viable optimisation to ensure basic usability under poor conditions.</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Page size target up to 500 KB</li>
+    <li class="vf-list__item">Minimal JavaScript and text-first rendering</li>
+    <li class="vf-list__item">Optimised images and compressed assets</li>
+    <li class="vf-list__item">Basic caching and limited third-party dependencies</li>
+    <li class="vf-list__item">Core functionality works without JavaScript where possible</li>
+  </ul>
+
+  <h3>Recommended tier</h3>
+  <p>Balanced optimisation for strong day-to-day production performance.</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">JavaScript bundle target up to 150 KB</li>
+    <li class="vf-list__item">Request count target up to 50</li>
+    <li class="vf-list__item">Modern image formats and code splitting</li>
+    <li class="vf-list__item">Service worker caching and compression</li>
+    <li class="vf-list__item">Progressive enhancement and adaptive loading</li>
+  </ul>
+
+  <h3>Advanced tier</h3>
+  <p>High maturity optimisation for mission-critical or large-scale systems.</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Dynamic delivery by device and network profile</li>
+    <li class="vf-list__item">Fine-grained caching and advanced service worker logic</li>
+    <li class="vf-list__item">RUM-driven optimisation and predictive preloading</li>
+    <li class="vf-list__item">Chunked uploads, robust retry logic, and degraded modes</li>
+    <li class="vf-list__item">Edge and backend optimisation at scale</li>
+  </ul>
+
+  <h3>Benchmark alignment</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Baseline:</strong> LCP around 3 to 4s on slow 3G, page size up to 500 KB</li>
+    <li class="vf-list__item"><strong>Recommended:</strong> LCP up to 2.5s, FCP up to 2s, CLS up to 0.1</li>
+    <li class="vf-list__item"><strong>Advanced:</strong> LCP around 1.5 to 2s, INP up to 200ms, high cache hit ratios</li>
+  </ul>
+
+  <h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400">Implementation guidance</h2>
+  <ol class="vf-list vf-list--ordered">
+    <li class="vf-list__item">Assess current performance and classify current tier</li>
+    <li class="vf-list__item">Set a target tier based on product context and team capability</li>
+    <li class="vf-list__item">Implement baseline practices before higher-tier techniques</li>
+    <li class="vf-list__item">Track benchmark progress and iterate incrementally</li>
+    <li class="vf-list__item">Advance tier only when gains justify complexity</li>
+  </ol>
+
+  <h2 id="examples" class="vf-u-margin--0 vf-u-padding__top--400">Examples</h2>
+  <h3>Adaptive loading</h3>
+  <pre class="vf-code-example__pre"><code>if (navigator.connection.effectiveType === '2g') {
+  loadLowQualityImages();
+} else {
+  loadHighQualityImages();
+}</code></pre>
+
+  <h3>Native lazy loading</h3>
+  <pre class="vf-code-example__pre"><code>&lt;img src="image.jpg" loading="lazy" alt="Optimized image"&gt;</code></pre>
+
+  <h2 id="dos-dont" class="vf-u-margin--0 vf-u-padding__top--400 vf-search-client-side--no-index">Do / Don't</h2>
+  <h3>Do</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Start with baseline optimisation</li>
+    <li class="vf-list__item">Progress incrementally with clear benchmarks</li>
+    <li class="vf-list__item">Adapt implementation to real user context</li>
+    <li class="vf-list__item">Continuously evaluate performance outcomes</li>
+  </ul>
+
+  <h3>Don't</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Skip foundational optimisation work</li>
+    <li class="vf-list__item">Over-engineer too early</li>
+    <li class="vf-list__item">Ignore benchmarking discipline</li>
+    <li class="vf-list__item">Apply advanced techniques without clear need</li>
+    <li class="vf-list__item">Treat all users and contexts the same</li>
+  </ul>
+
+  <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400">Checklist</h2>
+  <div class="vf-form__item vf-form__item--checkbox">
+      <input type="checkbox" id="checklist-item-1" class="vf-form__checkbox">
+      <label for="checklist-item-1" class="vf-form__label">Baseline optimisation complete</label>
+      <input type="checkbox" id="checklist-item-2" class="vf-form__checkbox">
+      <label for="checklist-item-2" class="vf-form__label">Target tier clearly defined</label>
+      <input type="checkbox" id="checklist-item-3" class="vf-form__checkbox">
+      <label for="checklist-item-3" class="vf-form__label">Tier-aligned benchmarks agreed</label>
+      <input type="checkbox" id="checklist-item-4" class="vf-form__checkbox">
+      <label for="checklist-item-4" class="vf-form__label">Incremental improvement plan in place</label>
+      <input type="checkbox" id="checklist-item-5" class="vf-form__checkbox">
+      <label for="checklist-item-5" class="vf-form__label">Monitoring and measurement active</label>
+      <input type="checkbox" id="checklist-item-6" class="vf-form__checkbox">
+      <label for="checklist-item-6" class="vf-form__label">Context adaptation considered for target users</label>
+  </div>
+
+  <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400">Metrics and tools</h2>
+  <h3>Key metrics</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Core Web Vitals (LCP, FCP, CLS, INP)</li>
+    <li class="vf-list__item">Page weight and request count</li>
+    <li class="vf-list__item">Cache efficiency</li>
+    <li class="vf-list__item">Error and retry rates</li>
+    <li class="vf-list__item">User engagement outcomes</li>
+  </ul>
+
+  <h3>Tools</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Lighthouse</li>
+    <li class="vf-list__item">WebPageTest</li>
+    <li class="vf-list__item">Chrome DevTools</li>
+    <li class="vf-list__item">RUM platforms</li>
+    <li class="vf-list__item">Bundle analysers</li>
+  </ul>
+
+  <h2 id="related" class="vf-u-margin--0 vf-u-padding__top--400">Related topics</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Measurement and testing</li>
+    <li class="vf-list__item">Embedding LRO in development</li>
+    <li class="vf-list__item">Resilience and offline patterns</li>
+    <li class="vf-list__item">Network and delivery optimisation</li>
+    <li class="vf-list__item">Rendering strategies</li>
+  </ul>
+
+  <h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400">Further reading</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/vitals/" target="_blank" rel="noopener noreferrer">Web Vitals</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/performance/" target="_blank" rel="noopener noreferrer">web.dev performance</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.webpagetest.org/" target="_blank" rel="noopener noreferrer">WebPageTest</a></li>
+  </ul>
 </article>

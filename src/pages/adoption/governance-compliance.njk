@@ -6,5 +6,193 @@ templateEngineOverride: njk
 ---
 
 <article class="vf-content">
-  <p class="vf-lede">This page is currently being developed.</p>
+
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400 vf-search-client-side--no-index">Contents</h2>
+  <nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+    <ul class="vf-list vf-list--unordered">
+      <li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+      <li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO</a></li>
+      <li class="vf-list__item"><a href="#common-problems" class="vf-link">Common problems</a></li>
+      <li class="vf-list__item"><a href="#design-principles" class="vf-link">Design principles involved</a></li>
+      <li class="vf-list__item"><a href="#strategy-options" class="vf-link">Strategy options</a></li>
+      <li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation guidance</a></li>
+      <li class="vf-list__item"><a href="#code-examples" class="vf-link">Code examples</a></li>
+      <li class="vf-list__item"><a href="#dos-dont" class="vf-link">Do / Don't</a></li>
+      <li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+      <li class="vf-list__item"><a href="#metrics" class="vf-link">Metrics and tools</a></li>
+      <li class="vf-list__item"><a href="#related" class="vf-link">Related topics</a></li>
+      <li class="vf-list__item"><a href="#further-reading" class="vf-link">Further reading</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Overview</h2>
+  <p>Governance and compliance make LRO enforceable at organisational level so that performance, accessibility, resilience, and efficiency are sustained over time instead of treated as one-off initiatives.</p>
+
+  <p><strong>Key idea:</strong> make performance and accessibility enforceable, not advisory. Governance defines standards and ownership; compliance validates adherence through measurable checks.</p>
+
+  <h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400">Why this matters for LRO</h2>
+  <h3>User impact</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Consistent experience across services and teams</li>
+    <li class="vf-list__item">Reduced long-term performance regression</li>
+    <li class="vf-list__item">Better accessibility and inclusivity</li>
+    <li class="vf-list__item">Lower data and cost burden for users</li>
+  </ul>
+
+  <h3>Risks if ignored</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Performance degrades over time</li>
+    <li class="vf-list__item">Inconsistent implementation across products</li>
+    <li class="vf-list__item">Accessibility and usability gaps persist</li>
+    <li class="vf-list__item">Regulatory and legal risk increases</li>
+  </ul>
+
+  <h2 id="common-problems" class="vf-u-margin--0 vf-u-padding__top--400">Common problems</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">No formal LRO standards or performance policies</li>
+    <li class="vf-list__item">No clear accountability for optimisation outcomes</li>
+    <li class="vf-list__item">One-time audits without follow-up</li>
+    <li class="vf-list__item">Ownership of performance metrics is unclear</li>
+    <li class="vf-list__item">Compliance focus limited to accessibility only</li>
+  </ul>
+
+  <h2 id="design-principles" class="vf-u-margin--0 vf-u-padding__top--400">Design principles involved</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Continuous compliance, not point-in-time checks</li>
+    <li class="vf-list__item">Clear ownership and accountability</li>
+    <li class="vf-list__item">Standardisation across teams and products</li>
+    <li class="vf-list__item">Transparent metrics and reporting</li>
+    <li class="vf-list__item">Inclusivity, accessibility, and sustainability</li>
+    <li class="vf-list__item">Risk-based prioritisation</li>
+  </ul>
+
+  <h2 id="strategy-options" class="vf-u-margin--0 vf-u-padding__top--400">Strategy options</h2>
+
+  <h3>LRO compliance checklist</h3>
+  <p>Use a structured checklist across performance, accessibility, efficiency, resilience, compatibility, and security.</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Performance:</strong> page size budgets, Core Web Vitals, loading strategy</li>
+    <li class="vf-list__item"><strong>Accessibility:</strong> WCAG checks, keyboard support, semantic structure</li>
+    <li class="vf-list__item"><strong>Efficiency:</strong> compression, image optimisation, caching, third-party limits</li>
+    <li class="vf-list__item"><strong>Resilience:</strong> retries, offline fallback, graceful degradation</li>
+    <li class="vf-list__item"><strong>Compatibility:</strong> low-end devices, constrained CPU and memory</li>
+    <li class="vf-list__item"><strong>Security/privacy:</strong> secure handling and minimal data collection</li>
+  </ul>
+
+  <h3>Periodic audit cycle</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Baseline assessment and gap analysis</li>
+    <li class="vf-list__item">Remediation planning and tracking</li>
+    <li class="vf-list__item">Re-evaluation with field data</li>
+    <li class="vf-list__item">Quarterly for major systems, more frequent for critical platforms</li>
+  </ul>
+
+  <h3>Governance model</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Product owners accountable for compliance outcomes</li>
+    <li class="vf-list__item">Engineering teams accountable for implementation quality</li>
+    <li class="vf-list__item">QA validates performance, accessibility, and usability</li>
+    <li class="vf-list__item">Leadership ensures prioritisation, funding, and enforcement</li>
+  </ul>
+
+  <h3>Policy and standards definition</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Define enforceable performance budgets and accessibility thresholds</li>
+    <li class="vf-list__item">Set data usage and device compatibility expectations</li>
+    <li class="vf-list__item">Align to recognised standards and local constraints</li>
+  </ul>
+
+  <h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400">Implementation guidance</h2>
+  <ol class="vf-list vf-list--ordered">
+    <li class="vf-list__item">Define LRO governance policies and measurable standards</li>
+    <li class="vf-list__item">Establish compliance checklists and release gates</li>
+    <li class="vf-list__item">Create recurring audit cycles and ownership model</li>
+    <li class="vf-list__item">Integrate real-user monitoring and regression alerts</li>
+    <li class="vf-list__item">Prioritise high-risk areas and continuously refine controls</li>
+  </ol>
+
+  <h2 id="code-examples" class="vf-u-margin--0 vf-u-padding__top--400">Code examples</h2>
+  <h3>Performance budget configuration</h3>
+  <pre class="vf-code-example__pre"><code>{
+  "budgets": [
+    {
+      "resourceSizes": [
+        {
+          "resourceType": "script",
+          "budget": 150
+        }
+      ]
+    }
+  ]
+}</code></pre>
+
+  <h2 id="dos-dont" class="vf-u-margin--0 vf-u-padding__top--400 vf-search-client-side--no-index">Do / Don't</h2>
+  <h3>Do</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Define clear and measurable LRO standards</li>
+    <li class="vf-list__item">Conduct regular audits with follow-through</li>
+    <li class="vf-list__item">Monitor real-user performance continuously</li>
+    <li class="vf-list__item">Assign accountability clearly across teams</li>
+    <li class="vf-list__item">Continuously improve governance mechanisms</li>
+  </ul>
+
+  <h3>Don't</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Treat compliance as one-time activity</li>
+    <li class="vf-list__item">Rely on manual checks only</li>
+    <li class="vf-list__item">Ignore accessibility and inclusivity gaps</li>
+    <li class="vf-list__item">Delay remediation of known high-impact issues</li>
+  </ul>
+
+  <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400">Checklist</h2>
+  <div class="vf-form__item vf-form__item--checkbox">
+      <input type="checkbox" id="checklist-item-1" class="vf-form__checkbox">
+      <label for="checklist-item-1" class="vf-form__label">LRO policies documented and communicated</label>
+      <input type="checkbox" id="checklist-item-2" class="vf-form__checkbox">
+      <label for="checklist-item-2" class="vf-form__label">Compliance checklist implemented</label>
+      <input type="checkbox" id="checklist-item-3" class="vf-form__checkbox">
+      <label for="checklist-item-3" class="vf-form__label">Audit cycle established and owned</label>
+      <input type="checkbox" id="checklist-item-4" class="vf-form__checkbox">
+      <label for="checklist-item-4" class="vf-form__label">Performance budgets enforced in delivery pipelines</label>
+      <input type="checkbox" id="checklist-item-5" class="vf-form__checkbox">
+      <label for="checklist-item-5" class="vf-form__label">Monitoring and alerts configured</label>
+      <input type="checkbox" id="checklist-item-6" class="vf-form__checkbox">
+      <label for="checklist-item-6" class="vf-form__label">Accessibility standards met</label>
+      <input type="checkbox" id="checklist-item-7" class="vf-form__checkbox">
+      <label for="checklist-item-7" class="vf-form__label">Ownership assigned across product and engineering</label>
+  </div>
+
+  <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400">Metrics and tools</h2>
+  <h3>Key metrics</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Core Web Vitals</li>
+    <li class="vf-list__item">Page weight and data usage</li>
+    <li class="vf-list__item">Accessibility scores</li>
+    <li class="vf-list__item">Error rates and uptime</li>
+    <li class="vf-list__item">Compliance adherence rate</li>
+  </ul>
+
+  <h3>Tools</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Lighthouse and WebPageTest</li>
+    <li class="vf-list__item">Accessibility tooling such as Axe</li>
+    <li class="vf-list__item">RUM dashboards and observability tools</li>
+  </ul>
+
+  <h2 id="related" class="vf-u-margin--0 vf-u-padding__top--400">Related topics</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Measurement and testing</li>
+    <li class="vf-list__item">Embedding LRO in development</li>
+    <li class="vf-list__item">Tiered implementation model</li>
+    <li class="vf-list__item">Resilience and offline patterns</li>
+    <li class="vf-list__item">Accessibility</li>
+  </ul>
+
+  <h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400">Further reading</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/" target="_blank" rel="noopener noreferrer">web.dev</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank" rel="noopener noreferrer">WCAG guidance</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.webpagetest.org/" target="_blank" rel="noopener noreferrer">WebPageTest</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/vitals/" target="_blank" rel="noopener noreferrer">Core Web Vitals</a></li>
+  </ul>
 </article>
