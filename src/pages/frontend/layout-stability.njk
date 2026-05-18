@@ -260,13 +260,18 @@ templateEngineOverride: njk
   {# ── Checklist ── #}
   <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400">Checklist</h2>
 
-  <ul class="vf-list vf-list--unordered">
-    <li class="vf-list__item">All images have width and height attributes</li>
-    <li class="vf-list__item">Ad and embed containers have reserved dimensions</li>
-    <li class="vf-list__item">Web fonts use fallback strategies</li>
-    <li class="vf-list__item">Animations use transform instead of layout properties</li>
-    <li class="vf-list__item">Dynamic content does not shift the existing layout</li>
-  </ul>
+  <div class="vf-form__item vf-form__item--checkbox">
+      <input type="checkbox" id="checklist-item-1" class="vf-form__checkbox">
+      <label for="checklist-item-1" class="vf-form__label">All images have width and height attributes</label>
+      <input type="checkbox" id="checklist-item-2" class="vf-form__checkbox">
+      <label for="checklist-item-2" class="vf-form__label">Ad and embed containers have reserved dimensions</label>
+      <input type="checkbox" id="checklist-item-3" class="vf-form__checkbox">
+      <label for="checklist-item-3" class="vf-form__label">Web fonts use fallback strategies</label>
+      <input type="checkbox" id="checklist-item-4" class="vf-form__checkbox">
+      <label for="checklist-item-4" class="vf-form__label">Animations use transform instead of layout properties</label>
+      <input type="checkbox" id="checklist-item-5" class="vf-form__checkbox">
+      <label for="checklist-item-5" class="vf-form__label">Dynamic content does not shift the existing layout</label>
+  </div>
 
   {# ── Metrics and Tools ── #}
   <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400">Metrics and Tools</h2>

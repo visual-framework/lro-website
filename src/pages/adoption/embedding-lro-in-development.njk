@@ -6,5 +6,205 @@ templateEngineOverride: njk
 ---
 
 <article class="vf-content">
-  <p class="vf-lede">This page is currently being developed.</p>
+
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400 vf-search-client-side--no-index">Contents</h2>
+  <nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+    <ul class="vf-list vf-list--unordered">
+      <li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+      <li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for LRO</a></li>
+      <li class="vf-list__item"><a href="#common-problems" class="vf-link">Common problems</a></li>
+      <li class="vf-list__item"><a href="#design-principles" class="vf-link">Design principles involved</a></li>
+      <li class="vf-list__item"><a href="#strategy-options" class="vf-link">Strategy options</a></li>
+      <li class="vf-list__item"><a href="#implementation" class="vf-link">Implementation guidance</a></li>
+      <li class="vf-list__item"><a href="#code-examples" class="vf-link">Code examples</a></li>
+      <li class="vf-list__item"><a href="#dos-dont" class="vf-link">Do / Don't</a></li>
+      <li class="vf-list__item"><a href="#checklist" class="vf-link">Checklist</a></li>
+      <li class="vf-list__item"><a href="#metrics" class="vf-link">Metrics and tools</a></li>
+      <li class="vf-list__item"><a href="#related" class="vf-link">Related topics</a></li>
+      <li class="vf-list__item"><a href="#further-reading" class="vf-link">Further reading</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Overview</h2>
+
+  <p>Embedding LRO in development means making performance, resilience, and efficiency part of everyday delivery from design to deployment, rather than treating them as post-release fixes.</p>
+
+  <p><strong>Key idea:</strong> shift left for performance and resilience. Validate early during design and coding, and continuously through CI/CD and monitoring.</p>
+
+  <h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400">Why this matters for LRO</h2>
+
+  <h3>User impact</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Slow networks expose inefficiencies introduced during development</li>
+    <li class="vf-list__item">Low-end devices struggle with unoptimised code and assets</li>
+    <li class="vf-list__item">Expensive data plans amplify poor implementation choices</li>
+    <li class="vf-list__item">Missing monitoring allows regressions to go unnoticed</li>
+  </ul>
+
+  <h3>Risks if ignored</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Performance issues discovered too late</li>
+    <li class="vf-list__item">Frequent regressions after release</li>
+    <li class="vf-list__item">Inconsistent experience across environments</li>
+    <li class="vf-list__item">Higher cost of post-deployment remediation</li>
+  </ul>
+
+  <h2 id="common-problems" class="vf-u-margin--0 vf-u-padding__top--400">Common problems</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Performance checks only happen near release</li>
+    <li class="vf-list__item">No performance budgets in CI/CD</li>
+    <li class="vf-list__item">Code review focuses on functionality but not efficiency</li>
+    <li class="vf-list__item">Little testing on low-end devices and slow networks</li>
+    <li class="vf-list__item">No real-user performance monitoring</li>
+    <li class="vf-list__item">Over-reliance on manual checks</li>
+  </ul>
+
+  <h2 id="design-principles" class="vf-u-margin--0 vf-u-padding__top--400">Design principles involved</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Shift-left testing and validation</li>
+    <li class="vf-list__item">Continuous performance enforcement</li>
+    <li class="vf-list__item">Automation over manual checks</li>
+    <li class="vf-list__item">Performance as a feature, not an afterthought</li>
+    <li class="vf-list__item">Guardrails over advisory guidelines</li>
+    <li class="vf-list__item">Feedback-driven development</li>
+    <li class="vf-list__item">Progressive enhancement</li>
+  </ul>
+
+  <h2 id="strategy-options" class="vf-u-margin--0 vf-u-padding__top--400">Strategy options</h2>
+
+  <h3>Design reviews</h3>
+  <p>Ensure LRO principles are built into designs before implementation starts.</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Prioritise content-first layouts</li>
+    <li class="vf-list__item">Define degraded and offline states</li>
+    <li class="vf-list__item">Limit above-the-fold heavy assets</li>
+    <li class="vf-list__item">Avoid design assumptions about high bandwidth</li>
+  </ul>
+
+  <h3>Pull request checks</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Enforce bundle size limits</li>
+    <li class="vf-list__item">Block large unoptimised assets</li>
+    <li class="vf-list__item">Encourage lazy loading and code splitting</li>
+    <li class="vf-list__item">Include performance impact in PR descriptions</li>
+  </ul>
+
+  <h3>CI/CD integration</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Treat budget breaches as build failures</li>
+    <li class="vf-list__item">Run Lighthouse audits with throttling</li>
+    <li class="vf-list__item">Run accessibility and bundle checks on every build</li>
+    <li class="vf-list__item">Use regression detection and release gates</li>
+  </ul>
+
+  <h3>Observability and monitoring</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Prioritise real-user monitoring (RUM)</li>
+    <li class="vf-list__item">Segment by region, device, and network conditions</li>
+    <li class="vf-list__item">Set alerts for performance regressions</li>
+    <li class="vf-list__item">Track retries, errors, cache hit ratios, and Core Web Vitals</li>
+  </ul>
+
+  <h2 id="implementation" class="vf-u-margin--0 vf-u-padding__top--400">Implementation guidance</h2>
+  <ol class="vf-list vf-list--ordered">
+    <li class="vf-list__item">Define measurable LRO goals and budgets</li>
+    <li class="vf-list__item">Integrate checks into design reviews and PR workflows</li>
+    <li class="vf-list__item">Add CI/CD performance gates and automated audits</li>
+    <li class="vf-list__item">Implement real-user monitoring and dashboarding</li>
+    <li class="vf-list__item">Review data regularly and iterate continuously</li>
+  </ol>
+
+  <h2 id="code-examples" class="vf-u-margin--0 vf-u-padding__top--400">Code examples</h2>
+
+  <h3>Bundle size checks in CI</h3>
+  <pre class="vf-code-example__pre"><code>{
+  "scripts": {
+    "analyze": "webpack-bundle-analyzer build/stats.json",
+    "budget": "size-limit"
+  }
+}</code></pre>
+
+  <h3>Lighthouse CI assertions</h3>
+  <pre class="vf-code-example__pre"><code>{
+  "ci": {
+    "assert": {
+      "assertions": {
+        "largest-contentful-paint": ["error", { "maxNumericValue": 2500 }],
+        "total-byte-weight": ["error", { "maxNumericValue": 500000 }]
+      }
+    }
+  }
+}</code></pre>
+
+  <h2 id="dos-dont" class="vf-u-margin--0 vf-u-padding__top--400 vf-search-client-side--no-index">Do / Don't</h2>
+  <h3>Do</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Integrate performance checks early</li>
+    <li class="vf-list__item">Automate testing and validation</li>
+    <li class="vf-list__item">Monitor real-user performance continuously</li>
+    <li class="vf-list__item">Enforce performance budgets</li>
+    <li class="vf-list__item">Test under realistic constrained conditions</li>
+  </ul>
+
+  <h3>Don't</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Treat performance as post-release work</li>
+    <li class="vf-list__item">Rely only on manual checks</li>
+    <li class="vf-list__item">Ignore low-end device behaviour</li>
+    <li class="vf-list__item">Allow regressions into production</li>
+    <li class="vf-list__item">Optimise only for ideal environments</li>
+  </ul>
+
+  <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400">Checklist</h2>
+  <div class="vf-form__item vf-form__item--checkbox">
+    <input type="checkbox" id="checklist-item-1" class="vf-form__checkbox">
+    <label for="checklist-item-1" class="vf-form__label">LRO included in design review criteria</label>
+    <input type="checkbox" id="checklist-item-2" class="vf-form__checkbox">
+    <label for="checklist-item-2" class="vf-form__label">PR checks enforce performance standards</label>
+    <input type="checkbox" id="checklist-item-3" class="vf-form__checkbox">
+    <label for="checklist-item-3" class="vf-form__label">CI/CD includes performance and accessibility audits</label>
+    <input type="checkbox" id="checklist-item-4" class="vf-form__checkbox">
+    <label for="checklist-item-4" class="vf-form__label">Budgets defined and enforced</label>
+    <input type="checkbox" id="checklist-item-5" class="vf-form__checkbox">
+    <label for="checklist-item-5" class="vf-form__label">Real-user monitoring implemented</label>
+    <input type="checkbox" id="checklist-item-6" class="vf-form__checkbox">
+    <label for="checklist-item-6" class="vf-form__label">Testing completed on slow networks and low-end devices</label>
+    <input type="checkbox" id="checklist-item-7" class="vf-form__checkbox">
+    <label for="checklist-item-7" class="vf-form__label">Regression alerts configured</label>
+  </div>
+
+  <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400">Metrics and tools</h2>
+  <h3>Key metrics</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Core Web Vitals (LCP, FCP, CLS, INP)</li>
+    <li class="vf-list__item">Page weight and bundle size</li>
+    <li class="vf-list__item">Error rates and retry success</li>
+    <li class="vf-list__item">Data usage and cache efficiency</li>
+    <li class="vf-list__item">User engagement and completion rates</li>
+  </ul>
+
+  <h3>Tools</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Lighthouse CI</li>
+    <li class="vf-list__item">Chrome DevTools</li>
+    <li class="vf-list__item">WebPageTest</li>
+    <li class="vf-list__item">Bundle analysers</li>
+    <li class="vf-list__item">RUM and observability platforms</li>
+  </ul>
+
+  <h2 id="related" class="vf-u-margin--0 vf-u-padding__top--400">Related topics</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Measurement and testing</li>
+    <li class="vf-list__item">Resilience and offline patterns</li>
+    <li class="vf-list__item">Network and delivery optimisation</li>
+    <li class="vf-list__item">JavaScript usage</li>
+    <li class="vf-list__item">Rendering strategies</li>
+  </ul>
+
+  <h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400">Further reading</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/learn/performance/" target="_blank" rel="noopener noreferrer">web.dev performance learning</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/lighthouse-ci" target="_blank" rel="noopener noreferrer">Lighthouse CI</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.webpagetest.org/" target="_blank" rel="noopener noreferrer">WebPageTest</a></li>
+  </ul>
 </article>

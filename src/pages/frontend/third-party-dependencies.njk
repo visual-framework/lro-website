@@ -438,14 +438,20 @@ function showFallbackMessage(message) {
   <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400">Checklist</h2>
 
   <p>Before adding a new dependency:</p>
-  <ul class="vf-list vf-list--unordered">
-    <li class="vf-list__item">Confirm the dependency is necessary</li>
-    <li class="vf-list__item">Check file size and performance impact</li>
-    <li class="vf-list__item">Review maintenance activity</li>
-    <li class="vf-list__item">Evaluate security vulnerabilities</li>
-    <li class="vf-list__item">Ensure asynchronous loading</li>
-    <li class="vf-list__item">Implement fallback behaviour</li>
-  </ul>
+  <div class="vf-form__item vf-form__item--checkbox">
+      <input type="checkbox" id="checklist-item-1" class="vf-form__checkbox">
+      <label for="checklist-item-1" class="vf-form__label">Confirm the dependency is necessary</label>
+      <input type="checkbox" id="checklist-item-2" class="vf-form__checkbox">
+      <label for="checklist-item-2" class="vf-form__label">Check file size and performance impact</label>
+      <input type="checkbox" id="checklist-item-3" class="vf-form__checkbox">
+      <label for="checklist-item-3" class="vf-form__label">Review maintenance activity</label>
+      <input type="checkbox" id="checklist-item-4" class="vf-form__checkbox">
+      <label for="checklist-item-4" class="vf-form__label">Evaluate security vulnerabilities</label>
+      <input type="checkbox" id="checklist-item-5" class="vf-form__checkbox">
+      <label for="checklist-item-5" class="vf-form__label">Ensure asynchronous loading</label>
+      <input type="checkbox" id="checklist-item-6" class="vf-form__checkbox">
+      <label for="checklist-item-6" class="vf-form__label">Implement fallback behaviour</label>
+  </div>
 
   {# ── Metrics and Tools ── #}
   <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400">Metrics and Tools</h2>

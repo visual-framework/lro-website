@@ -145,9 +145,9 @@ function vfSearchClientSide() {
       resultPages.forEach(element => {
         if (typeof element !== "undefined") {
           element.text = element.text || "";
-          renderedResults += "<article class='vf-search-result' data-vf-search-result-item>";
-          renderedResults += "<a class='result' href='" + searchDestinationPrefix + element.url + "'><h3>" + element.title + "</h3></a>";
-          renderedResults += "<p class='snippet'>" + element.text.substring(0, 200) + "</p>";
+          renderedResults += "<article class='vf-summary' data-vf-search-result-item>";
+          renderedResults += "<h3 class='vf-summary__title'><a class='vf-summary__link' href='" + searchDestinationPrefix + element.url + "'>" + element.title + "</a></h3>";
+          renderedResults += "<p class='vf-summary__text'>" + element.text.substring(0, 200) + "</p>";
           renderedResults += "</article>";
         }
       });

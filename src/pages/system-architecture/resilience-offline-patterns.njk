@@ -233,15 +233,22 @@ self.addEventListener('fetch', event => {
   {# ── Checklist ── #}
   <h2 id="checklist" class="vf-u-margin--0 vf-u-padding__top--400">Checklist</h2>
 
-  <ul class="vf-list vf-list--unordered">
-    <li class="vf-list__item">Service worker implemented and tested</li>
-    <li class="vf-list__item">App works in offline mode</li>
-    <li class="vf-list__item">Failed requests are queued</li>
-    <li class="vf-list__item">Sync status is visible to users</li>
-    <li class="vf-list__item">Error messages are clear and actionable</li>
-    <li class="vf-list__item">Retry logic uses exponential backoff</li>
-    <li class="vf-list__item">App tested on slow and unreliable networks</li>
-  </ul>
+  <div class="vf-form__item vf-form__item--checkbox">
+      <input type="checkbox" id="checklist-item-1" class="vf-form__checkbox">
+      <label for="checklist-item-1" class="vf-form__label">Service worker implemented and tested</label>
+      <input type="checkbox" id="checklist-item-2" class="vf-form__checkbox">
+      <label for="checklist-item-2" class="vf-form__label">App works in offline mode</label>
+      <input type="checkbox" id="checklist-item-3" class="vf-form__checkbox">
+      <label for="checklist-item-3" class="vf-form__label">Failed requests are queued</label>
+      <input type="checkbox" id="checklist-item-4" class="vf-form__checkbox">
+      <label for="checklist-item-4" class="vf-form__label">Sync status is visible to users</label>
+      <input type="checkbox" id="checklist-item-5" class="vf-form__checkbox">
+      <label for="checklist-item-5" class="vf-form__label">Error messages are clear and actionable</label>
+      <input type="checkbox" id="checklist-item-6" class="vf-form__checkbox">
+      <label for="checklist-item-6" class="vf-form__label">Retry logic uses exponential backoff</label>
+      <input type="checkbox" id="checklist-item-7" class="vf-form__checkbox">
+      <label for="checklist-item-7" class="vf-form__label">App tested on slow and unreliable networks</label>
+  </div>
 
   {# ── Metrics & Tools ── #}
   <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400">Metrics & Tools</h2>

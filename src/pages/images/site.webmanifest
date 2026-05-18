@@ -1,0 +1,14 @@
+{
+    "name": "LRO Framework",
+    "short_name": "LRO Framework",
+    "icons": [
+        {
+            "src": "favicon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#a8a99e",
+    "background_color": "#373a36",
+    "display": "standalone"
+}

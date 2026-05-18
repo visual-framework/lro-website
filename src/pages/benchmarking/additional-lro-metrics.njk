@@ -1,0 +1,166 @@
+<div class="vf-content">
+
+  <p>These additional metrics extend the core LRO performance framework to better reflect the real-world conditions of low-resource users, such as limited bandwidth, low-end devices, unstable connectivity, and high data costs. They focus on areas not fully captured by standard web performance metrics, including data efficiency, resilience, device constraints, interaction simplicity, and perceived performance.</p>
+
+  <p>Developers should first target and validate the <strong>core performance metrics</strong> (page weight, load time, critical rendering performance) before working on these additional metrics. Once baseline targets are met, these metrics can drive deeper improvements in usability, reliability, and inclusivity for low-resource environments.</p>
+
+  <div class="vf-u-padding__top--400" style="overflow-x: auto;">
+    <table class="vf-table vf-table--striped">
+      <thead class="vf-table__header">
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" scope="col">Metric</th>
+          <th class="vf-table__heading" scope="col">Description</th>
+          <th class="vf-table__heading" scope="col">Benchmark</th>
+          <th class="vf-table__heading" scope="col">Thresholds</th>
+          <th class="vf-table__heading" scope="col">Tools</th>
+        </tr>
+      </thead>
+      <tbody class="vf-table__body">
+
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="5" scope="rowgroup">Data Efficiency</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Data Cost per Page Load</td>
+          <td class="vf-table__cell">Total MB downloaded on first load.</td>
+          <td class="vf-table__cell">≤ 0.3 MB</td>
+          <td class="vf-table__cell">🟢 ≤0.3 MB<br>🟡 0.3–0.7 MB<br>🔴 &gt;0.7 MB</td>
+          <td class="vf-table__cell">Chrome DevTools, WebPageTest</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Repeat Visit Data Usage</td>
+          <td class="vf-table__cell">Bytes downloaded on second visit (cache effectiveness).</td>
+          <td class="vf-table__cell">≤ 50 KB</td>
+          <td class="vf-table__cell">🟢 ≤50 KB<br>🟡 50–150 KB<br>🔴 &gt;150 KB</td>
+          <td class="vf-table__cell">Lighthouse, DevTools</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Image Bytes Ratio</td>
+          <td class="vf-table__cell">% of total payload from images.</td>
+          <td class="vf-table__cell">≤ 30%</td>
+          <td class="vf-table__cell">🟢 ≤30%<br>🟡 31–50%<br>🔴 &gt;50%</td>
+          <td class="vf-table__cell">WebPageTest</td>
+        </tr>
+
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="5" scope="rowgroup">Resilience &amp; Reliability</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Partial Load Usability</td>
+          <td class="vf-table__cell">% of core content visible if JS fails.</td>
+          <td class="vf-table__cell">≥ 80%</td>
+          <td class="vf-table__cell">🟢 ≥80%<br>🟡 50–79%<br>🔴 &lt;50%</td>
+          <td class="vf-table__cell">Disable JS test, manual audit</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Retry Friendliness</td>
+          <td class="vf-table__cell">Failed requests auto-retry gracefully.</td>
+          <td class="vf-table__cell">Enabled</td>
+          <td class="vf-table__cell">🟢 Yes<br>🟡 Partial<br>🔴 No</td>
+          <td class="vf-table__cell">Network logs</td>
+        </tr>
+
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="5" scope="rowgroup">Device Constraints</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Peak Memory Usage</td>
+          <td class="vf-table__cell">Max RAM used during load.</td>
+          <td class="vf-table__cell">≤ 150 MB</td>
+          <td class="vf-table__cell">🟢 ≤150 MB<br>🟡 150–300 MB<br>🔴 &gt;300 MB</td>
+          <td class="vf-table__cell">Chrome Performance Profiler</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">JS Execution Time</td>
+          <td class="vf-table__cell">Time spent parsing &amp; running JS.</td>
+          <td class="vf-table__cell">≤ 1.5s</td>
+          <td class="vf-table__cell">🟢 ≤1.5s<br>🟡 1.5–3s<br>🔴 &gt;3s</td>
+          <td class="vf-table__cell">Lighthouse, DevTools</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">DOM Node Count</td>
+          <td class="vf-table__cell">Total DOM elements rendered.</td>
+          <td class="vf-table__cell">≤ 800</td>
+          <td class="vf-table__cell">🟢 ≤800<br>🟡 800–1500<br>🔴 &gt;1500</td>
+          <td class="vf-table__cell">DevTools Elements</td>
+        </tr>
+
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="5" scope="rowgroup">Energy &amp; Battery</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">CPU Wakeups per Minute</td>
+          <td class="vf-table__cell">Background JS activity.</td>
+          <td class="vf-table__cell">≤ 5 / min</td>
+          <td class="vf-table__cell">🟢 ≤5<br>🟡 6–15<br>🔴 &gt;15</td>
+          <td class="vf-table__cell">Chrome Performance tab</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Network Requests After Idle</td>
+          <td class="vf-table__cell">Requests fired after page load completes.</td>
+          <td class="vf-table__cell">None</td>
+          <td class="vf-table__cell">🟢 None<br>🟡 Minimal<br>🔴 Frequent</td>
+          <td class="vf-table__cell">DevTools Network</td>
+        </tr>
+
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="5" scope="rowgroup">Compatibility</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Old Browser Support</td>
+          <td class="vf-table__cell">Works on older Android/Chrome versions.</td>
+          <td class="vf-table__cell">Full</td>
+          <td class="vf-table__cell">🟢 Full<br>🟡 Partial<br>🔴 Broken</td>
+          <td class="vf-table__cell">BrowserStack</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">No-JS Mode Coverage</td>
+          <td class="vf-table__cell">Content visible without JS.</td>
+          <td class="vf-table__cell">≥ 80%</td>
+          <td class="vf-table__cell">🟢 ≥80%<br>🟡 50–79%<br>🔴 &lt;50%</td>
+          <td class="vf-table__cell">Disable JS test</td>
+        </tr>
+
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="5" scope="rowgroup">Perceived Performance</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Time to First Meaningful Text</td>
+          <td class="vf-table__cell">Time until readable content appears.</td>
+          <td class="vf-table__cell">≤ 1s</td>
+          <td class="vf-table__cell">🟢 ≤1s<br>🟡 1–3s<br>🔴 &gt;3s</td>
+          <td class="vf-table__cell">Lighthouse</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Blank Screen Time</td>
+          <td class="vf-table__cell">White screen duration.</td>
+          <td class="vf-table__cell">≤ 0.5s</td>
+          <td class="vf-table__cell">🟢 ≤0.5s<br>🟡 0.5–2s<br>🔴 &gt;2s</td>
+          <td class="vf-table__cell">WebPageTest</td>
+        </tr>
+
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="5" scope="rowgroup">User Control &amp; Transparency</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Low-Data Mode Toggle</td>
+          <td class="vf-table__cell">User can enable lite mode.</td>
+          <td class="vf-table__cell">Available</td>
+          <td class="vf-table__cell">🟢 Yes<br>🟡 Hidden<br>🔴 No</td>
+          <td class="vf-table__cell">Product review</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Data Usage Disclosure</td>
+          <td class="vf-table__cell">Warns user before heavy download.</td>
+          <td class="vf-table__cell">Always</td>
+          <td class="vf-table__cell">🟢 Always<br>🟡 Sometimes<br>🔴 Never</td>
+          <td class="vf-table__cell">UX review</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <p class="vf-u-padding__top--400"><small>See the <strong>Developer supplement</strong> tab for technical guidance on how to measure each of these additional metrics.</small></p>
+
+</div>

@@ -37,7 +37,7 @@ function getChevronIconMarkup(type) {
 }
 
 function getMaxVisiblePageLinks() {
-  return window.matchMedia("(max-width: 600px)").matches ? 3 : 5;
+  return window.matchMedia("(max-width: 768px)").matches ? 3 : 5;
 }
 
 function renderResultsSummary(container, startIndex, endIndex, totalResults) {

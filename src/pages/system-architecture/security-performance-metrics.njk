@@ -6,5 +6,226 @@ templateEngineOverride: njk
 ---
 
 <article class="vf-content">
-  <p class="vf-lede">This page is currently being developed.</p>
+
+	<h2 id="Contents" class="vf-u-margin--0 vf-u-padding__top--800 vf-u-padding__bottom--400 vf-search-client-side--no-index">Contents</h2>
+  <nav class="toc vf-search-client-side--no-index" aria-label="On this page">
+    <ul class="vf-list vf-list--unordered">
+      <li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
+      <li class="vf-list__item"><a href="#why-lro" class="vf-link">Why this matters for low-resource users</a></li>
+      <li class="vf-list__item"><a href="#strategy-options" class="vf-link">Strategy options</a></li>
+      <li class="vf-list__item"><a href="#https-optimisation" class="vf-link">HTTPS optimisation</a></li>
+      <li class="vf-list__item"><a href="#auth" class="vf-link">Lightweight authentication</a></li>
+      <li class="vf-list__item"><a href="#recovery" class="vf-link">Token-based workflow recovery</a></li>
+      <li class="vf-list__item"><a href="#third-party" class="vf-link">Third-party dependency risk</a></li>
+      <li class="vf-list__item"><a href="#uploads" class="vf-link">Secure uploads</a></li>
+      <li class="vf-list__item"><a href="#tradeoffs" class="vf-link">Security and performance trade-offs</a></li>
+      <li class="vf-list__item"><a href="#metrics" class="vf-link">Metrics and tools</a></li>
+      <li class="vf-list__item"><a href="#further-reading" class="vf-link">Further reading</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Overview</h2>
+
+  <p>In constrained environments, security controls can unintentionally increase latency, bandwidth usage, and CPU overhead. The objective is to maintain strong protection while keeping systems fast, reliable, and affordable to use.</p>
+
+  <p>Within an LRO approach, security controls should be:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Lightweight</li>
+    <li class="vf-list__item">Network-efficient</li>
+    <li class="vf-list__item">Failure-tolerant</li>
+    <li class="vf-list__item">Compatible with intermittent connectivity</li>
+  </ul>
+
+  <h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400">Why this matters for low-resource users</h2>
+
+  <p>Users in low-resource settings often use low-end devices over unstable and expensive networks. Heavy security workflows can cause repeated logins, failed uploads, extra retries, and unnecessary data transfer.</p>
+
+  <p>Balancing security and performance helps services remain usable despite connectivity and device constraints.</p>
+
+  <h2 id="strategy-options" class="vf-u-margin--0 vf-u-padding__top--400">Strategy options</h2>
+
+  <p>Use layered controls that minimise round-trips and compute cost while preserving security outcomes.</p>
+
+  <h3 id="https-optimisation">1. HTTPS optimisation under constrained networks</h3>
+
+  <p>HTTPS is mandatory, but handshake and certificate overhead can be expensive on slow links. Optimisation focuses on reducing connection setup cost and prioritising critical content.</p>
+
+  <p><strong>Key optimisation strategies</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Use TLS 1.3 to reduce handshake round-trips and support session resumption</li>
+    <li class="vf-list__item">Use HTTP/2 or HTTP/3 for multiplexing and reduced connection overhead</li>
+    <li class="vf-list__item">Reuse connections with keep-alive</li>
+    <li class="vf-list__item">Enable OCSP stapling and keep certificate chains lightweight</li>
+    <li class="vf-list__item">Compress HTML, CSS, and JS with Brotli/Gzip</li>
+    <li class="vf-list__item">Prioritise critical resources before non-essential assets</li>
+  </ul>
+
+  <h4>How to measure</h4>
+  <pre class="vf-code-example__pre"><code># TLS handshake time
+curl -w '%{time_appconnect}' -so /dev/null https://example.com
+
+# Protocol version
+openssl s_client --connect yourhostname:443 2&gt;&amp;1 | grep Protocol
+
+# OCSP stapling status
+openssl s_client --connect yourhostname:443 -status 2&gt;&amp;1 | grep OCSP
+
+# HTTP/2 support
+curl -sI https://example.com --http2 | head -1</code></pre>
+
+  <h3 id="auth">2. Lightweight authentication</h3>
+
+  <p>Authentication flows should minimise redirects, payload size, and repeated requests while preserving robust server-side validation.</p>
+
+  <p><strong>Best practices</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Minimise network requests during login</li>
+    <li class="vf-list__item">Use short-lived tokens with refresh flow</li>
+    <li class="vf-list__item">Allow progressive access where appropriate</li>
+    <li class="vf-list__item">Avoid large auth payloads and unnecessary claims</li>
+    <li class="vf-list__item">Manage token lifecycle to avoid expired-token retries</li>
+  </ul>
+
+  <pre class="vf-code-example__pre"><code>// Minimal login request
+async function login(email, password) {
+  const response = await fetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+
+  if (!response.ok) throw new Error('Login failed');
+  const data = await response.json();
+  localStorage.setItem('authToken', data.token);
+}</code></pre>
+
+  <p><strong>Note:</strong> localStorage should be used only when XSS protections and risk profile permit it.</p>
+
+  <h3 id="recovery">3. Token-based workflow recovery</h3>
+
+  <p>On unstable connections, workflow state can be lost. Signed recovery tokens can restore progress without forcing users to start over.</p>
+
+  <pre class="vf-code-example__pre"><code>// Save progress
+async function saveProgress(token, data) {
+  await fetch('/api/save-progress', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+}
+
+// Restore progress
+async function restoreProgress(token) {
+  const response = await fetch('/api/restore-progress', {
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  return await response.json();
+}</code></pre>
+
+  <h3 id="third-party">4. Third-party dependency risk</h3>
+
+  <p>External scripts can slow pages or fail unpredictably. In constrained environments, this directly degrades usability.</p>
+
+  <p><strong>Strategies</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Load scripts asynchronously</li>
+    <li class="vf-list__item">Provide fallbacks for unavailable services</li>
+    <li class="vf-list__item">Audit dependency size and security posture</li>
+    <li class="vf-list__item">Wrap third-party calls with graceful error handling</li>
+  </ul>
+
+  <pre class="vf-code-example__pre"><code>window.addEventListener('load', async () =&gt; {
+  try {
+    const analytics = await import('./analytics.js');
+    analytics.init();
+  } catch {
+    console.warn('Analytics unavailable');
+  }
+});</code></pre>
+
+  <h4>Content Security Policy example (Nginx)</h4>
+  <pre class="vf-code-example__pre"><code>add_header Content-Security-Policy "
+  default-src 'self';
+  script-src 'self' https://cdn.jsdelivr.net https://www.googletagmanager.com;
+  style-src 'self' 'unsafe-inline';
+  img-src 'self' data: https://trusted-cdn.example.com;
+  connect-src 'self' https://api.example.com;
+  frame-ancestors 'none';
+  base-uri 'self';
+  form-action 'self';
+" always;</code></pre>
+
+  <h3 id="uploads">5. Secure uploads</h3>
+
+  <p>Uploads are high-risk and bandwidth-sensitive. Use chunked resumable transfer with strict validation and minimal auth overhead.</p>
+
+  <pre class="vf-code-example__pre"><code>async function uploadFile(file, token) {
+  const chunkSize = 1024 * 1024;
+  let offset = 0;
+
+  while (offset &lt; file.size) {
+    await fetch('/api/upload', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}` },
+      body: file.slice(offset, offset + chunkSize)
+    });
+    offset += chunkSize;
+  }
+}</code></pre>
+
+  <p><strong>Security checklist for uploads</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Validate file type using magic bytes, not only extension</li>
+    <li class="vf-list__item">Enforce file size limits at edge and backend</li>
+    <li class="vf-list__item">Store uploads outside web root</li>
+    <li class="vf-list__item">Randomise stored filenames</li>
+    <li class="vf-list__item">Use asynchronous malware scanning</li>
+    <li class="vf-list__item">Never pass raw uploaded filenames to filesystem operations</li>
+  </ul>
+
+  <h3 id="tradeoffs">6. Security and performance trade-offs</h3>
+
+  <p>Security controls such as token checks, cryptography, and logging can increase CPU and latency. LRO requires tuning for acceptable protection at lower resource cost.</p>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Prefer modern efficient cryptography implementations</li>
+    <li class="vf-list__item">Encrypt only sensitive data where full encryption is not required</li>
+    <li class="vf-list__item">Move heavy verification work server-side when feasible</li>
+    <li class="vf-list__item">Use client-side token checks only for UX optimisation, never as sole trust control</li>
+  </ul>
+
+  <pre class="vf-code-example__pre"><code>function isValidToken(token) {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.exp &gt; Date.now() / 1000;
+  } catch {
+    return false;
+  }
+}</code></pre>
+
+  <h2 id="metrics" class="vf-u-margin--0 vf-u-padding__top--400">Metrics and tools</h2>
+
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>HTTPS:</strong> TLS 1.3 + OCSP stapling + HTTP/2, target low handshake time</li>
+    <li class="vf-list__item"><strong>Authentication:</strong> small token payload, low verification overhead</li>
+    <li class="vf-list__item"><strong>Recovery:</strong> no workflow data loss during disconnects</li>
+    <li class="vf-list__item"><strong>Third-party scripts:</strong> no render-blocking dependencies</li>
+    <li class="vf-list__item"><strong>Uploads:</strong> resumable chunked transfer success rate</li>
+    <li class="vf-list__item"><strong>Headers and policy:</strong> strong security header score</li>
+  </ul>
+
+  <p><strong>Recommended tools:</strong> Lighthouse, WebPageTest, SSL Labs, securityheaders.com, CSP Evaluator, and platform load-testing tools.</p>
+
+  <h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400">Further reading</h2>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener noreferrer">OWASP Top 10</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://infosec.mozilla.org/guidelines/web_security" target="_blank" rel="noopener noreferrer">Mozilla Web Security Guidelines</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://web.dev/security/" target="_blank" rel="noopener noreferrer">web.dev Security</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.ssllabs.com/ssltest/" target="_blank" rel="noopener noreferrer">SSL Labs Server Test</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://securityheaders.com/" target="_blank" rel="noopener noreferrer">Security Headers Checker</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://csp-evaluator.withgoogle.com/" target="_blank" rel="noopener noreferrer">CSP Evaluator</a></li>
+  </ul>
 </article>

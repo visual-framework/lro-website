@@ -1,0 +1,397 @@
+<div class="vf-content">
+
+  <p>The Developer Supplement provides practical guidance for implementing LRO principles. It covers how to optimise web performance for low-resource environments and explains <em>why</em> each benchmark matters.</p>
+
+  <h3 id="dev-supplement-benchmarks" class="vf-u-padding__top--400">Technical benchmarks reference</h3>
+
+  <div style="overflow-x: auto;">
+    <table class="vf-table vf-table--striped">
+      <thead class="vf-table__header">
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" scope="col">Metric</th>
+          <th class="vf-table__heading" scope="col">Technical Benchmark</th>
+          <th class="vf-table__heading" scope="col">Tools</th>
+        </tr>
+      </thead>
+      <tbody class="vf-table__body">
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="3" scope="rowgroup">Loading &amp; Rendering</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Largest Contentful Paint (LCP)</td>
+          <td class="vf-table__cell">≤ 2.0s</td>
+          <td class="vf-table__cell">Lighthouse, WebPageTest</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">First Contentful Paint (FCP)</td>
+          <td class="vf-table__cell">≤ 1.5s</td>
+          <td class="vf-table__cell">Lighthouse</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Time to First Byte (TTFB)</td>
+          <td class="vf-table__cell">≤ 500ms</td>
+          <td class="vf-table__cell">WebPageTest, Chrome DevTools</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Total Blocking Time (TBT)</td>
+          <td class="vf-table__cell">≤ 200ms</td>
+          <td class="vf-table__cell">Lighthouse</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Speed Index</td>
+          <td class="vf-table__cell">≤ 3.0s</td>
+          <td class="vf-table__cell">WebPageTest</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">First CPU Idle</td>
+          <td class="vf-table__cell">≤ 3.5s</td>
+          <td class="vf-table__cell">Lighthouse</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Time to Interactive (TTI)</td>
+          <td class="vf-table__cell">≤ 5s</td>
+          <td class="vf-table__cell">Lighthouse</td>
+        </tr>
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="3" scope="rowgroup">Code &amp; Assets</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">JavaScript Bundle Size</td>
+          <td class="vf-table__cell">≤ 150 KB gzipped</td>
+          <td class="vf-table__cell">Lighthouse, Source Map Explorer</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Critical JS</td>
+          <td class="vf-table__cell">≤ 30 KB inline/async</td>
+          <td class="vf-table__cell">Chrome DevTools Coverage</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">CSS Bundle Size</td>
+          <td class="vf-table__cell">≤ 50 KB gzipped</td>
+          <td class="vf-table__cell">Chrome DevTools, PurgeCSS</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Critical CSS Inline</td>
+          <td class="vf-table__cell">≤ 15 KB</td>
+          <td class="vf-table__cell">Critical, Lighthouse</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Total Page Weight</td>
+          <td class="vf-table__cell">≤ 500 KB initial</td>
+          <td class="vf-table__cell">WebPageTest, PageSpeed Insights</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">HTTP Requests</td>
+          <td class="vf-table__cell">≤ 50 requests</td>
+          <td class="vf-table__cell">WebPageTest waterfall</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Third-Party Scripts</td>
+          <td class="vf-table__cell">≤ 3 scripts, ≤ 50 KB</td>
+          <td class="vf-table__cell">RequestMap, Lighthouse</td>
+        </tr>
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="3" scope="rowgroup">Images &amp; Media</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Image Size</td>
+          <td class="vf-table__cell">≤ 100 KB per image</td>
+          <td class="vf-table__cell">Squoosh, ImageOptim, Lighthouse</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Above-the-Fold Images</td>
+          <td class="vf-table__cell">≤ 3 images</td>
+          <td class="vf-table__cell">WebPageTest filmstrip</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Preferred Formats</td>
+          <td class="vf-table__cell">AVIF/WebP only</td>
+          <td class="vf-table__cell">Lighthouse</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Lazy Loading</td>
+          <td class="vf-table__cell">100% of non-critical images</td>
+          <td class="vf-table__cell">Chrome DevTools, Lighthouse</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Video Usage</td>
+          <td class="vf-table__cell">No autoplay, ≤ 1 MB preview</td>
+          <td class="vf-table__cell">Chrome DevTools, Manual Audit</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">SVGs (icons)</td>
+          <td class="vf-table__cell">≤ 5 KB each, inline</td>
+          <td class="vf-table__cell">Chrome DevTools</td>
+        </tr>
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="3" scope="rowgroup">Fonts</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Font Size</td>
+          <td class="vf-table__cell">≤ 50 KB per family</td>
+          <td class="vf-table__cell">WebPageTest, Lighthouse</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Max Families</td>
+          <td class="vf-table__cell">≤ 2</td>
+          <td class="vf-table__cell">Chrome DevTools</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Preload Critical Fonts</td>
+          <td class="vf-table__cell">Required</td>
+          <td class="vf-table__cell">Lighthouse</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Fallbacks Defined</td>
+          <td class="vf-table__cell">Required</td>
+          <td class="vf-table__cell">CSS Audit, Manual</td>
+        </tr>
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="3" scope="rowgroup">Design &amp; UI</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Animations</td>
+          <td class="vf-table__cell">Avoid GPU-heavy, no autoplay video</td>
+          <td class="vf-table__cell">Chrome DevTools Performance</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Reduced Motion Support</td>
+          <td class="vf-table__cell"><code>prefers-reduced-motion</code> honoured</td>
+          <td class="vf-table__cell">Manual, Lighthouse Accessibility</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Color Contrast</td>
+          <td class="vf-table__cell">WCAG AA (≥ 4.5:1)</td>
+          <td class="vf-table__cell">Axe, Lighthouse Accessibility</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Layout Stability (CLS)</td>
+          <td class="vf-table__cell">≤ 0.05</td>
+          <td class="vf-table__cell">Lighthouse, Chrome DevTools</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Tap Targets</td>
+          <td class="vf-table__cell">≥ 48px</td>
+          <td class="vf-table__cell">Axe, Chrome DevTools</td>
+        </tr>
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="3" scope="rowgroup">Resilience &amp; Usability</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Keyboard Navigation</td>
+          <td class="vf-table__cell">Fully supported</td>
+          <td class="vf-table__cell">Axe, Manual testing</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Text-first Mode</td>
+          <td class="vf-table__cell">Usable with CSS/JS off</td>
+          <td class="vf-table__cell">Manual testing</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Offline First (Service Worker)</td>
+          <td class="vf-table__cell">≤ 1 MB cache, fallback</td>
+          <td class="vf-table__cell">Lighthouse PWA, Workbox</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Graceful Degradation</td>
+          <td class="vf-table__cell">No crashes on 1 GB RAM devices</td>
+          <td class="vf-table__cell">Chrome DevTools Throttling</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Progressive Enhancement</td>
+          <td class="vf-table__cell">Core usable without JS</td>
+          <td class="vf-table__cell">Manual testing</td>
+        </tr>
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="3" scope="rowgroup">Network Efficiency</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Critical Rendering Path</td>
+          <td class="vf-table__cell">≤ 75 KB critical resources</td>
+          <td class="vf-table__cell">Lighthouse, WebPageTest</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Caching – HTML</td>
+          <td class="vf-table__cell">≤ 5 min TTL</td>
+          <td class="vf-table__cell">DevTools, WebPageTest</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Caching – Assets</td>
+          <td class="vf-table__cell">≥ 30 days TTL with versioning</td>
+          <td class="vf-table__cell">DevTools, WebPageTest</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="page-weight-requests" class="vf-u-padding__top--600">Page weight &amp; requests</h3>
+
+  <h4>1. Total page size ≤ 500 KB (initial load)</h4>
+  <p><strong>Why it matters:</strong> In low-bandwidth environments, every extra kilobyte directly impacts load time. A 2 MB site might take 30+ seconds on 2G, causing abandonment.</p>
+  <p><strong>How to achieve:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Compress images (WebP/AVIF preferred).</li>
+    <li class="vf-list__item">Enable Gzip/Brotli compression on the server.</li>
+    <li class="vf-list__item">Minify and tree-shake CSS &amp; JS.</li>
+    <li class="vf-list__item">Avoid large background images/videos on first load — load them lazily.</li>
+  </ul>
+
+  <h4>2. ≤ 50 HTTP requests on first load</h4>
+  <p><strong>Why it matters:</strong> Each request adds round-trip latency. On 3G, latency can be 400ms+ per request, so 100 requests may mean 40 seconds of waiting before content downloads.</p>
+  <p><strong>How to achieve:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Combine/minify CSS &amp; JS files where appropriate.</li>
+    <li class="vf-list__item">Use HTTP/2 or HTTP/3 (which handles multiple streams more efficiently).</li>
+    <li class="vf-list__item">Inline small critical assets (SVG icons, tiny CSS) instead of separate requests.</li>
+    <li class="vf-list__item">Defer analytics, ads, and third-party widgets until the main content has loaded.</li>
+  </ul>
+
+  <h4>3. Inline/preload critical CSS, defer non-essential JS</h4>
+  <p><strong>Why it matters:</strong> Browsers block rendering until they fetch and parse CSS &amp; JS. External and delayed critical resources mean users see a blank screen for longer.</p>
+  <p><strong>How to achieve:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Use tools like CriticalCSS or PurgeCSS to extract minimal CSS for inlining.</li>
+    <li class="vf-list__item">Add <code>&lt;link rel="preload"&gt;</code> for fonts and critical CSS.</li>
+    <li class="vf-list__item">Add <code>defer</code> or <code>async</code> attributes to script tags.</li>
+    <li class="vf-list__item">Lazy-load non-essential widgets, ads, or heavy scripts.</li>
+  </ul>
+
+  <h3 id="performance-metrics" class="vf-u-padding__top--600">Performance metrics</h3>
+
+  <h4>1. First Contentful Paint (FCP ≤ 2s on 3G)</h4>
+  <p>Time until the first piece of DOM content is rendered. Signals to the user that something is happening. Optimisation tips: minimise critical path resources, compress and preload fonts, use a fast CDN, reduce render-blocking CSS/JS.</p>
+
+  <h4>2. Largest Contentful Paint (LCP ≤ 2.5s)</h4>
+  <p>Time for the largest visible element to render. Measures when the main content is actually ready. Optimisation tips: optimise hero images, preload LCP assets, reduce TTFB below 600ms, avoid oversized images.</p>
+
+  <h4>3. Time to Interactive (TTI ≤ 5s on mid-tier device)</h4>
+  <p>Time until the page can reliably respond to user input. Optimisation tips: split code bundles, defer non-critical JavaScript, use web workers for heavy computations, minimise main thread work.</p>
+
+  <h4>4. Total Blocking Time (TBT ≤ 300ms)</h4>
+  <p>Total time between FCP and TTI where the main thread was blocked by long tasks (&gt;50ms). Optimisation tips: break long JS tasks into smaller chunks, use <code>requestIdleCallback</code> for background work, optimise third-party scripts.</p>
+
+  <h4>5. Cumulative Layout Shift (CLS ≤ 0.1)</h4>
+  <p>Measures how much visible content unexpectedly shifts during page load. Optimisation tips: always set <code>width/height</code> on images and video, preload fonts to avoid FOUT, avoid dynamically inserting DOM elements above existing content, reserve space for ads and embeds.</p>
+
+  <h3 id="javascript-resource-use" class="vf-u-padding__top--600">JavaScript &amp; resource use</h3>
+
+  <h4>1. JS bundle ≤ 150 KB gzipped (initial load)</h4>
+  <p><strong>Why it matters:</strong> Large bundles take longer to download on slow networks. Parsing and executing JS is CPU-intensive — low-tier devices may take seconds even after the download finishes.</p>
+  <p><strong>How to achieve:</strong> Tree-shaking, code splitting, lazy-loading non-critical features, replacing heavy frameworks with lighter alternatives (e.g., Preact instead of React, native JS where possible).</p>
+
+  <h4>2. No long tasks &gt; 50ms</h4>
+  <p><strong>Why it matters:</strong> Long tasks block the main thread, causing UI freezes, input delays, and jank — magnified on mid-tier devices.</p>
+  <p><strong>How to achieve:</strong> Break heavy computations into smaller chunks, use <code>requestIdleCallback</code> for non-urgent background work, offload CPU-heavy logic to Web Workers, reduce expensive DOM operations during load.</p>
+
+  <h4>3. Memory stable on 512 MB RAM devices</h4>
+  <p><strong>Why it matters:</strong> High memory usage causes frequent garbage collection and crashes on entry-level smartphones common in low-resource regions.</p>
+  <p><strong>How to achieve:</strong> Avoid memory leaks (detached DOM nodes, unremoved event listeners), use device-appropriate image sizes, keep JS variables and in-memory caches minimal.</p>
+
+  <h4>4. Core features work with JS disabled/partial load</h4>
+  <p><strong>Why it matters:</strong> On weak networks, JS files may timeout or fail. Accessibility tools and old browsers may not execute JS.</p>
+  <p><strong>How to achieve:</strong> Progressive enhancement — start with semantic HTML, layer JS enhancements. Ensure core navigation and content are server-rendered. Provide server-side fallbacks for forms, links, and routing.</p>
+
+  <h3 id="network-resilience" class="vf-u-padding__top--600">Network resilience</h3>
+
+  <h4>1. Test on slow 3G (400 kbps, 400ms RTT)</h4>
+  <p>Use Chrome DevTools → Network Throttling → Slow 3G. Use WebPageTest with Moto G4/3G profile. Add performance budgets that fail builds if page exceeds size/load thresholds.</p>
+
+  <h4>2. Progressive rendering: content visible early</h4>
+  <p>Inline critical HTML &amp; CSS (above-the-fold). Defer non-essential JS and images. Use skeleton screens or content placeholders. Stream HTML as chunks are ready rather than as one large response.</p>
+
+  <h4>3. Service worker caching for critical assets</h4>
+  <p>Use Workbox or manual service worker setup. Cache HTML shell + essential assets (CacheFirst strategy). Apply StaleWhileRevalidate for frequently updated resources (API calls). Keep the cache size small — avoid blindly caching everything.</p>
+
+  <h4>4. Retry/fallback for images &amp; data fetches</h4>
+  <p>For images: use <code>&lt;picture&gt;</code> with multiple formats/sizes and provide low-res placeholders as fallbacks. For fetches/API calls: implement retry logic with exponential backoff, show cached/offline data where possible, and gracefully degrade the UI ("content unavailable, try again").</p>
+
+  <h3 id="accessibility-usability" class="vf-u-padding__top--600">Accessibility &amp; usability</h3>
+
+  <h4>1. Keyboard-only navigation works</h4>
+  <p><strong>Why it matters:</strong> Many low-resource users rely on non-mouse input. Keyboard support also improves screen reader compatibility.</p>
+  <p><strong>How to achieve:</strong> Ensure focus styles are always visible, maintain logical tab order, provide skip-to-content links, and ensure interactive elements (menus, forms, modals) can be operated with keyboard only.</p>
+
+  <h4>2. Text accessible without images/CSS/JS</h4>
+  <p><strong>Why it matters:</strong> On poor connections, resources often fail to download. Text-first browsers, screen readers, and search crawlers rely on semantic HTML.</p>
+  <p><strong>How to achieve:</strong> Use semantic HTML tags (<code>&lt;h1&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;button&gt;</code>, <code>&lt;nav&gt;</code>), provide alt text for images, ensure text contrast is high enough without CSS, never hide essential content behind client-side rendering alone.</p>
+
+  <h4>3. Optional low-bandwidth mode (text-first)</h4>
+  <p><strong>Why it matters:</strong> Critical for users on 2G/3G, satellite internet, or expensive metered data.</p>
+  <p><strong>How to achieve:</strong> Offer a "Low-bandwidth mode" or "Text-only mode" toggle. Auto-detect via the <code>Save-Data</code> HTTP header. Use conditional loading to serve only core text and small assets in this mode.</p>
+
+  <h3 id="energy-device-constraints" class="vf-u-padding__top--600">Energy &amp; device constraints</h3>
+
+  <h4>1. Avoid autoplay video/animations on load</h4>
+  <p><strong>Why it matters:</strong> Videos and animations consume CPU, GPU, and bandwidth — on weak devices they cause lag, stutters, or crashes; on mobile they drain battery fast.</p>
+  <p><strong>How to achieve:</strong> Disable autoplay by default; use a static poster image instead of loading video immediately; prefer CSS transitions or SVG animations over heavy JS/Canvas effects; give users explicit "Play video" control.</p>
+
+  <h4>2. Minimal CPU/GPU-intensive tasks</h4>
+  <p><strong>Why it matters:</strong> Low-end devices have weak CPUs/GPUs, often without hardware acceleration. Heavy computation leads to high battery drain and poor responsiveness.</p>
+  <p><strong>How to achieve:</strong> Avoid infinite loops or constant polling; minimise reflows and repaints; avoid large shadows, blurs, or filters that trigger GPU acceleration; aim for a stable 30–60 FPS with minimal dropped frames.</p>
+
+  <h4>3. Works on low-end Android (emulator/device test)</h4>
+  <p><strong>Why it matters:</strong> The majority of users in low-resource regions browse on low-end Android phones. Sites that feel fine on MacBooks or flagship iPhones may be unusable on these devices.</p>
+  <p><strong>How to achieve:</strong> Test with Chrome DevTools → CPU throttling (4× or 6×) + network throttling. Use emulated Android Go devices (Moto E, Nokia C series, etc.). Run Lighthouse in simulated low-end hardware mode.</p>
+
+  <h3 id="testing-tooling" class="vf-u-padding__top--600">Testing &amp; tooling</h3>
+
+  <h4>1. Run Lighthouse with throttling (3G / mid-tier mobile)</h4>
+  <p>In Chrome DevTools → Lighthouse tab, set Network to Slow 3G (400 kbps, 400ms RTT) and CPU to 4× or 6× slowdown with Mobile emulation. Pay attention to FCP, LCP, TTI, CLS, and JavaScript bundle sizes.</p>
+
+  <h4>2. Run WebPageTest (2G/3G, Moto G4 profile)</h4>
+  <p>Configure WebPageTest with device Moto G4 (or similar), connection 2G/3G or custom bandwidth, and a location representative of your users (India, Africa, LATAM). Review waterfall charts for large/slow assets and use the filmstrip view to check how quickly content becomes visible.</p>
+
+  <h4>3. Monitor Core Web Vitals (PageSpeed Insights / Search Console)</h4>
+  <p>Run PageSpeed Insights regularly to compare lab vs field results. Use Search Console → Core Web Vitals report for long-term tracking. Segment performance by device type and region. Thresholds: FCP ≤ 2s, LCP ≤ 2.5s, CLS ≤ 0.1, TBT ≤ 300ms.</p>
+
+  <h3 id="measure-additional-metrics" class="vf-u-padding__top--600">How to measure additional metrics</h3>
+
+  <h4>Data Cost per Page Load</h4>
+  <p>Open Chrome DevTools → Network tab. Enable "Disable cache" and throttle to Slow 3G / 2G. Reload the page and check <em>Transferred</em> or <em>Total bytes</em>. Record: total MB downloaded (HTML + CSS + JS + images + fonts + APIs).</p>
+
+  <h4>Repeat Visit Data Usage</h4>
+  <p>Load page once, then reload with cache enabled. Check Network tab → Transferred size (excluding "from disk cache"). Record: KB transferred on second load.</p>
+
+  <h4>Image Bytes Ratio</h4>
+  <p>Filter the Network tab by <em>Img</em>. Sum image bytes and divide by total page bytes. Formula: <code>Image Bytes / Total Bytes × 100</code>.</p>
+
+  <h4>Partial Load Usability</h4>
+  <p>Disable JavaScript (DevTools → Settings → Disable JS). Reload and count total key content sections vs visible/usable sections. Formula: <code>Visible core sections / Total core sections × 100</code>.</p>
+
+  <h4>Retry Friendliness</h4>
+  <p>Throttle to Slow 3G, simulate a network drop, and observe auto-retries, error messages, and exponential backoff behaviour. Score: Yes / Partial / No.</p>
+
+  <h4>Peak Memory Usage</h4>
+  <p>Open Chrome Performance → Record → Reload page → Stop recording. Inspect the Memory graph. Record: peak MB usage.</p>
+
+  <h4>JS Execution Time</h4>
+  <p>Run Lighthouse and check Total Blocking Time and JS execution time. Or inspect the CPU flame chart in the Performance tab. Record: seconds of JS execution.</p>
+
+  <h4>DOM Node Count</h4>
+  <p>Run <code>document.getElementsByTagName('*').length</code> in the DevTools Console. Record: number of DOM nodes (target ≤ 800).</p>
+
+  <h4>CPU Wakeups per Minute</h4>
+  <p>In Chrome Performance, record an idle page for 1 minute and count CPU spikes. Record: wakeups/minute (target ≤ 5).</p>
+
+  <h4>Network Requests After Idle</h4>
+  <p>Load the page, wait 30–60 seconds, and observe new requests in the Network tab. Record: None / Minimal / Frequent.</p>
+
+  <h4>Old Browser Support</h4>
+  <p>Test on Android 8 / Chrome 80 in BrowserStack or Sauce Labs. Verify the page loads and core content is visible. Score: Full / Partial / Broken.</p>
+
+  <h4>No-JS Mode Coverage</h4>
+  <p>Disable JS, reload, and count visible content sections. Record: percentage (target ≥ 80%).</p>
+
+  <h4>Time to First Meaningful Text</h4>
+  <p>Run Lighthouse and observe First Contentful Paint, then validate visually. Record: seconds (target ≤ 1s).</p>
+
+  <h4>Blank Screen Time</h4>
+  <p>Run WebPageTest video capture and observe video frames until content appears. Record: milliseconds (target ≤ 500ms).</p>
+
+  <h4>Low-Data Mode Toggle</h4>
+  <p>Look for the toggle in the UI, test it, and verify a reduced payload. Score: Yes / Hidden / No.</p>
+
+  <h4>Data Usage Disclosure</h4>
+  <p>Trigger large content and observe whether a warning or message is displayed. Score: Always / Sometimes / Never.</p>
+
+</div>

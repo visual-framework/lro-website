@@ -1,0 +1,330 @@
+<div class="vf-content">
+
+  <p>The table below covers key website performance metrics. Each metric contributes based on its weightage. Weighted scores add up to the <strong>overall performance score: 0–300</strong>.</p>
+
+  <h3 class="vf-u-padding__top--400">Traffic light legend</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">🟢 <strong>Green — Excellent / Optimal Experience</strong> (270–300): Users perceive the site as fast, stable, and delightful. Maintain and monitor for regressions.</li>
+    <li class="vf-list__item">🟡 <strong>Amber — Acceptable / Needs Optimisation</strong> (150–269): Usable but friction is visible; users may notice lag or instability. Identify bottlenecks and prioritise fixes.</li>
+    <li class="vf-list__item">🔴 <strong>Red — Poor / At-Risk Experience</strong> (0–149): Users experience frustration — long waits, layout jumps, slow inputs. Immediate action required.</li>
+  </ul>
+
+  <div class="vf-u-padding__top--400" style="overflow-x: auto;">
+    <table class="vf-table vf-table--striped">
+      <thead class="vf-table__header">
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" scope="col">Metric</th>
+          <th class="vf-table__heading" scope="col">What it measures</th>
+          <th class="vf-table__heading" scope="col">Weightage</th>
+          <th class="vf-table__heading" scope="col">Score Bands</th>
+          <th class="vf-table__heading" scope="col">UX Relevance</th>
+        </tr>
+      </thead>
+      <tbody class="vf-table__body">
+
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="5" scope="rowgroup">Loading &amp; Rendering</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Largest Contentful Paint (LCP)</td>
+          <td class="vf-table__cell">The largest visible element (hero image, heading, etc.) renders within 2.5s. Reflects how quickly users see what they came for.</td>
+          <td class="vf-table__cell">20</td>
+          <td class="vf-table__cell">🟢 ≤2.5s<br>🟡 2.5–4s<br>🔴 &gt;4s</td>
+          <td class="vf-table__cell">Fast-loading content keeps visitors engaged and helps them access information without delay.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">First Contentful Paint (FCP)</td>
+          <td class="vf-table__cell">When the first visual element (text/image) appears — provides immediate feedback that the page is loading.</td>
+          <td class="vf-table__cell">10</td>
+          <td class="vf-table__cell">🟢 ≤1.8s<br>🟡 1.9–3s<br>🔴 &gt;3s</td>
+          <td class="vf-table__cell">Provides immediate visual feedback that the page is loading, creating a positive first impression.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Time to First Byte (TTFB)</td>
+          <td class="vf-table__cell">Time for the browser to receive the first byte from the server. Indicates backend or CDN efficiency.</td>
+          <td class="vf-table__cell">8</td>
+          <td class="vf-table__cell">🟢 ≤500ms<br>🟡 500–1000ms<br>🔴 &gt;1s</td>
+          <td class="vf-table__cell">Sets the foundation for all other performance metrics; a responsive server creates a smooth experience.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Total Blocking Time (TBT)</td>
+          <td class="vf-table__cell">How long the page is unresponsive during loading.</td>
+          <td class="vf-table__cell">12</td>
+          <td class="vf-table__cell">🟢 ≤200ms<br>🟡 200–600ms<br>🔴 &gt;600ms</td>
+          <td class="vf-table__cell">Ensures visitors can interact smoothly with buttons, links, and forms from the moment they appear.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Speed Index</td>
+          <td class="vf-table__cell">Measures how quickly visible content is displayed during loading — a smoothness indicator.</td>
+          <td class="vf-table__cell">8</td>
+          <td class="vf-table__cell">🟢 ≤3s<br>🟡 3–5s<br>🔴 &gt;5s</td>
+          <td class="vf-table__cell">Progressive, smooth loading creates a perception of speed that keeps users engaged and informed.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Interaction to Next Paint (INP)</td>
+          <td class="vf-table__cell">Time between user interaction (click/tap) and visible response. Shows how responsive the interface feels.</td>
+          <td class="vf-table__cell">7</td>
+          <td class="vf-table__cell">🟢 ≤200ms<br>🟡 201–500ms<br>🔴 &gt;500ms</td>
+          <td class="vf-table__cell">Instant feedback to clicks and taps builds confidence and makes the site feel professional and polished.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">First CPU Idle</td>
+          <td class="vf-table__cell">When the page is ready for basic interactions.</td>
+          <td class="vf-table__cell">5</td>
+          <td class="vf-table__cell">🟢 ≤3.5s<br>🟡 3.6–5s<br>🔴 &gt;5s</td>
+          <td class="vf-table__cell">Allows visitors to begin their tasks quickly and efficiently.</td>
+        </tr>
+
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="5" scope="rowgroup">Code &amp; Assets</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">JavaScript Bundle Size</td>
+          <td class="vf-table__cell">Total size of JavaScript files loaded.</td>
+          <td class="vf-table__cell">10</td>
+          <td class="vf-table__cell">🟢 ≤150KB<br>🟡 151–300KB<br>🔴 &gt;300KB</td>
+          <td class="vf-table__cell">Leaner code means faster processing and smoother interactions, particularly on mobile devices.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Critical JS</td>
+          <td class="vf-table__cell">Size of JavaScript needed for initial render.</td>
+          <td class="vf-table__cell">6</td>
+          <td class="vf-table__cell">🟢 ≤30KB<br>🟡 31–60KB<br>🔴 &gt;60KB</td>
+          <td class="vf-table__cell">Minimising essential scripts gets visitors to meaningful content faster.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">CSS Bundle Size</td>
+          <td class="vf-table__cell">Total size of style sheets loaded.</td>
+          <td class="vf-table__cell">8</td>
+          <td class="vf-table__cell">🟢 ≤50KB<br>🟡 51–100KB<br>🔴 &gt;100KB</td>
+          <td class="vf-table__cell">Streamlined styling ensures the design appears quickly and consistently.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Critical CSS Inline</td>
+          <td class="vf-table__cell">Amount of CSS embedded in the HTML.</td>
+          <td class="vf-table__cell">5</td>
+          <td class="vf-table__cell">🟢 ≤15KB<br>🟡 16–30KB<br>🔴 &gt;30KB</td>
+          <td class="vf-table__cell">The right balance ensures fast initial rendering while maintaining optimal performance.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Total Page Weight</td>
+          <td class="vf-table__cell">Combined size of all initial resources.</td>
+          <td class="vf-table__cell">15</td>
+          <td class="vf-table__cell">🟢 ≤500KB<br>🟡 501KB–1MB<br>🔴 &gt;1MB</td>
+          <td class="vf-table__cell">Lighter pages work beautifully on varied network conditions and help users conserve mobile data.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">HTTP Requests</td>
+          <td class="vf-table__cell">Number of separate resource requests made.</td>
+          <td class="vf-table__cell">5</td>
+          <td class="vf-table__cell">🟢 ≤50<br>🟡 51–100<br>🔴 &gt;100</td>
+          <td class="vf-table__cell">Fewer requests mean faster loading through improved network efficiency.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Third-Party Scripts</td>
+          <td class="vf-table__cell">External code from analytics, ads, etc.</td>
+          <td class="vf-table__cell">6</td>
+          <td class="vf-table__cell">🟢 ≤3 scripts / 50KB<br>🟡 moderate<br>🔴 excessive</td>
+          <td class="vf-table__cell">Controlled third-party code maintains the performance standards visitors expect.</td>
+        </tr>
+
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="5" scope="rowgroup">Images &amp; Media</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Image Size</td>
+          <td class="vf-table__cell">File size of individual images.</td>
+          <td class="vf-table__cell">12</td>
+          <td class="vf-table__cell">🟢 ≤100KB<br>🟡 101–250KB<br>🔴 &gt;250KB</td>
+          <td class="vf-table__cell">Optimised images deliver visual impact without compromising speed — one of the most effective improvements.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Above-the-Fold Images</td>
+          <td class="vf-table__cell">Number of images visible on initial load.</td>
+          <td class="vf-table__cell">5</td>
+          <td class="vf-table__cell">🟢 ≤3 images<br>🟡 4–6<br>🔴 &gt;6</td>
+          <td class="vf-table__cell">Focusing on essential visuals ensures visitors see meaningful content immediately.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Preferred Formats</td>
+          <td class="vf-table__cell">Use of modern image formats (WebP/AVIF).</td>
+          <td class="vf-table__cell">5</td>
+          <td class="vf-table__cell">🟢 100%<br>🟡 partial<br>🔴 none</td>
+          <td class="vf-table__cell">Next-generation formats deliver high-quality visuals at 20–30% smaller file sizes.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Lazy Loading</td>
+          <td class="vf-table__cell">Images load only when needed.</td>
+          <td class="vf-table__cell">7</td>
+          <td class="vf-table__cell">🟢 all<br>🟡 partial<br>🔴 none</td>
+          <td class="vf-table__cell">Smart loading prioritises visible content while conserving bandwidth and device resources.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Video Usage</td>
+          <td class="vf-table__cell">Video file sizes and autoplay settings.</td>
+          <td class="vf-table__cell">6</td>
+          <td class="vf-table__cell">🟢 ≤1MB preview<br>🟡 moderate<br>🔴 heavy</td>
+          <td class="vf-table__cell">Thoughtful video implementation works effectively across all devices and connection speeds.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">SVGs</td>
+          <td class="vf-table__cell">Use and optimisation of vector graphics.</td>
+          <td class="vf-table__cell">3</td>
+          <td class="vf-table__cell">🟢 ≤5KB<br>🟡 larger<br>🔴 too heavy</td>
+          <td class="vf-table__cell">Lightweight vectors scale perfectly on any screen while loading near-instantly.</td>
+        </tr>
+
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="5" scope="rowgroup">Fonts</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Font Size</td>
+          <td class="vf-table__cell">Total file size of web fonts.</td>
+          <td class="vf-table__cell">6</td>
+          <td class="vf-table__cell">🟢 ≤50KB<br>🟡 51–100KB<br>🔴 &gt;100KB</td>
+          <td class="vf-table__cell">Optimised fonts ensure beautiful typography renders quickly and consistently.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Max Families</td>
+          <td class="vf-table__cell">Number of different font families used.</td>
+          <td class="vf-table__cell">4</td>
+          <td class="vf-table__cell">🟢 ≤2<br>🟡 3–4<br>🔴 &gt;4</td>
+          <td class="vf-table__cell">Focused typography choices create visual consistency while maintaining fast load times.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Preload Critical Fonts</td>
+          <td class="vf-table__cell">Priority loading for essential fonts.</td>
+          <td class="vf-table__cell">3</td>
+          <td class="vf-table__cell">🟢 yes<br>🟡 partial<br>🔴 no</td>
+          <td class="vf-table__cell">Ensures headlines and key text appear instantly without jarring layout shifts.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Fallbacks Defined</td>
+          <td class="vf-table__cell">System font alternatives specified.</td>
+          <td class="vf-table__cell">3</td>
+          <td class="vf-table__cell">🟢 yes<br>🟡 partial<br>🔴 no</td>
+          <td class="vf-table__cell">Guarantees readable text at all times, even during slower font loading.</td>
+        </tr>
+
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="5" scope="rowgroup">Resilience &amp; Usability</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Keyboard Navigation</td>
+          <td class="vf-table__cell">Full support for keyboard-only users.</td>
+          <td class="vf-table__cell">5</td>
+          <td class="vf-table__cell">🟢 full<br>🟡 partial<br>🔴 none</td>
+          <td class="vf-table__cell">Welcomes the 15–20% of visitors who rely on keyboards or assistive technologies.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Text-first Mode</td>
+          <td class="vf-table__cell">Core content accessible without enhancements.</td>
+          <td class="vf-table__cell">6</td>
+          <td class="vf-table__cell">🟢 yes<br>🟡 partial<br>🔴 no</td>
+          <td class="vf-table__cell">Ensures the message reaches visitors even when images or scripts encounter loading issues.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Offline First</td>
+          <td class="vf-table__cell">Key assets cached for offline use.</td>
+          <td class="vf-table__cell">5</td>
+          <td class="vf-table__cell">🟢 yes<br>🟡 partial<br>🔴 no</td>
+          <td class="vf-table__cell">Provides a reliable experience even when network connections are unstable or intermittent.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Graceful Degradation</td>
+          <td class="vf-table__cell">Functionality on older/budget devices.</td>
+          <td class="vf-table__cell">5</td>
+          <td class="vf-table__cell">🟢 yes<br>🟡 partial<br>🔴 no</td>
+          <td class="vf-table__cell">Extends reach to visitors worldwide, regardless of their device capabilities.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Progressive Enhancement</td>
+          <td class="vf-table__cell">Core features work without JavaScript.</td>
+          <td class="vf-table__cell">5</td>
+          <td class="vf-table__cell">🟢 yes<br>🟡 partial<br>🔴 no</td>
+          <td class="vf-table__cell">Ensures universal access by making core functionality available to everyone.</td>
+        </tr>
+
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="5" scope="rowgroup">Network Efficiency</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Critical Rendering Path</td>
+          <td class="vf-table__cell">Number/size of resources blocking initial render.</td>
+          <td class="vf-table__cell">7</td>
+          <td class="vf-table__cell">🟢 ≤75KB<br>🟡 76–150KB<br>🔴 &gt;150KB</td>
+          <td class="vf-table__cell">Streamlined critical resources enable faster time to interactive and visible content.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Caching – HTML</td>
+          <td class="vf-table__cell">Short caching for HTML.</td>
+          <td class="vf-table__cell">3</td>
+          <td class="vf-table__cell">🟢 ≤5 min TTL<br>🟡 longer<br>🔴 none</td>
+          <td class="vf-table__cell">—</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Caching – Assets</td>
+          <td class="vf-table__cell">Cache assets for long periods.</td>
+          <td class="vf-table__cell">5</td>
+          <td class="vf-table__cell">🟢 ≥30 days<br>🟡 partial<br>🔴 none</td>
+          <td class="vf-table__cell">—</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Compression</td>
+          <td class="vf-table__cell">Gzip/Brotli enabled for text assets.</td>
+          <td class="vf-table__cell">5</td>
+          <td class="vf-table__cell">🟢 all<br>🟡 partial<br>🔴 none</td>
+          <td class="vf-table__cell">60–80% file size reduction delivers faster experiences without compromising content quality.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Protocols</td>
+          <td class="vf-table__cell">Modern protocol (HTTP/2+) for parallel requests.</td>
+          <td class="vf-table__cell">5</td>
+          <td class="vf-table__cell">🟢 yes<br>🟡 partial<br>🔴 no</td>
+          <td class="vf-table__cell">Enables parallel requests and faster resource delivery — a standard for modern web experiences.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">CDN Usage</td>
+          <td class="vf-table__cell">Content delivery network implementation.</td>
+          <td class="vf-table__cell">7</td>
+          <td class="vf-table__cell">🟢 yes<br>🟡 partial<br>🔴 no</td>
+          <td class="vf-table__cell">Reduces latency by serving content from geographically closer servers, benefiting global audiences.</td>
+        </tr>
+
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" colspan="5" scope="rowgroup">Testing Environments</th>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Network Simulation</td>
+          <td class="vf-table__cell">Test on slow 3G.</td>
+          <td class="vf-table__cell">5</td>
+          <td class="vf-table__cell">🟢 tested<br>🟡 partial<br>🔴 not tested</td>
+          <td class="vf-table__cell">Testing on slower networks ensures your site remains accessible for visitors in areas with limited connectivity.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Device Testing</td>
+          <td class="vf-table__cell">Test on low-end devices.</td>
+          <td class="vf-table__cell">5</td>
+          <td class="vf-table__cell">🟢 tested<br>🟡 partial<br>🔴 not tested</td>
+          <td class="vf-table__cell">Validating on budget devices guarantees all visitors enjoy a smooth experience regardless of hardware.</td>
+        </tr>
+        <tr class="vf-table__row">
+          <td class="vf-table__cell">Battery Usage</td>
+          <td class="vf-table__cell">Efficient use of mobile battery.</td>
+          <td class="vf-table__cell">3</td>
+          <td class="vf-table__cell">🟢 ≤2% / 5 min<br>🟡 moderate<br>🔴 heavy</td>
+          <td class="vf-table__cell">Efficient battery consumption shows respect for visitors' device resources, allowing them to browse longer.</td>
+        </tr>
+
+        <tr class="vf-table__row">
+          <th class="vf-table__heading" scope="row">Total Score</th>
+          <td class="vf-table__cell" colspan="4"><strong>~300 points</strong></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <p class="vf-u-padding__top--400">For technical details on these metrics and how to achieve the benchmarks, see the <a class="vf-link" href="#vf-tabs__section--developer-supplement"><strong>Developer supplement</strong></a> tab.</p>
+
+</div>

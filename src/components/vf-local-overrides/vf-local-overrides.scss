@@ -1,15 +1,799 @@
 // vf-local-overrides
 
-// **Thinking about deleting this file?**
-// If your component needs no CSS/Sass, we still recommend leaving the
-// scss files in place. As this is primarily a CSS framework, it is better to
-// leave the empty files so you know a file wasn't accidently omitted.
-// If you don't have any Sass, you can trim this block down to:
-// "This page was intentionally left blank"
-
-
 @import 'vf-local-overrides.variables.scss';
 
-.vf-local-overrides {
-  /* your settings here */
+// ============================================================
+// Global
+// ============================================================
+
+html {
+  scroll-behavior: smooth;
+}
+
+// :root {
+//   --lro-mobile-topbar-height: 88px;
+// }
+
+body {
+  margin: 0;
+}
+
+// Skip link
+// .skip {
+//   height: 1px;
+//   left: -10000px;
+//   overflow: hidden;
+//   position: absolute;
+//   top: auto;
+//   width: 1px;
+
+//   &:focus {
+//     height: auto;
+//     position: static;
+//     width: auto;
+//   }
+// }
+
+// ============================================================
+// VF component overrides
+// ============================================================
+
+.vf-logo {
+  .vf-logo__image { height: unset; }
+
+  .vf-text {
+    font-weight: 600;
+    color: #1a1c1a;
+    margin-bottom: 0;
+    margin-left: 0.5rem;
+  }
+}
+
+.vf-hero .vf-hero__kicker a {
+  border-bottom: none;
+  color: #3b6fb6;
+  text-decoration: none;
+}
+
+.vf-banner {
+  height: 3rem;
+  text-align: center;
+
+  &__content {
+    display: flex;
+  }
+}
+
+// .vf-minimal-footer .vf-logo__image {
+//   display: block;
+//   height: auto;
+// }
+
+// .vf-footer__logo-mission {
+//   display: flex;
+
+//   .vf-footer__notice {
+//     color: var(--vf-color--neutral--300);
+//   }
+// }
+
+// .vf-footer__link.vf-color--neutral--300 {
+//   &,
+//   &:visited,
+//   &:hover,
+//   &:focus,
+//   &:focus-visible {
+//     color: var(--vf-color--neutral--300);
+//   }
+// }
+
+// ============================================================
+// Search page results
+// ============================================================
+
+// #search-content {
+//   .vf-summary__meta {
+//     margin-top: 0.5rem;
+//   }
+
+//   .vf-search-results-summary {
+//     color: #1a1c1a;
+//     font-size: clamp(2rem, 5vw, 3.75rem);
+//     font-weight: 400;
+//     line-height: 1.1;
+//     margin: 0 0 1.5rem;
+//   }
+
+//   div[data-jplist-group] > article {
+//     border-bottom: 1px solid #d0d0ce;
+//     margin: 0;
+//     padding: 2rem 0;
+
+//     &:last-child {
+//       border-bottom: none;
+//     }
+//   }
+// }
+
+[data-vf-search-pagination] {
+  margin-bottom: 2rem;
+  margin-top: 4rem;
+
+  .vf-pagination__list {
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .vf-pagination__item {
+    align-self: center;
+    padding-left: 0;
+    padding-right: 0;
+
+    &--jump-back,
+    &--jump-forward {
+      border: none;
+    }
+
+    &--is-active .vf-pagination__label {
+      color: #1a1c1a;
+    }
+
+    &--is-disabled .vf-pagination__label {
+      display: none;
+    }
+  }
+
+  .vf-pagination__link,
+  .vf-pagination__label {
+    align-items: center;
+    color: #3b6fb6;
+    display: inline-flex;
+    font-size: 16px;
+    font-weight: 400;
+    justify-content: center;
+    line-height: 1.2;
+    padding: 14px;
+    text-decoration: none;
+  }
+
+  .vf-pagination__link {
+    &:hover,
+    &:focus-visible {
+      background: #f3f3f3;
+      color: #3b6fb6;
+      outline: none;
+      text-decoration: none;
+    }
+  }
+
+  .vf-pagination__icon svg {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+// ============================================================
+// TOC & lists
+// ============================================================
+
+.toc .vf-list__item {
+  margin-bottom: 0;
+}
+
+.toc .vf-list__item::marker,
+.fr .vf-list__item::marker {
+  color: #3b6fb6;
+}
+
+.vf-content {
+  ul.vf-list,
+  ol.vf-list {
+    padding-inline-start: 1.75rem;
+
+    > .vf-list__item {
+      color: #1a1c1a;
+      font-family: "IBM Plex Sans", Helvetica, Arial, sans-serif;
+      font-size: 19px;
+      font-weight: 400;
+      line-height: 1.421;
+      padding-inline-start: 0.5rem;
+    }
+  }
+}
+
+// ============================================================
+// Sidebar
+// ============================================================
+
+.lro-sidebar {
+  background-color: #f3f3f3;
+  height: 100vh;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: sticky;
+  scrollbar-gutter: stable;
+  top: 0;
+}
+
+.lro-sidebar__desktop {
+  display: block;
+  padding: 0.5rem 1rem 0 2rem;
+}
+
+// Shared scrollbar styling
+.lro-sidebar,
+.lro-mobile-panel--menu {
+  scrollbar-color: #9a9a96 #e8e8e6;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #e8e8e6;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #9a9a96;
+    border: 2px solid #e8e8e6;
+    border-radius: 8px;
+  }
+}
+
+// ============================================================
+// Mobile panel
+// ============================================================
+
+.lro-mobile-panel {
+  background-color: #f3f3f3;
+  border-bottom: 4px solid #68c7ac;
+  box-shadow: 0 18px 32px rgba(26, 28, 26, 0.12);
+  left: 0;
+  padding: 0 2rem;
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  &[hidden] {
+    display: none !important;
+  }
+}
+
+.lro-mobile-search-form {
+  margin: 0;
+  max-width: 100%;
+  padding: 1.25rem 1rem 2.25rem;
+
+  // .vf-form__label {
+  //   display: block;
+  //   font-size: 2.4rem;
+  //   font-weight: 400;
+  //   line-height: 1.1;
+  //   margin-bottom: 1.6rem;
+  // }
+
+  // .vf-form__input {
+  //   border: 1px solid #7e7e7e;
+  //   font-size: 1.05rem;
+  //   height: 4.1rem;
+  //   padding: 0.95rem 1rem;
+  // }
+
+  &__row {
+    align-items: center;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  &__submit {
+    top: 5px;
+    align-items: center;
+    background: #2e5ea7;
+    border-color: #2e5ea7;
+    display: inline-flex;
+    height: 3.5rem;
+    justify-content: center;
+    min-width: 3.5rem;
+    padding: 0;
+
+    svg {
+      display: block;
+      height: 24px;
+      width: 24px;
+    }
+  }
+}
+
+// ============================================================
+// Sidebar navigation
+// ============================================================
+
+.lro-sidebar-nav__list,
+.lro-nav-group__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lro-sidebar-nav__item {
+  margin: 0;
+}
+
+.lro-nav-group {
+  &[open] > .lro-nav-group__summary::after {
+    transform: rotate(180deg);
+  }
+
+  &__summary {
+    align-items: center;
+    color: #1a1c1a;
+    cursor: pointer;
+    display: grid;
+    // font-family: "IBM Plex Sans", Helvetica, Arial, sans-serif;
+    // font-size: 19px;
+    // font-weight: 400;
+    gap: 1rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+    line-height: 26.6px;
+    list-style: none;
+    padding: 0.5rem 0;
+    margin: 0;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::after {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.47 6.47a.75.75 0 0 1 1.06 0L8 8.94l2.47-2.47a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 0 1 0-1.06Z' fill='%231a1c1a'/%3E%3C/svg%3E");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 1rem 1rem;
+      content: "";
+      display: block;
+      height: 1rem;
+      transition: transform 0.2s ease;
+      width: 1rem;
+    }
+  }
+
+  &__list {
+    padding-bottom: 0.5rem;
+    padding-right: 2rem;
+  }
+
+  &__item {
+    margin: 0;
+  }
+}
+
+// Shared nav link styles
+.lro-nav-group__link,
+.lro-sidebar-nav__single {
+  color: #3b6fb6;
+  display: block;
+  text-decoration: none;
+  margin: 0;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: none;
+  }
+
+  &.is-current {
+    border-bottom: 4px solid var(--Blue-600, #3b6fb6);
+    color: #1a1c1a;
+  }
+}
+
+.lro-nav-group__link {
+  margin-left: 1rem;
+  padding: 0.5rem 0;
+}
+
+.lro-sidebar-nav__single {
+  color: #1a1c1a;
+  margin-left: 0;
+  padding: 0.5rem 0;
+  padding-right: 1.5rem;
+
+  &.is-current {
+    padding-left: 0.75rem;
+  }
+}
+
+// ============================================================
+// Desktop navigation menu
+// ============================================================
+
+.desktop-only-menu {
+  background-color: #f3f3f3;
+  border-bottom: 1px solid #e4e4e4;
+  display: flex !important;
+  margin: unset;
+  padding-left: 2rem;
+
+  .menu-link {
+    display: none;
+  }
+
+  ul.vf-navigation__list li {
+    position: relative;
+
+    &:last-child {
+      margin-bottom: 0 !important;
+      padding: 0;
+      position: absolute;
+      right: 1em;
+
+      a {
+        padding-bottom: 12px;
+        position: relative;
+        top: 8px;
+      }
+
+      svg {
+        margin-right: 8px;
+      }
+    }
+
+    a {
+      align-items: center;
+      margin: 0;
+      padding: 0;
+      text-decoration: none;
+
+      &::before {
+        bottom: 0;
+        content: "";
+        left: 0;
+        position: absolute;
+        right: 0;
+      }
+
+      &:hover {
+        text-decoration: none;
+
+        &::before {
+          border-bottom: 4px solid #373a36;
+        }
+      }
+
+      &.is-expanded {
+        &:focus::before  { border-bottom: 4px solid #3b6fb6; }
+        &:hover::before  { border-bottom: 4px solid #373a36; }
+      }
+    }
+  }
+}
+
+// Desktop search overlay
+.desktop-only {
+  // .vf-search-container {
+  //   background-image: url(https://acxngcvroo.cloudimg.io/v7/www.embl.org/files/wp-content/uploads/EMBL-EBI-Intranet-Background-DNA-scaled.jpg);
+
+  //   form {
+  //     margin: 0 auto;
+  //     padding-bottom: 12%;
+  //     padding-top: 12%;
+  //     width: 65%;
+  //   }
+  // }
+
+  .searchbar-content-section {
+    background-color: #f3f3f3;
+    padding: 78px 0 !important;
+
+    .vf-search__button {
+      margin-top: 5rem !important;
+    }
+  }
+
+  // .vf-form--search .vf-search__label {
+  //   font-family: "IBM Plex Sans", Helvetica, Arial, sans-serif;
+  //   font-size: 30px;
+  //   font-style: normal;
+  //   font-weight: 500;
+  //   line-height: 39px;
+  // }
+
+  .vf-mega-menu__content {
+    &__section .vf-form--search {
+      margin: 0 auto;
+      width: 55%;
+    }
+
+    .vf-summary-container {
+      padding: 0 1rem;
+    }
+  }
+}
+
+// ============================================================
+// Page layout
+// ============================================================
+
+.lro-page-layout {
+  align-items: start;
+  display: grid;
+  gap: 0;
+  grid-template-columns: 1fr 4fr;
+}
+
+.lro-main-content {
+  min-width: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.home-two-col-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.lro-breadcrumb__title {
+  font-weight: 600;
+}
+
+.vf-back-top--floating {
+  right: 0rem;
+}
+
+.lro-glossary ul.vf-list--inline {
+  padding-inline-start: unset;
+
+  li {
+    &:first-child {
+      padding-inline-start: 0rem;
+    }
+  }
+}
+
+// ============================================================
+// Media queries — Desktop (>= 1025px)
+// ============================================================
+
+@media (min-width: 1025px) {
+  .lro-page-layout {
+    grid-template-columns: 1fr 4fr;
+
+    &--with-empty-right {
+      grid-template-columns: 1fr 3fr 1fr;
+
+      .lro-sidebar { grid-column: 1; }
+
+      .lro-main-content {
+        grid-column: 2;
+        overflow: visible;
+      }
+    }
+  }
+
+  figure {
+    width: 75%;
+  }
+
+  // Measurement and testing: wide tables span into empty right track
+  .lro-measurement-testing-page .lro-page-layout--with-empty-right .lro-main-content {
+    grid-column: 2 / 4;
+    overflow: visible;
+  }
+}
+
+// ============================================================
+// Media queries — Tablet (769px to 1024px)
+// ============================================================
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .lro-page-layout {
+    grid-template-columns: 2fr 3fr;
+  }
+
+  .home-two-col-grid {
+    grid-template-columns: 1fr;//repeat(2, minmax(0, 1fr));
+  }
+
+  .lro-measurement-testing-page {
+    .lro-page-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .lro-sidebar {
+      max-height: none;
+      min-height: auto;
+      overflow: visible;
+      position: static;
+    }
+
+    .lro-main-content {
+      grid-column: 1;
+      overflow: visible;
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+
+    .vf-tabs-content {
+      .vf-tabs__section {
+        -webkit-overflow-scrolling: touch;
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: max-content;
+      }
+    }
+  }
+}
+
+// ============================================================
+// Media queries — Mobile (<= 768px)
+// ============================================================
+
+@media (max-width: 768px) {
+  .desktop-only,
+  .desktop-only-menu,
+  .lro-sidebar__desktop {
+    display: none !important;
+  }
+
+  // Prevent background scrolling when mobile panel is open
+  body.lro-mobile-panel-open {
+    overflow: hidden;
+  }
+
+// ============================================================
+// Mobile top bar
+// ============================================================
+
+  .lro-mobile-topbar {
+    align-items: stretch;
+    background-color: #f3f3f3;
+    display: none;
+    justify-content: space-between;
+    min-height: var(--lro-mobile-topbar-height);
+    padding: 2rem;
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 1200;
+    height: 44px;
+    &__brand {
+      align-items: center;
+      color: #1a1c1a;
+      display: inline-flex;
+      gap: 0.6rem;
+      min-width: 0;
+      // padding: 1.25rem 1.25rem 1.25rem 0;
+      text-decoration: none;
+
+      .vf-logo__image {
+        height: 2.1rem;
+        width: auto;
+      }
+
+      .vf-text {
+        font-weight: 500;
+      }
+    }
+
+    &__actions {
+      align-items: stretch;
+      display: flex;
+      flex-shrink: 0;
+      // padding: 1.25rem 0;
+    }
+
+    &__toggle {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      border-left: 1px solid #d0d0ce;
+      color: #1a1c1a;
+      display: inline-flex;
+      font-family: "IBM Plex Sans", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      justify-content: center;
+      padding: 0 1rem;
+      position: relative;
+
+      &.is-active::after {
+        background: #3b6fb6;
+        bottom: 0;
+        content: "";
+        height: 4px;
+        left: 50%;
+        position: absolute;
+        transform: translateX(-50%);
+        width: 32px;
+      }
+
+      &--icon {
+        padding-left: 0.9rem;
+        padding-right: 0.9rem;
+      }
+
+      svg {
+        display: block;
+        height: 22px;
+        width: 22px;
+      }
+    }
+  }
+
+  .lro-mobile-panel--menu {
+    padding: 0 2rem 2rem 2rem;
+  }
+  .lro-page-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .lro-main-content {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .lro-sidebar {
+    background: transparent;
+    height: unset;
+    max-height: none;
+    min-height: auto;
+    overflow: visible;
+    padding: 0;
+    position: static;
+  }
+
+  .lro-sidebar__mobile {
+    display: block;
+    min-height: 0;
+    position: static;
+  }
+
+  .lro-mobile-panel {
+    left: 0;
+    height: 100vh;//calc(100vh - var(--lro-mobile-topbar-height));
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: fixed;
+    right: 0;
+    scrollbar-gutter: stable;
+    top: 108px;//var(--lro-mobile-topbar-height);
+    z-index: 1190;
+  }
+
+  .lro-nav-group,
+  .lro-sidebar-nav__single {
+    border-bottom: 1px solid #d0d0ce;
+  }
+
+  .home-two-col-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .vf-summary-container.home-two-col-grid {
+    margin-left: 0 !important;
+  }
+
+  .searchbar-content-section .vf-form--search {
+    width: 93%;
+  }
+
+  .vf-search-container form {
+    padding-bottom: 15%;
+    padding-top: 15%;
+    width: 75%;
+  }
+}
+
+// ============================================================
+// Media queries — Hide mobile UI on desktop+ (>= 769px)
+// ============================================================
+
+@media (min-width: 769px) {
+  .lro-mobile-topbar,
+  .lro-sidebar__mobile {
+    display: none !important;
+  }
 }
