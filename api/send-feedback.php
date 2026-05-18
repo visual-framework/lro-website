@@ -18,61 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 header('Content-Type: application/json; charset=UTF-8');
 
-function jsonError(int $statusCode, string $message): void
-{
-    http_response_code($statusCode);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
     echo json_encode([
         'success' => false,
-        'error' => $message
+        'error' => 'Method not allowed.'
     ]);
     exit;
-}
-
-function getEnvValue(string $name): string
-{
-    $value = getenv($name);
-    if (is_string($value) && $value !== '') {
-        return trim($value);
-    }
-
-    if (isset($_SERVER[$name]) && $_SERVER[$name] !== '') {
-        return trim((string) $_SERVER[$name]);
-    }
-
-    return '';
-}
-
-function verifyHcaptchaToken(string $verifyUrl, string $secret, string $token, string $remoteIp = ''): bool
-{
-    $payload = [
-        'secret' => $secret,
-        'response' => $token,
-    ];
-
-    if ($remoteIp !== '') {
-        $payload['remoteip'] = $remoteIp;
-    }
-
-    $context = stream_context_create([
-        'http' => [
-            'method' => 'POST',
-            'header' => "Content-Type: application/x-www-form-urlencoded\r\n",
-            'content' => http_build_query($payload),
-            'timeout' => 10,
-        ]
-    ]);
-
-    $response = @file_get_contents($verifyUrl, false, $context);
-    if ($response === false) {
-        return false;
-    }
-
-    $decoded = json_decode($response, true);
-    return is_array($decoded) && !empty($decoded['success']);
-}
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    jsonError(405, 'Method not allowed.');
 }
 
 $rawInput = file_get_contents('php://input');
@@ -107,38 +59,17 @@ if ($subject === '') {
 }
 
 if ($message === '') {
-    jsonError(400, 'Message is required.');
-}
-
-$captchaToken = isset($payload['captchaToken']) ? trim((string) $payload['captchaToken']) : '';
-$hcaptchaSecret = getEnvValue('HCAPTCHA_SECRET');
-$hcaptchaVerifyUrl = getEnvValue('HCAPTCHA_VERIFY_URL');
-$hcaptchaVerifyUrl = $hcaptchaVerifyUrl !== '' ? $hcaptchaVerifyUrl : 'https://api.hcaptcha.com/siteverify';
-$requestHost = isset($_SERVER['HTTP_HOST']) ? strtolower((string) $_SERVER['HTTP_HOST']) : '';
-$remoteIp = isset($_SERVER['REMOTE_ADDR']) ? (string) $_SERVER['REMOTE_ADDR'] : '';
-$isLocalRequest = $requestHost === 'localhost'
-    || $requestHost === '127.0.0.1'
-    || str_starts_with($requestHost, 'localhost:')
-    || str_starts_with($requestHost, '127.0.0.1:')
-    || $remoteIp === '127.0.0.1'
-    || $remoteIp === '::1';
-
-if (!$isLocalRequest) {
-    if ($hcaptchaSecret === '') {
-        jsonError(500, 'Captcha is not configured.');
-    }
-
-    if ($captchaToken === '') {
-        jsonError(400, 'Captcha token is required.');
-    }
-
-    if (!verifyHcaptchaToken($hcaptchaVerifyUrl, $hcaptchaSecret, $captchaToken, $remoteIp)) {
-        jsonError(400, 'Captcha verification failed.');
-    }
+    http_response_code(400);
+    echo json_encode([
+        'success' => false,
+        'error' => 'Message is required.'
+    ]);
+    exit;
 }
 
 $sanitizedSubject = preg_replace('/[\r\n]+/', ' ', $subject);
 $siteHost = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^A-Za-z0-9.-]/', '', $_SERVER['HTTP_HOST']) : 'localhost';
+// $fromAddress = 'no-reply@' . ($siteHost !== '' ? $siteHost : 'localhost');
 $fromAddress = "no-reply@ebi.ac.uk";
 
 $headers = [
@@ -152,7 +83,12 @@ $mailto = implode(',', $to);
 // Send email
 $sent = mail($mailto, $sanitizedSubject, $message, implode("\r\n", $headers));
 if (!$sent) {
-    jsonError(500, 'Failed to send email.');
+    http_response_code(500);
+    echo json_encode([
+        'success' => false,
+        'error' => 'Failed to send email.'
+    ]);
+    exit;
 }
 
 echo json_encode([
