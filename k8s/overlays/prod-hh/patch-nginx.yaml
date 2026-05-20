@@ -23,6 +23,8 @@ spec:
               value: "pg"
             - name: SMTP_HOST
               value: "hh-smtp.ebi.ac.uk"
+            - name: SMTP_PORT
+              value: "25"
             - name: HTTP_PROXY
               value: "http://pg-wwwcache.ebi.ac.uk:3128"
             - name: HTTPS_PROXY

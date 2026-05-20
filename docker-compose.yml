@@ -23,12 +23,12 @@ services:
     container_name: ${PROJECT_NAME_SANITISED}-phpfpm-service
     environment:
       PHP_SENDMAIL_PATH: '"/usr/bin/dos2unix -u | /usr/sbin/ssmtp -t -f"'
-      SSMTP_MAILHUB: mailhog:1025
+      SMTP_HOST: "${PROJECT_NAME_SANITISED}_mailhog"
+      SMTP_PORT: 1025
       ENV: ${ENVIRONMENT:-dev}
     volumes:
       # Same API directory mounted here
       - ./api/:/var/www/html/api:rw
-      - ./docker-assets/conf.d/msmtprc:/etc/msmtprc
     expose:
       - "9000"
 

@@ -2,7 +2,7 @@ defaults
 auth           off
 tls            off
 host {{SMTP_HOST}}
-port 25
+port {{SMTP_PORT}}
 from no-reply@ebi.ac.uk
 logfile /dev/stdout
 
