@@ -1,5 +1,3 @@
-import "@hcaptcha/vanilla-hcaptcha";
-
 // Detect environment once
 const hostname = typeof window !== "undefined" ? window.location.hostname : "";
 const IS_LOCALHOST =
@@ -12,8 +10,10 @@ const INDEX_URL = "https://wwwdev.ebi.ac.uk/web-optimisation-framework/";
 
 // Build API URL dynamically
 const FEEDBACK_API_URL = IS_LOCALHOST
-  ? `http://localhost:3333/api/send-feedback.php`
+  ? `${window.location.origin}/web-optimisation-framework/api/send-feedback.php`
   : `${INDEX_URL.replace(/\/$/, "")}/api/send-feedback.php`;
+
+const HCAPTCHA_SCRIPT_URL = "https://js.hcaptcha.com/1/api.js?render=explicit";
 
 // Small utility helpers
 const text = (el) => (el?.textContent || "").trim();
@@ -39,29 +39,68 @@ const bindBannerDismiss = (bannerEl) => {
   btn?.addEventListener("click", () => hideBanner(bannerEl));
 };
 
-const resetCaptcha = (captchaEl) => captchaEl?.reset?.();
+const resetCaptcha = (widgetId) => {
+  if (typeof widgetId === "number" && window.hcaptcha?.reset) {
+    window.hcaptcha.reset(widgetId);
+  }
+};
 
-async function ensureHcaptchaLoaded() {
+const getCaptchaSitekey = (el) => (el?.dataset?.sitekey || "").trim();
+
+let hcaptchaLoadPromise = null;
+
+// Load captcha script once
+function ensureHcaptchaLoaded() {
   if (IS_LOCALHOST) {
-    return true;
+    return Promise.resolve(null);
   }
 
-  await customElements.whenDefined("h-captcha");
-  return true;
-}
-
-function extractCaptchaToken(event) {
-  const detail = event?.detail;
-
-  if (typeof detail === "string") {
-    return detail;
+  if (window.hcaptcha?.render) {
+    return Promise.resolve(window.hcaptcha);
   }
 
-  if (detail && typeof detail.token === "string") {
-    return detail.token;
+  if (hcaptchaLoadPromise) {
+    return hcaptchaLoadPromise;
   }
 
-  return "";
+  const resolveScript = (resolve, reject) => {
+    if (window.hcaptcha?.render) {
+      resolve(window.hcaptcha);
+      return;
+    }
+
+    reject(new Error("Captcha API unavailable"));
+  };
+
+  const existing = document.querySelector('[data-hcaptcha-api]');
+  if (existing) {
+    hcaptchaLoadPromise = new Promise((resolve, reject) => {
+      if (window.hcaptcha?.render) {
+        resolve(window.hcaptcha);
+        return;
+      }
+
+      existing.addEventListener("load", () => resolveScript(resolve, reject), { once: true });
+      existing.addEventListener("error", () => reject(new Error("Captcha load failed")), { once: true });
+    });
+
+    return hcaptchaLoadPromise;
+  }
+
+  hcaptchaLoadPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = HCAPTCHA_SCRIPT_URL;
+    script.async = true;
+    script.defer = true;
+    script.dataset.hcaptchaApi = "true";
+
+    script.addEventListener("load", () => resolveScript(resolve, reject), { once: true });
+    script.addEventListener("error", () => reject(new Error("Captcha load failed")), { once: true });
+
+    document.head.appendChild(script);
+  });
+
+  return hcaptchaLoadPromise;
 }
 
 // API call
@@ -87,25 +126,19 @@ function postFeedback(payload) {
 }
 
 // Shared submit handler creator (reduces duplication)
-function handleCaptchaFlow({ captcha, banner, onSuccess, onError }) {
+function handleCaptchaFlow({ captchaContainer, banner, onSuccess, onError }) {
   let pending = null;
-  let bound = false;
+  let widgetId = null;
+  let widgetPromise = null;
 
   const handleError = (message = "Captcha verification failed.") => {
     setBanner(banner, "error", message);
     pending = null;
-    resetCaptcha(captcha);
+    resetCaptcha(widgetId);
   };
 
-  const handleVerified = async (event) => {
+  const handleVerified = async (captchaToken) => {
     if (!pending) return;
-
-    const captchaToken = extractCaptchaToken(event);
-
-    if (!captchaToken) {
-      handleError("Captcha verification failed.");
-      return;
-    }
 
     try {
       await postFeedback({
@@ -117,28 +150,56 @@ function handleCaptchaFlow({ captcha, banner, onSuccess, onError }) {
       onError();
     } finally {
       pending = null;
-      resetCaptcha(captcha);
+      resetCaptcha(widgetId);
     }
   };
 
-  async function prepareCaptcha() {
+  async function prepareWidget() {
     if (IS_LOCALHOST) {
       return true;
     }
 
-    try {
-      await ensureHcaptchaLoaded();
-
-      if (typeof captcha.execute === "function") {
-        return true;
-      }
-
-      handleError("Captcha not ready. Try again.");
-      return false;
-    } catch {
-      handleError("Captcha failed to load.");
-      return false;
+    if (widgetId !== null) {
+      return true;
     }
+
+    if (widgetPromise) {
+      return widgetPromise;
+    }
+
+    widgetPromise = ensureHcaptchaLoaded()
+      .then((hcaptcha) => {
+        const sitekey = getCaptchaSitekey(captchaContainer);
+
+        if (!sitekey) {
+          throw new Error("Captcha is not configured.");
+        }
+
+        if (widgetId !== null) {
+          return true;
+        }
+
+        widgetId = hcaptcha.render(captchaContainer, {
+          sitekey,
+          size: "invisible",
+          callback: handleVerified,
+          "error-callback": () => handleError(),
+          "expired-callback": () => handleError("Captcha expired. Try again.")
+        });
+
+        return true;
+      })
+      .catch((error) => {
+        handleError(error.message === "Captcha is not configured." ? error.message : "Captcha failed to load.");
+        return false;
+      })
+      .finally(() => {
+        if (widgetId === null) {
+          widgetPromise = null;
+        }
+      });
+
+    return widgetPromise;
   }
 
   return {
@@ -147,7 +208,7 @@ function handleCaptchaFlow({ captcha, banner, onSuccess, onError }) {
     },
 
     async prepare() {
-      return prepareCaptcha();
+      return prepareWidget();
     },
 
     async trigger() {
@@ -168,29 +229,20 @@ function handleCaptchaFlow({ captcha, banner, onSuccess, onError }) {
         }
       }
 
-      const ready = await prepareCaptcha();
-      if (!ready) {
+      const ready = await prepareWidget();
+      if (!ready || widgetId === null || !window.hcaptcha?.execute) {
         setBanner(banner, "error", "Captcha not ready. Try again.");
-        resetCaptcha(captcha);
+        resetCaptcha(widgetId);
         return false;
       }
 
-      captcha.execute();
+      window.hcaptcha.execute(widgetId);
       return true;
     },
 
     reset() {
       pending = null;
-      resetCaptcha(captcha);
-    },
-
-    bind() {
-      if (bound) return;
-      bound = true;
-
-      captcha.addEventListener("verified", handleVerified);
-      captcha.addEventListener("error", () => handleError());
-      captcha.addEventListener("expired", () => handleError("Captcha expired. Try again."));
+      resetCaptcha(widgetId);
     }
   };
 }
@@ -203,14 +255,14 @@ function initFrameworkFeedback() {
   const textarea = document.getElementById("framework-feedback");
   const validation = document.querySelector(".framework-feedback-validation-msg");
   const banner = document.getElementById("framework-feedback-banner");
-  const captcha = document.getElementById("framework-feedback-captcha");
+  const captchaContainer = document.getElementById("framework-feedback-captcha");
 
-  if (!trigger || !form || !textarea || !captcha) return;
+  if (!trigger || !form || !textarea || !captchaContainer) return;
 
   bindBannerDismiss(banner);
 
   const flow = handleCaptchaFlow({
-    captcha,
+    captchaContainer,
     banner,
     onSuccess: () => {
       setBanner(banner, "success", "Feedback submitted successfully.");
@@ -224,8 +276,6 @@ function initFrameworkFeedback() {
       flow.reset();
     }
   });
-
-  flow.bind();
 
   trigger.addEventListener("click", (e) => {
     e.preventDefault();
@@ -276,14 +326,14 @@ function initArticleFeedback() {
   const textarea = document.getElementById("article-feedback");
   const validation = document.querySelector(".article-feedback-validation-msg");
   const banner = document.getElementById("feedback-response-banner");
-  const captcha = document.getElementById("article-feedback-captcha");
+  const captchaContainer = document.getElementById("article-feedback-captcha");
 
-  if (!form || !textarea || !captcha) return;
+  if (!form || !textarea || !captchaContainer) return;
 
   bindBannerDismiss(banner);
 
   const flow = handleCaptchaFlow({
-    captcha,
+    captchaContainer,
     banner,
     onSuccess: () => {
       setBanner(banner, "success", "Feedback submitted successfully.");
@@ -295,8 +345,6 @@ function initArticleFeedback() {
       flow.reset();
     }
   });
-
-  flow.bind();
 
   textarea.addEventListener("focus", () => {
     void flow.prepare();
