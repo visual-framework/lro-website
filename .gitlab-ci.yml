@@ -44,7 +44,9 @@ stages:
 
 # Global adjustments for included templates:
 semgrep-sast:
-  extends: .security_scan_rules
+  extends:
+    - .sast-analyzer
+    - .security_scan_rules
 
 gemnasium-dependency_scanning:
   extends:
@@ -52,9 +54,6 @@ gemnasium-dependency_scanning:
     - .security_scan_rules
 
 secret_detection: # Crucial: Hyphen instead of underscore fixes the "/analyzer not found" crash
-  extends: .security_scan_rules
-
-dependency_scanning:
   extends: .security_scan_rules
 
 kics-iac-sast:
