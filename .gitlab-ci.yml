@@ -46,7 +46,7 @@ stages:
 sast:
   extends: .security_scan_rules
 
-secret-detection: # Crucial: Hyphen instead of underscore fixes the "/analyzer not found" crash
+secret_detection: # Crucial: Hyphen instead of underscore fixes the "/analyzer not found" crash
   extends: .security_scan_rules
 
 dependency_scanning:
