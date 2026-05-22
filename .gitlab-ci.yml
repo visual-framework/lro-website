@@ -36,12 +36,11 @@ stages:
     - if: '$CI_COMMIT_REF_NAME == "master"'
 
 ####################################
-# SECURITY SCANNING CUSTOMIZATIONS
+# SECURITY SCANNING OVERRIDES
 ####################################
 
-# SAST, Secret Detection, Dependency Scanning, and IaC templates create 
-# hidden jobs (e.g., semgrep-sast). To alter their stage or rules globally,
-# use the documented global override variables or extend the specific analyzer jobs.
+# We use multi-inheritance arrays [template_job, rule_set] so we don't
+# overwrite the internal script properties defined by GitLab's core templates.
 
 # Global adjustments for included templates:
 sast:
@@ -53,8 +52,10 @@ secret-detection: # Crucial: Hyphen instead of underscore fixes the "/analyzer n
 dependency_scanning:
   extends: .security_scan_rules
 
-kics-iac-sast:  # Explicitly mapped here to pull it out of 'test' and push it into 'security-scan'
-  extends: .security_scan_rules
+kics-iac-sast:
+  extends: 
+    - iac-sast
+    - .security_scan_rules
 
 before_script:
   - echo "Loading .env file..."     # Inform about loading environment variables
