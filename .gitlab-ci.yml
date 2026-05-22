@@ -47,7 +47,9 @@ semgrep-sast:
   extends: .security_scan_rules
 
 gemnasium-dependency_scanning:
-  extends: .security_scan_rules
+  extends:
+    - dependency_scanning
+    - .security_scan_rules
 
 secret_detection: # Crucial: Hyphen instead of underscore fixes the "/analyzer not found" crash
   extends: .security_scan_rules
