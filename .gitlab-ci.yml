@@ -5,6 +5,10 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
   DOCKER_DRIVER: overlay2
   GIT_STRATEGY: fetch
+  # Dependency scanning
+  DS_EXCLUDED_PATHS: ".git, vendor/bundle"
+  # SAST + IaC scanning
+  SAST_EXCLUDED_PATHS: "node_modules, vendor, .git, dist, build, public/core, public/modules/contrib"
 
 before_script:
   - echo "Loading .env file..."     # Inform about loading environment variables
@@ -73,36 +77,6 @@ container_scanning_nginx:
     - if: '$CI_COMMIT_TAG'
       variables:
         CS_IMAGE: "$CI_REGISTRY/$CI_PROJECT_PATH:$DOCKER_PROJECT_NAME-nginx-$CI_COMMIT_SHORT_SHA-$CI_PIPELINE_ID"
-
-# ─────────────────────────────────────────────
-# DEPENDENCY SCANNING — scoped, exclude vendored noise
-# ─────────────────────────────────────────────
-dependency_scanning:
-  stage: scan
-  variables:
-    DS_EXCLUDED_PATHS: ".git, vendor/bundle"
-
-# ─────────────────────────────────────────────
-# SAST — exclude build artefacts and vendor dirs
-# ─────────────────────────────────────────────
-sast:
-  stage: scan
-  variables:
-    SAST_EXCLUDED_PATHS: "node_modules, vendor, .git, dist, build, public/core, public/modules/contrib"
-
-# ─────────────────────────────────────────────
-# SECRET DETECTION — catches .env leaks, API keys, tokens
-# ─────────────────────────────────────────────
-secret_detection:
-  stage: scan
-
-# ─────────────────────────────────────────────
-# IaC SCANNING — scans your Dockerfiles + k8s/ manifests
-# ─────────────────────────────────────────────
-kics-iac-sast:
-  stage: scan
-  variables:
-    SAST_EXCLUDED_PATHS: "node_modules, vendor"
 
 ####################################
 # BUILD
