@@ -22,7 +22,7 @@ before_script:
 
 stages:
   - build
-  - scan        # ← new: all security scanning runs here, after build
+  - security-scan        # ← new: all security scanning runs here, after build
   - deploy
 
 # ─────────────────────────────────────────────
@@ -53,7 +53,7 @@ include:
 
 # Override the default container_scanning job to scan the PHP-FPM image
 container_scanning:
-  stage: scan
+  stage: security-scan
   needs: [build_dev]   # runs after dev build on master; tag builds handled below
   rules:
     - if: '$CI_COMMIT_REF_NAME == "master"'
@@ -77,6 +77,13 @@ container_scanning_nginx:
     - if: '$CI_COMMIT_TAG'
       variables:
         CS_IMAGE: "$CI_REGISTRY/$CI_PROJECT_PATH:$DOCKER_PROJECT_NAME-nginx-$CI_COMMIT_SHORT_SHA-$CI_PIPELINE_ID"
+
+sast:
+  stage: security-scan
+secret_detection:
+  stage: security-scan
+dependency_scanning:
+  stage: security-scan
 
 ####################################
 # BUILD
