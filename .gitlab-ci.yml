@@ -21,13 +21,19 @@ include:
   - template: Jobs/Secret-Detection.gitlab-ci.yml
   - template: Jobs/SAST-IaC.gitlab-ci.yml
 
+stages:
+  - build
+  - test
+  - security-scan        # ← new: all security scanning runs here, after build
+  - deploy
+
 ####################################
 # GLOBAL TEMPLATE FOR WORKFLOW RULES
 ####################################
 .security_scan_rules:
+  stage: security-scan  # Forces extended jobs into your custom stage globally
   rules:
     - if: '$CI_COMMIT_REF_NAME == "master"'
-    # - if: '$CI_COMMIT_TAG'
 
 ####################################
 # SECURITY SCANNING CUSTOMIZATIONS
@@ -39,20 +45,16 @@ include:
 
 # Global adjustments for included templates:
 sast:
-  stage: security-scan
   extends: .security_scan_rules
 
-secret_detection:
-  stage: security-scan
+secret-detection: # Crucial: Hyphen instead of underscore fixes the "/analyzer not found" crash
   extends: .security_scan_rules
 
 dependency_scanning:
-  stage: security-scan
   extends: .security_scan_rules
 
-# kics-iac-sast:
-#   stage: security-scan
-#   extends: .security_scan_rules
+kics-iac-sast:  # Explicitly mapped here to pull it out of 'test' and push it into 'security-scan'
+  extends: .security_scan_rules
 
 before_script:
   - echo "Loading .env file..."     # Inform about loading environment variables
@@ -60,27 +62,13 @@ before_script:
   - source ./.env                  # Load environment variables from .env file
   - set +a                         # Stop exporting all variables
   - export CI_COMMIT_SHA_SHORT=${CI_COMMIT_SHA::8}    # Shorten commit SHA for tagging
-  # - export IMAGE_NGINX=$CI_REGISTRY/$CI_PROJECT_PATH:$DOCKER_PROJECT_NAME-nginx-$CI_COMMIT_SHORT_SHA-$CI_PIPELINE_ID     # Tag for NGINX image
-  # - export IMAGE_PHP_FPM=$CI_REGISTRY/$CI_PROJECT_PATH:$DOCKER_PROJECT_NAME-php-fpm-$CI_COMMIT_SHORT_SHA-$CI_PIPELINE_ID # Tag for PHP-FPM image
-
-stages:
-  - build
-  - test
-  - security-scan        # ← new: all security scanning runs here, after build
-  - deploy
 
 php_container_scanning:
   extends: [container_scanning, .security_scan_rules]
   stage: security-scan
   needs: [build_dev]
-  rules:
-    - if: '$CI_COMMIT_REF_NAME == "master"'
-      variables:
-        CS_IMAGE: "$IMAGE_PHP_FPM"
-    - if: '$CI_COMMIT_TAG'
-      variables:
-        CS_IMAGE: "$IMAGE_PHP_FPM"
   variables:
+    CS_IMAGE: "$IMAGE_PHP_FPM"
     CS_SEVERITY_THRESHOLD: "HIGH"
     CS_REGISTRY_USER: "gitlab-ci-token"
     CS_REGISTRY_PASSWORD: "$CI_JOB_TOKEN"
@@ -89,13 +77,11 @@ nginx_container_scanning:
   extends: [container_scanning, .security_scan_rules]  
   stage: security-scan
   needs: [build_dev]
-  rules:
-    - if: '$CI_COMMIT_REF_NAME == "master"'
-      variables:
-        CS_IMAGE: $IMAGE_NGINX
-    - if: '$CI_COMMIT_TAG'
-      variables:
-        CS_IMAGE: $IMAGE_NGINX
+  variables:
+    CS_IMAGE: "$IMAGE_NGINX"
+    CS_SEVERITY_THRESHOLD: "HIGH"
+    CS_REGISTRY_USER: "gitlab-ci-token"
+    CS_REGISTRY_PASSWORD: "$CI_JOB_TOKEN"
 
 
 ####################################
