@@ -1,5 +1,4 @@
 # This script runs on gitlab.ebi.ac.uk
-# https://gitlab.ebi.ac.uk/emblorg/vf-core-mirror
 
 variables:
   # set secrets in Settings -> Pipelines -> Secret Variables
@@ -19,7 +18,91 @@ before_script:
 
 stages:
   - build
+  - scan        # ← new: all security scanning runs here, after build
   - deploy
+
+# ─────────────────────────────────────────────
+# SECURITY SCANNING TEMPLATES
+# ─────────────────────────────────────────────
+include:
+  # Dependency vulnerability scanning (composer, npm, yarn, etc.)
+  # Updated from legacy path; v2 is the current stable version
+  - template: Jobs/Dependency-Scanning.v2.gitlab-ci.yml
+
+  # Container / Docker image scanning (Trivy-powered)
+  - template: Jobs/Container-Scanning.gitlab-ci.yml
+
+  # Static Application Security Testing (source code analysis)
+  - template: Jobs/SAST.gitlab-ci.yml
+
+  # Secret & credential leak detection (.env, API keys, tokens)
+  - template: Jobs/Secret-Detection.gitlab-ci.yml
+
+  # IaC misconfiguration scanning (Dockerfiles, K8s manifests)
+  - template: Security/SAST-IaC.gitlab-ci.yml
+
+# ─────────────────────────────────────────────
+# CONTAINER SCANNING — scan BOTH built images
+# GitLab's template only scans one image per job,
+# so we define two jobs: one per image.
+# ─────────────────────────────────────────────
+
+# Override the default container_scanning job to scan the PHP-FPM image
+container_scanning:
+  stage: scan
+  needs: [build_dev]   # runs after dev build on master; tag builds handled below
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master"'
+      variables:
+        CS_IMAGE: "$CI_REGISTRY/$CI_PROJECT_PATH:$DOCKER_PROJECT_NAME-php-fpm-$CI_COMMIT_SHORT_SHA-$CI_PIPELINE_ID"
+    - if: '$CI_COMMIT_TAG'
+      variables:
+        CS_IMAGE: "$CI_REGISTRY/$CI_PROJECT_PATH:$DOCKER_PROJECT_NAME-php-fpm-$CI_COMMIT_SHORT_SHA-$CI_PIPELINE_ID"
+  variables:
+    CS_SEVERITY_THRESHOLD: "HIGH"   # report HIGH and CRITICAL only; remove to see all
+    CS_REGISTRY_USER: "gitlab-ci-token"
+    CS_REGISTRY_PASSWORD: "$CI_JOB_TOKEN"
+
+# Extra job: scan the NGINX image separately
+container_scanning_nginx:
+  extends: container_scanning        # inherit all scanner config from above
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master"'
+      variables:
+        CS_IMAGE: "$CI_REGISTRY/$CI_PROJECT_PATH:$DOCKER_PROJECT_NAME-nginx-$CI_COMMIT_SHORT_SHA-$CI_PIPELINE_ID"
+    - if: '$CI_COMMIT_TAG'
+      variables:
+        CS_IMAGE: "$CI_REGISTRY/$CI_PROJECT_PATH:$DOCKER_PROJECT_NAME-nginx-$CI_COMMIT_SHORT_SHA-$CI_PIPELINE_ID"
+
+# ─────────────────────────────────────────────
+# DEPENDENCY SCANNING — scoped, exclude vendored noise
+# ─────────────────────────────────────────────
+dependency_scanning:
+  stage: scan
+  variables:
+    DS_EXCLUDED_PATHS: ".git, vendor/bundle"
+
+# ─────────────────────────────────────────────
+# SAST — exclude build artefacts and vendor dirs
+# ─────────────────────────────────────────────
+sast:
+  stage: scan
+  variables:
+    SAST_EXCLUDED_PATHS: "node_modules, vendor, .git, dist, build, public/core, public/modules/contrib"
+
+# ─────────────────────────────────────────────
+# SECRET DETECTION — catches .env leaks, API keys, tokens
+# ─────────────────────────────────────────────
+secret_detection:
+  stage: scan
+
+# ─────────────────────────────────────────────
+# IaC SCANNING — scans your Dockerfiles + k8s/ manifests
+# ─────────────────────────────────────────────
+kics-iac-sast:
+  stage: scan
+  variables:
+    SAST_EXCLUDED_PATHS: "node_modules, vendor"
 
 ####################################
 # BUILD
@@ -112,7 +195,7 @@ build_prod:
     - kubectl kustomize k8s/overlays/$OVERLAY_DIR | envsubst | kubectl --namespace=$NAMESPACE apply -f - # Deploy application
     - echo "⏳ Waiting for PHP-FPM rollout"
     - sleep 30 # Initial wait for 30 seconds before checking rollout status
- 
+
 deploy_dev:
   stage: deploy
   rules:
