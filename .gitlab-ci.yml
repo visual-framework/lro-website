@@ -55,8 +55,11 @@ gemnasium-dependency_scanning:
     - .ds-analyzer
     - .security_scan_rules
 
-secret_detection: # Crucial: Hyphen instead of underscore fixes the "/analyzer not found" crash
-  extends: .security_scan_rules
+secret_detection:
+  stage: security-scan
+  before_script: [] # Keep this to preserve container stability
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master"'
 
 kics-iac-sast:
   extends: 
