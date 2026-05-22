@@ -80,10 +80,20 @@ container_scanning_nginx:
 
 sast:
   stage: security-scan
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master"'
 secret_detection:
   stage: security-scan
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master"'
 dependency_scanning:
   stage: security-scan
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master"'
+kics-iac-sast:
+  stage: security-scan
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master"'
 
 ####################################
 # BUILD
