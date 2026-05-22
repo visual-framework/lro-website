@@ -22,6 +22,7 @@ before_script:
 
 stages:
   - build
+  - test
   - security-scan        # ← new: all security scanning runs here, after build
   - deploy
 
