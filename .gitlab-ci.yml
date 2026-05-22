@@ -43,7 +43,10 @@ stages:
 # overwrite the internal script properties defined by GitLab's core templates.
 
 # Global adjustments for included templates:
-sast:
+semgrep-sast:
+  extends: .security_scan_rules
+
+gemnasium-dependency_scanning:
   extends: .security_scan_rules
 
 secret_detection: # Crucial: Hyphen instead of underscore fixes the "/analyzer not found" crash
@@ -56,6 +59,11 @@ kics-iac-sast:
   extends: 
     - iac-sast
     - .security_scan_rules
+
+# 2. Disable the default, unconfigured container scanning job to stop duplication
+container_scanning:
+  rules:
+    - when: never
 
 before_script:
   - echo "Loading .env file..."     # Inform about loading environment variables
