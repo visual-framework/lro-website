@@ -1,5 +1,5 @@
 ---
-title: Accessibility
+title: Accessibility evaluation and checks
 layout: layouts/topic.njk
 isArticlePage: true
 templateEngineOverride: njk
@@ -13,6 +13,8 @@ templateEngineOverride: njk
       <li class="vf-list__item"><a href="#overview" class="vf-link">Overview</a></li>
       <li class="vf-list__item"><a href="#why-lro" class="vf-link">Why does this matter for LRO?</a></li>
       <li class="vf-list__item"><a href="#practices" class="vf-link">Accessibility practices</a></li>
+      <li class="vf-list__item"><a href="#workflow" class="vf-link">Accessibility Evaluation workflow</a></li>
+      <li class="vf-list__item"><a href="#progress" class="vf-link">Measuring Accessibility Progress</a></li>
       <li class="vf-list__item"><a href="#testing" class="vf-link">Testing under real constraints</a></li>
       <li class="vf-list__item"><a href="#further-reading" class="vf-link">Further reading</a></li>
     </ul>
@@ -20,12 +22,12 @@ templateEngineOverride: njk
 
   <h2 id="overview" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Overview</h2>
 
-  <p>This section explains how the LRO framework supports accessibility in practice. Many LRO practices, including content-first delivery, progressive enhancement, graceful degradation, stability, and user control, also remove common accessibility barriers.</p>
+  <p>This section explains how the LRO framework supports accessibility in practice. Many LRO practices (content-first delivery, progressive enhancement, graceful degradation, stability, and user control) also remove common accessibility barriers.</p>
 
   <p>The aim is to help teams translate LRO guidance into inclusive outcomes by:</p>
   <ul class="vf-list vf-list--unordered">
-    <li class="vf-list__item">describing the accessibility impact of each practice and principle</li>
-    <li class="vf-list__item">linking to the relevant LRO sections where the practice is explained, applied, or validated</li>
+    <li class="vf-list__item">describing the accessibility impact of each practice and principle (who benefits and how)</li>
+    <li class="vf-list__item">linking to the relevant LRO sections where the practice is explained, applied, or validated.</li>
   </ul>
 
   <h2 id="why-lro" class="vf-u-margin--0 vf-u-padding__top--400">Why does this matter for LRO?</h2>
@@ -34,97 +36,297 @@ templateEngineOverride: njk
 
   <p>Treating accessibility as a core concern inside LRO helps ensure that:</p>
   <ul class="vf-list vf-list--unordered">
-    <li class="vf-list__item">core content and tasks remain available even when JavaScript, media, or third-party services fail</li>
-    <li class="vf-list__item">the experience is predictable and controllable, reducing cognitive load and interaction errors</li>
-    <li class="vf-list__item">access includes the ability to use a service in real-world constraints, not only the ability to perceive it</li>
+    <li class="vf-list__item">Core content and tasks remain available even when JavaScript, media, or third-party services fail</li>
+    <li class="vf-list__item">The experience is predictable and controllable (reduced cognitive load and fewer interaction errors)</li>
+    <li class="vf-list__item">"Access" includes the ability to use a service in real-world constraints, not only the ability to perceive it</li>
   </ul>
 
   <h2 id="practices" class="vf-u-margin--0 vf-u-padding__top--400">Accessibility practices</h2>
 
-  <h3>Core content first</h3>
-  <p>Screen reader and Braille display users benefit because page structure is present immediately, enabling fast orientation and navigation instead of waiting for client-side rendering.</p>
-  <p>Keyboard users benefit when core interactions exist as real HTML controls from the start, so they can tab and operate controls even if enhancements do not load.</p>
-  <p>Users with cognitive or learning disabilities benefit from early clarity: visible page title, headings, summaries, and predictable navigation reduce uncertainty during slow loads.</p>
-  <p>Supports WCAG outcomes indirectly by improving robustness and operability.</p>
+  <h3>Semantic structure and operability</h3>
+  <p>LRO repeatedly emphasises HTML-first delivery, avoiding JS-only shells, and using semantic elements. This directly supports accessibility fundamentals such as robust content interpretation by assistive technologies, predictable keyboard access, and a usable page when scripts fail.</p>
+  <p><strong>Accessibility impact</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Stronger semantics, better navigation: headings, lists, and landmarks enable jump navigation in screen readers (by heading, region, or list), reducing time and effort to find content.</li>
+    <li class="vf-list__item">Native controls are more reliable: real button, link, and input elements come with built-in keyboard support and accessibility APIs. Replacing them with clickable divs increases the likelihood of WCAG failures.</li>
+    <li class="vf-list__item">Less ARIA risk: when semantics are correct, ARIA is used sparingly and appropriately, reducing the risk of incorrect roles or states that confuse assistive technologies.</li>
+    <li class="vf-list__item">Improves robustness across environments: older browsers, reader modes, and some assistive-technology combinations interpret semantic HTML more consistently than custom JS-rendered UI.</li>
+    <li class="vf-list__item">Supports WCAG robust outcomes in practice and reduces common failures against name, role, and value expectations.</li>
+  </ul>
   <p><strong>Related LRO sections:</strong></p>
   <ul class="vf-list vf-list--unordered">
-    <li class="vf-list__item"><a class="vf-link" href="{{ '/frontend/css-strategy/' | url }}">Core Content First Strategy</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="{{ '/principles/progressive-enhancement/#implementation' | url }}">Progressive Enhancement → Implementation guidance</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="{{ '/principles/core-content-first/#implementation' | url }}">Core Content First Strategy → Implementing the content-first strategy</a></li>
+  </ul>
+
+  <h3>Core content first</h3>
+  <p><strong>Accessibility impact</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Screen reader and Braille display users benefit because page structure (headings, landmarks, and lists) is available immediately, enabling fast orientation and navigation rather than waiting for client-side rendering.</li>
+    <li class="vf-list__item">Users who use a keyboard to navigate benefit when core interactions (navigation, basic forms, and primary buttons) exist as real HTML controls from the start. They can tab and operate controls even if enhancements do not load.</li>
+    <li class="vf-list__item">Users with cognitive or learning disabilities can benefit from early clarity: visible page title, headings, summaries, and predictable navigation reduce uncertainty during slow loads.</li>
+    <li class="vf-list__item">Users using assistive technology on slow networks avoid a common failure mode in which a screen reader announces very little while the UI displays a spinner.</li>
+    <li class="vf-list__item">Supports WCAG outcomes indirectly by improving robustness and operability when enhancements do not load.</li>
+  </ul>
+  <p><strong>Related LRO sections:</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><a class="vf-link" href="{{ '/principles/core-content-first/' | url }}">Core Content First Strategy</a></li>
     <li class="vf-list__item"><a class="vf-link" href="{{ '/frontend/rendering-strategies/' | url }}">Rendering strategies</a></li>
   </ul>
 
   <h3>Progressive enhancement</h3>
   <p>Progressive enhancement supports accessibility because it treats advanced styling and interactivity as optional. The baseline experience remains usable with keyboard, without JavaScript, on older browsers, and under constrained bandwidth.</p>
-  <p>Compatibility with assistive technologies improves because the baseline relies on native HTML semantics first; ARIA and complex JS widgets become additive rather than required.</p>
-  <p>It also reduces the risk of JS-required traps and encourages better separation of concerns, which lowers keyboard and compatibility regressions.</p>
+  <p><strong>Accessibility impact</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Compatibility with assistive technologies improves because the baseline relies on native HTML semantics first. ARIA and complex JS widgets become additive rather than required.</li>
+    <li class="vf-list__item">Reduced risk of JS-required traps: when enhancements fail, users can still read content, navigate, and complete primary tasks.</li>
+    <li class="vf-list__item">More predictable focus and interaction: a baseline built with real links, buttons, and forms reduces focus-order bugs and custom event-handling issues that often break keyboard and switch access.</li>
+    <li class="vf-list__item">Encourages better separation of concerns (HTML, CSS, JS), which tends to reduce regressions that impact keyboard navigation, navigability, and compatibility.</li>
+  </ul>
   <p><strong>Related LRO sections:</strong></p>
   <ul class="vf-list vf-list--unordered">
-    <li class="vf-list__item"><a class="vf-link" href="{{ '/frontend/progressive-enhancement/' | url }}">Progressive Enhancement</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="{{ '/principles/progressive-enhancement/' | url }}">Progressive Enhancement</a></li>
     <li class="vf-list__item"><a class="vf-link" href="{{ '/frontend/rendering-strategies/' | url }}">Rendering strategies and LRO impact</a></li>
   </ul>
 
   <h3>Graceful degradation</h3>
-  <p>Graceful degradation reduces the accessibility impact of partial failures: if a widget, API call, or third-party dependency breaks, users should still be able to access core content and complete essential tasks.</p>
-  <p>It prevents single-point failures, maintains task completion, and improves reliability for assistive technology users where third-party widgets can introduce focus traps or unlabeled controls.</p>
-  <p><strong>Related LRO sections:</strong></p>
+  <p>Graceful degradation reduces the impact of partial failures on accessibility. If a widget, API call, or third-party dependency breaks, users should still be able to access core content and complete essential tasks.</p>
+  <p><strong>Accessibility impact</strong></p>
   <ul class="vf-list vf-list--unordered">
-    <li class="vf-list__item"><a class="vf-link" href="{{ '/frontend/graceful-degradation/' | url }}">Graceful Degradation</a></li>
-    <li class="vf-list__item"><a class="vf-link" href="{{ '/frontend/third-party-dependencies/' | url }}">Third-party libraries usage strategy</a></li>
+    <li class="vf-list__item">Prevents single-point failures that can block access entirely (for example, one broken chart script preventing a whole page from rendering).</li>
+    <li class="vf-list__item">Maintains task completion: if enhanced filtering fails, users can still browse paginated results; if a map fails, users can still access addresses or locations in text.</li>
+    <li class="vf-list__item">Supports error recovery: clear fallbacks and non-blocking errors reduce confusion for screen reader users and users with cognitive disabilities.</li>
+    <li class="vf-list__item">Improves reliability for assistive-technology users by preventing third-party widgets from introducing focus traps, unlabeled controls, or inconsistent keyboard behavior.</li>
   </ul>
-
-  <h3>Semantic structure and operability</h3>
-  <p>LRO repeatedly emphasises HTML-first delivery, avoiding JS-only shells, and using semantic elements. This supports accessibility fundamentals such as robust interpretation by assistive technologies, predictable keyboard access, and a usable page when scripts fail.</p>
-  <p>Native controls are more reliable, and correct semantics reduce the need for ARIA and the risk of incorrect roles or states.</p>
   <p><strong>Related LRO sections:</strong></p>
   <ul class="vf-list vf-list--unordered">
-    <li class="vf-list__item"><a class="vf-link" href="{{ '/frontend/rendering-strategies/' | url }}">Progressive Enhancement → Implementation guidance</a></li>
-    <li class="vf-list__item"><a class="vf-link" href="{{ '/frontend/css-strategy/' | url }}">Core Content First Strategy → Implementing the content-first strategy</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="{{ '/principles/graceful-degradation/' | url }}">Graceful Degradation</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="{{ '/frontend/third-party-dependencies/' | url }}">Third-party libraries usage strategy</a></li>
   </ul>
 
   <h3>Accessible media</h3>
   <p>The images and media strategy includes explicit accessibility guidance: ensure content makes sense without images or video; provide appropriate alt text; provide captions and transcripts; avoid sensory-only instructions.</p>
+  <p><strong>Accessibility impact</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Text alternatives keep meaning available when media fails: when images, embeds, or video do not load, users can still understand the content and complete the task.</li>
+    <li class="vf-list__item">Alt text and null alt reduce friction for screen reader and Braille users: meaningful images need concise alt text; decorative images should use null alt to avoid adding noise or slowing navigation.</li>
+    <li class="vf-list__item">Captions and transcripts support many contexts and needs, including users who rely on text alternatives to audio.</li>
+    <li class="vf-list__item">Complex images (charts or diagrams) need a text equivalent: provide the underlying data, a summary, or a structured description.</li>
+    <li class="vf-list__item">Avoiding sensory-only instructions supports users who cannot perceive color, position, or shape and improves clarity for everyone.</li>
+  </ul>
+  <p><strong>Multimedia content guidelines</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Decide the role of each image (informative, functional, decorative, complex) and choose the appropriate alternative.</li>
+    <li class="vf-list__item">Do not put essential content only in images (including text in images). If an image is required, repeat key information in text.</li>
+    <li class="vf-list__item">Provide captions for video with speech and transcripts for audio or video.</li>
+    <li class="vf-list__item">Avoid auto-playing media and heavy embeds by default. Let users opt in to load or play.</li>
+    <li class="vf-list__item">Keep instructions independent of media. Avoid references such as "see the image above" as the only guidance.</li>
+    <li class="vf-list__item">Ensure media controls are operable: play, pause, volume, captions toggle, and fullscreen should be usable without relying on a mouse.</li>
+  </ul>
   <p><strong>Related LRO sections:</strong></p>
   <ul class="vf-list vf-list--unordered">
     <li class="vf-list__item"><a class="vf-link" href="{{ '/frontend/images-and-media/' | url }}">Images and media strategy</a></li>
   </ul>
 
   <h3>Predictable layouts</h3>
-  <p>Layout shifts create usability and accessibility problems, including mis-clicks, loss of reading position, increased cognitive load, and frustration, especially when pages load slowly.</p>
-  <p>Stable layouts reduce accidental activation, help screen magnification users preserve reading position, and prevent late-inserted banners or embeds from disrupting keyboard focus order.</p>
+  <p>Layout shifts (CLS) create real usability and accessibility problems, including mis-clicks, loss of reading position, increased cognitive load, and frustration, especially when pages load slowly.</p>
+  <p><strong>Accessibility impact</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Motor accessibility: reduces accidental activation when targets move (mis-click or mis-tap), supporting users with tremor or limited precision.</li>
+    <li class="vf-list__item">Cognitive accessibility: reduces disorientation and helps maintain reading comprehension (content does not jump away).</li>
+    <li class="vf-list__item">Screen magnification users: when zoomed in, small shifts are amplified. Stability prevents losing the current line or region.</li>
+    <li class="vf-list__item">Keyboard users: late-inserted banners or embeds can unexpectedly change tab order or push focused elements. Reserving space and avoiding top inserts reduce focus disruption.</li>
+  </ul>
   <p><strong>Related LRO sections:</strong></p>
   <ul class="vf-list vf-list--unordered">
     <li class="vf-list__item"><a class="vf-link" href="{{ '/frontend/layout-stability/' | url }}">Layout stability (CLS)</a></li>
   </ul>
 
   <h3>User control and transparency</h3>
-  <p>Giving users control over data-heavy features is an inclusion mechanism because it reduces hidden costs that effectively exclude users on limited data plans or unstable connectivity.</p>
-  <p>Transparency and choice also support trust and comprehension, and can provide accessible alternative paths such as lite views or lower-quality media.</p>
+  <p>Giving users control over data-heavy features is an inclusion mechanism. It reduces hidden costs that effectively exclude users on limited data plans or unstable connectivity. Transparency and choice also support trust and comprehension.</p>
+  <p><strong>Accessibility impact</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Equitable access: users can choose to avoid features that would otherwise be inaccessible due to cost, bandwidth, or device limits.</li>
+    <li class="vf-list__item">Reduced cognitive load: clear file sizes and warnings prevent unexpected waits and confusion.</li>
+    <li class="vf-list__item">More resilient alternative paths: offering lite views, lower-quality media, or CSV exports can provide accessible formats for assistive-technology users and low-resource users alike.</li>
+    <li class="vf-list__item">Aligns with inclusive practice: users control their experience rather than the system assuming max bandwidth and max device capability.</li>
+  </ul>
   <p><strong>Related LRO sections:</strong></p>
   <ul class="vf-list vf-list--unordered">
-    <li class="vf-list__item"><a class="vf-link" href="{{ '/frontend/data-transparency-user-control/' | url }}">Data Transparency &amp; User Control</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="{{ '/principles/data-transparency-user-control/' | url }}">Data Transparency &amp; User Control</a></li>
   </ul>
 
   <h3>Avoiding patterns that become barriers at scale</h3>
-  <p>Several anti-patterns flagged in LRO are also common accessibility failure points: SPA-only architectures with blank initial states, infinite scrolling, no pagination, unbounded API calls, and heavy third-party scripts.</p>
-  <p>These patterns can break reading order, reduce discoverability, overwhelm cognition, and introduce inaccessible UI or focus traps.</p>
+  <p>Several anti-patterns flagged in LRO are also common accessibility failure points: SPA-only architectures with blank initial states, infinite scrolling for large datasets, no pagination, unbounded API calls, and heavy third-party scripts.</p>
+  <p><strong>Accessibility impact</strong></p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">SPA or CSR-only blank shell patterns can break reading order, reduce discoverability for assistive technologies, and make pages unusable when JavaScript fails.</li>
+    <li class="vf-list__item">Infinite scroll can be difficult for keyboard and screen reader users to manage (harder to reach footer/help content, difficult to maintain position, inconsistent announcements).</li>
+    <li class="vf-list__item">No pagination and huge tables can overwhelm cognition and devices. Paginated, chunked content is easier to navigate.</li>
+    <li class="vf-list__item">Heavy third-party scripts often introduce inaccessible UI (unlabeled controls, focus traps) and unpredictable performance.</li>
+  </ul>
   <p><strong>Related LRO sections:</strong></p>
   <ul class="vf-list vf-list--unordered">
     <li class="vf-list__item"><a class="vf-link" href="{{ '/principles/anti-patterns/' | url }}">Anti-patterns</a></li>
   </ul>
 
+  <h2 id="workflow" class="vf-u-margin--0 vf-u-padding__top--400">Accessibility Evaluation workflow</h2>
+
+  <p>The workflow adapts accessibility evaluations to the goals of the LRO framework: keeping core tasks usable and understandable under real-world constraints while supporting inclusive access across different needs and ways of interacting. It combines automated checks, human-led review, and usability testing with feedback from participants who use assistive technologies and other access supports.</p>
+
+  <p>It is designed to help teams answer four questions:</p>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Where do we start?</li>
+    <li class="vf-list__item">What are we testing? (scope and key flows)</li>
+    <li class="vf-list__item">What are we aiming for? (acceptance target and support matrix)</li>
+    <li class="vf-list__item">How do we keep it from regressing? (repeatable checks and reporting)</li>
+  </ul>
+
+  <p><strong>Why it matters:</strong> when barriers are found late, fixes typically take longer and cost more to implement. This can push teams toward interim solutions rather than durable improvements.</p>
+
+  <h3>Plan the evaluation</h3>
+
+  <h4>Define the acceptance target</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Goal:</strong> align on the definition of accessible enough for an evaluation of a product or service.</li>
+    <li class="vf-list__item"><strong>Decisions to record:</strong> target WCAG level (usually WCAG 2.2 AA), any additional organizational or legal requirements, and what is in scope (new features vs full product).</li>
+    <li class="vf-list__item"><strong>Why it matters:</strong> without a shared target, prioritization and sign-off criteria can vary across roles.</li>
+  </ul>
+
+  <h4>Select support matrix (browsers and assistive tech)</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Goal:</strong> support consistent, repeatable results by testing browser and assistive-technology combinations users rely on.</li>
+    <li class="vf-list__item"><strong>Define:</strong> desktop and mobile browser coverage, plus assistive-technology baseline.</li>
+    <li class="vf-list__item"><strong>Why it matters:</strong> accessibility behavior can differ significantly across combinations.</li>
+  </ul>
+
+  <h4>Map the scope</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Goal:</strong> cover the real product experience end-to-end.</li>
+    <li class="vf-list__item"><strong>Capture:</strong> critical user journeys, reused pages and components (header, nav, footer, search, global alerts), and role-based or conditional UI.</li>
+    <li class="vf-list__item"><strong>Why it matters:</strong> spot checks can miss issues that appear only in complete user journeys.</li>
+  </ul>
+
+  <h4>Prepare an accessibility statement or update plan</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Goal:</strong> provide transparency and a feedback route.</li>
+    <li class="vf-list__item"><strong>Include:</strong> targeted standard, test coverage (browsers and assistive technologies), and known limitations.</li>
+    <li class="vf-list__item"><strong>Why it matters:</strong> user feedback surfaces barriers that tools and internal testing miss.</li>
+  </ul>
+
+  <h3>Run the evaluation</h3>
+  <table class="vf-table vf-table--striped">
+    <thead class="vf-table__header">
+      <tr class="vf-table__row">
+        <th class="vf-table__heading" scope="col">Area</th>
+        <th class="vf-table__heading" scope="col">What to do</th>
+        <th class="vf-table__heading" scope="col">Goal</th>
+      </tr>
+    </thead>
+    <tbody class="vf-table__body">
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Automated scan</td>
+        <td class="vf-table__cell">Run Lighthouse, axe, or WAVE tools on key flows. Fix repeated patterns.</td>
+        <td class="vf-table__cell">Quick baseline check, then re-run to spot trends and issues early.</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Validation</td>
+        <td class="vf-table__cell">Check HTML and CSS validity and structural errors (language, headings, landmarks).</td>
+        <td class="vf-table__cell">Improve robustness by reducing invalid markup and structural issues.</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Keyboard</td>
+        <td class="vf-table__cell">Tab through flows. Verify order, focus visibility, and no traps.</td>
+        <td class="vf-table__cell">Ensure operability without a mouse.</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Assistive technology</td>
+        <td class="vf-table__cell">Screen reader pass on critical flows. Confirm names, states, and announcements.</td>
+        <td class="vf-table__cell">Confirm non-visual usability.</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Responsive layout and reflow</td>
+        <td class="vf-table__cell">Check layout at major breakpoints. Zoom to 200 percent and confirm reflow without losing content or controls.</td>
+        <td class="vf-table__cell">Prevent viewport and responsive failures.</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Motion and media</td>
+        <td class="vf-table__cell">Check that motion and time-based UI can be paused, stopped, or bypassed, and that audio and video content remains perceivable and usable.</td>
+        <td class="vf-table__cell">Support controlled motion and usable media.</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">Third-party and embedded components</td>
+        <td class="vf-table__cell">Test keyboard behavior, focus management, and labels. Validate fallbacks.</td>
+        <td class="vf-table__cell">Avoid single points of failure.</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">LRO constraints</td>
+        <td class="vf-table__cell">Throttle CPU and network. Test low-end devices, JavaScript-disabled mode, and partial failures.</td>
+        <td class="vf-table__cell">Verify resilience and graceful degradation.</td>
+      </tr>
+      <tr class="vf-table__row">
+        <td class="vf-table__cell">User testing and feedback</td>
+        <td class="vf-table__cell">Test with participants who use assistive technologies where possible and maintain a feedback loop.</td>
+        <td class="vf-table__cell">Validate real-world success.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Report findings and plan improvements</h3>
+  <h4>Document findings</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Goal:</strong> make issues actionable for design, content, and engineering.</li>
+    <li class="vf-list__item"><strong>Include:</strong> steps to reproduce, expected vs actual behavior, affected users, environment, severity, and recommended fix approach.</li>
+  </ul>
+
+  <h4>Prioritize by user impact</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Task completion blockers</li>
+    <li class="vf-list__item">Keyboard and screen reader failures</li>
+    <li class="vf-list__item">Readability and cognitive load barriers</li>
+    <li class="vf-list__item">Enhancements</li>
+  </ul>
+
+  <h4>Make it continuous</h4>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item"><strong>Goal:</strong> keep accessibility from resetting after releases.</li>
+    <li class="vf-list__item"><strong>Practices:</strong> CI checks on key templates, design review checkpoints, component standards, periodic audits, and a feedback loop.</li>
+  </ul>
+
+  <h2 id="progress" class="vf-u-margin--0 vf-u-padding__top--400">Measuring Accessibility Progress</h2>
+  <p><strong>Accessibility Maturity Model:</strong> establish clear benchmarks to track accessibility progress and support continuous improvement.</p>
+
+  <table class="vf-table vf-table--striped">
+    <thead class="vf-table__header">
+      <tr class="vf-table__row">
+        <th class="vf-table__heading" scope="col">Level</th>
+        <th class="vf-table__heading" scope="col">Description</th>
+      </tr>
+    </thead>
+    <tbody class="vf-table__body">
+      <tr class="vf-table__row"><td class="vf-table__cell">Level 0</td><td class="vf-table__cell">No accessibility testing performed.</td></tr>
+      <tr class="vf-table__row"><td class="vf-table__cell">Level 1</td><td class="vf-table__cell">Automated accessibility scans only.</td></tr>
+      <tr class="vf-table__row"><td class="vf-table__cell">Level 2</td><td class="vf-table__cell">Keyboard navigation and responsive or zoom testing included.</td></tr>
+      <tr class="vf-table__row"><td class="vf-table__cell">Level 3</td><td class="vf-table__cell">Screen reader, low-bandwidth, and JavaScript-disabled testing included.</td></tr>
+      <tr class="vf-table__row"><td class="vf-table__cell">Level 4</td><td class="vf-table__cell">Accessibility integrated into design, development, and CI/CD workflows.</td></tr>
+      <tr class="vf-table__row"><td class="vf-table__cell">Level 5</td><td class="vf-table__cell">Continuous validation with inclusive user testing, including assistive-technology users.</td></tr>
+    </tbody>
+  </table>
+
   <h2 id="testing" class="vf-u-margin--0 vf-u-padding__top--400">Testing under real constraints</h2>
 
-  <p>LRO repeatedly recommends testing with slow networks, low-end devices, and failure modes such as JS or CSS disabled, and that is also a practical accessibility mindset: test the experience users actually have, not the one we assume.</p>
+  <p>LRO repeatedly recommends testing with slow networks, low-end devices, and failure modes (JS and CSS disabled, timeouts). This is a practical accessibility mindset: test the experience users actually have, not the one we assume they have.</p>
 
   <ul class="vf-list vf-list--unordered">
-    <li class="vf-list__item">reveals real failure modes that become accessibility barriers</li>
-    <li class="vf-list__item">helps ensure experiences remain usable when assistive tech and constrained networks combine</li>
-    <li class="vf-list__item">encourages teams to validate that fallback paths are usable, clear, and accessible</li>
+    <li class="vf-list__item">Reveals real failure modes that become accessibility barriers (timeouts, missing content, broken focus, partial rendering)</li>
+    <li class="vf-list__item">Helps ensure experiences remain usable when assistive technologies and constrained networks combine</li>
+    <li class="vf-list__item">Encourages teams to validate that fallback paths are present and usable, with clear messaging, functional navigation, and accessible error handling</li>
   </ul>
 
   <p><strong>Related LRO sections:</strong></p>
   <ul class="vf-list vf-list--unordered">
-    <li class="vf-list__item"><a class="vf-link" href="{{ '/frontend/progressive-enhancement/' | url }}">Progressive Enhancement → Checklist</a></li>
-    <li class="vf-list__item"><a class="vf-link" href="{{ '/frontend/rendering-strategies/' | url }}">Rendering strategies → Do / Don’t</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="{{ '/principles/progressive-enhancement/#checklist' | url }}">Progressive Enhancement → Checklist</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="{{ '/frontend/rendering-strategies/#dos-dont' | url }}">Rendering strategies → Do / Don’t</a></li>
   </ul>
 
   <h2 id="further-reading" class="vf-u-margin--0 vf-u-padding__top--400">Further reading</h2>
@@ -159,5 +361,13 @@ templateEngineOverride: njk
   <h3>Useful background</h3>
   <ul class="vf-list vf-list--unordered">
     <li class="vf-list__item"><a class="vf-link" href="https://www.w3.org/WAI/people-use-web/" target="_blank" rel="noopener noreferrer">How People with Disabilities Use the Web</a></li>
+  </ul>
+
+  <h3>Other sources</h3>
+  <ul class="vf-list vf-list--unordered">
+    <li class="vf-list__item">Approachable Accessibility: Planning for Success by Martine Dowden and Michael Dowden</li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.w3.org/WAI/test-evaluate/" target="_blank" rel="noopener noreferrer">W3C WAI - Evaluating Web Accessibility Overview</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.w3.org/WAI/planning/statements/" target="_blank" rel="noopener noreferrer">W3C WAI - Accessibility Statements</a></li>
+    <li class="vf-list__item"><a class="vf-link" href="https://www.w3.org/WAI/ER/tools/" target="_blank" rel="noopener noreferrer">Web Accessibility Evaluation Tool List</a></li>
   </ul>
 </article>

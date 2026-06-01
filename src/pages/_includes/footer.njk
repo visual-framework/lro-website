@@ -1,5 +1,5 @@
-<footer class="vf-footer  | vf-u-background-color-ui--dark-grey">
-  <div class="vf-footer__inner">
+<footer class="vf-footer vf-minimal-footer | vf-u-background-color-ui--dark-grey">
+  <div class="vf-footer__inner | vf-u-padding--400">
     <div class="vf-minimal-footer__intro">
       <a href="https://www.ebi.ac.uk" class="vf-logo">
         <img class="vf-logo__image" src="{{ '/images/embl-ebi-rgb-all-white.svg' | url }}" alt="EMBL-EBI Logo" loading="eager">
@@ -13,22 +13,38 @@
     </section>
   </div>
 </footer>
-<!-- Google tag (gtag.js) -->
+
+<!-- Google tag (gtag.js) - Lazy loaded after page interactive -->
 <script>
   (function () {
     var host = (window.location && window.location.hostname ? window.location.hostname : "").toLowerCase();
     var isDevHost = host === "localhost" || host.indexOf("wwwdev") !== -1;
     var gaId = isDevHost ? "G-SJYQ3Y808H" : "G-7D873YGZNY";
 
-    var gtagScript = document.createElement("script");
-    gtagScript.async = true;
-    gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=" + gaId;
-    document.head.appendChild(gtagScript);
-
+    // Initialize stub dataLayer and gtag to avoid errors
     window.dataLayer = window.dataLayer || [];
     window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
-    window.gtag("js", new Date());
-    window.gtag("config", gaId);
+
+    // Lazy-load GA script after page interactive
+    var loadGA = function () {
+      var gtagScript = document.createElement("script");
+      gtagScript.async = true;
+      gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=" + gaId;
+      document.head.appendChild(gtagScript);
+      
+      // Initialize tracking after script loads
+      gtagScript.onload = function () {
+        window.gtag("js", new Date());
+        window.gtag("config", gaId);
+      };
+    };
+
+    // Use requestIdleCallback if available, otherwise defer to load event
+    if (window.requestIdleCallback) {
+      window.requestIdleCallback(loadGA);
+    } else {
+      window.addEventListener("load", loadGA);
+    }
   })();
 </script>
 

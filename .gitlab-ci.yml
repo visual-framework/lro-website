@@ -102,6 +102,27 @@ nginx_container_scanning:
 ####################################
 # BUILD
 ####################################
+.template_perf_warn: &perf_warn
+  stage: build
+  image: node:20-bullseye
+  script:
+    - corepack enable
+    - yarn install --frozen-lockfile
+    - yarn build
+    - yarn perf:warn
+
+perf_warn_dev:
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master"'
+  allow_failure: true
+  <<: *perf_warn
+
+perf_warn_prod:
+  rules:
+    - if: '$CI_COMMIT_TAG'
+  allow_failure: true
+  <<: *perf_warn
+
 .template_build: &build
   stage: build
   tags: [dind] # Docker-in-Docker runner

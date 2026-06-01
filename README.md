@@ -29,6 +29,11 @@ Open: http://localhost:8025/
 - Localhost requests bypass captcha verification to keep local development simple.
 - The hCaptcha site key used by the frontend feedback placeholders is currently defined in the Nunjucks templates under `src/pages/`.
 
+### Performance warning mode
+- Run `npm run perf:warn` after a build to see warning-only checks for initial JS and request count.
+- This is intended to stay non-blocking for one sprint while the performance baseline is measured.
+- CI can also run the same checks in warning mode without blocking deploys.
+
 
 ### Local build using gulp
 #### `gulp dev`
