@@ -24,6 +24,8 @@ COPY ./api/ ${DOCUMENT_ROOT_PATH}/api
 
 # PHP settings
 COPY ./docker-assets/custom-php.ini /usr/local/etc/php/conf.d/99-custom-php.ini
+# PHP-FPM pool — exposes ENV to PHP via getenv()
+COPY ./docker-assets/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 # SMTP template only (NO sed during build)
 COPY ./docker-assets/conf.d/msmtprc.template /etc/msmtprc.template
