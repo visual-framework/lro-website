@@ -39,15 +39,10 @@ if (!is_array($payload)) {
     $payload = [];
 }
 
-$environment = strtolower((string) (getenv('ENV') ?: getenv('ENVIRONMENT') ?: ''));
-$siteHost = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^A-Za-z0-9.-]/', '', $_SERVER['HTTP_HOST']) : 'localhost';
-$isProductionHost = in_array($siteHost, ['www.ebi.ac.uk'], true);
-$isProductionEnv = in_array($environment, ['prod', 'production'], true);
-$isProduction = $isProductionEnv || $isProductionHost;
+$defaultRecipient = 'embldev@service-now.com';
+$allowedRecipients = [$defaultRecipient];
 
-$to = $isProduction
-    ? ['snprod-lrowebsite-feedback@ebi.ac.uk']
-    : ['embldev@service-now.com', 'es-wwwdev@ebi.ac.uk'];
+$to = ["embldev@service-now.com", "es-wwwdev@ebi.ac.uk"]; // Default recipient(s)
 $subject = isset($payload['subject']) ? trim((string) $payload['subject']) : 'Feedback';
 $message = isset($payload['message']) ? trim((string) $payload['message']) : '';
 
@@ -73,6 +68,7 @@ if ($message === '') {
 }
 
 $sanitizedSubject = preg_replace('/[\r\n]+/', ' ', $subject);
+$siteHost = isset($_SERVER['HTTP_HOST']) ? preg_replace('/[^A-Za-z0-9.-]/', '', $_SERVER['HTTP_HOST']) : 'localhost';
 // $fromAddress = 'no-reply@' . ($siteHost !== '' ? $siteHost : 'localhost');
 $fromAddress = "no-reply@ebi.ac.uk";
 
