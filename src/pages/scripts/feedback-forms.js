@@ -1,5 +1,7 @@
 // Detect environment once
 const hostname = typeof window !== "undefined" ? window.location.hostname : "";
+const pathname = typeof window !== "undefined" ? window.location.pathname : "";
+const origin = typeof window !== "undefined" ? window.location.origin : "";
 const IS_LOCALHOST =
   hostname === "localhost" ||
   hostname === "127.0.0.1" ||
@@ -8,9 +10,13 @@ const IS_LOCALHOST =
 // Base URL (only used outside localhost)
 const INDEX_URL = "https://wwwdev.ebi.ac.uk/web-optimisation-framework/";
 
+const HAS_BASE_PATH = pathname.startsWith("/web-optimisation-framework/");
+const LOCAL_API_PRIMARY_URL = `${origin}${HAS_BASE_PATH ? "/web-optimisation-framework/api/send-feedback.php" : "/api/send-feedback.php"}`;
+const LOCAL_API_FALLBACK_URL = `${origin}${HAS_BASE_PATH ? "/api/send-feedback.php" : "/web-optimisation-framework/api/send-feedback.php"}`;
+
 // Build API URL dynamically
 const FEEDBACK_API_URL = IS_LOCALHOST
-  ? `${window.location.origin}/web-optimisation-framework/api/send-feedback.php`
+  ? LOCAL_API_PRIMARY_URL
   : `${INDEX_URL.replace(/\/$/, "")}/api/send-feedback.php`;
 
 const HCAPTCHA_SCRIPT_URL = "https://js.hcaptcha.com/1/api.js?render=explicit";
@@ -28,8 +34,9 @@ const setBanner = (bannerEl, kind, message) => {
   const textEl = bannerEl.querySelector(".vf-banner__text");
   if (textEl) textEl.textContent = message;
 
-  bannerEl.classList.remove("vf-u-display-none", "vf-banner--alert", "vf-banner--success");
-  bannerEl.classList.add(kind === "success" ? "vf-banner--success" : "vf-banner--alert");
+  bannerEl.classList.remove("vf-u-display-none", "vf-banner--danger", "vf-banner--success");
+  bannerEl.classList.add("vf-banner", "vf-banner--alert");
+  bannerEl.classList.add(kind === "success" ? "vf-banner--success" : "vf-banner--danger");
 };
 
 const hideBanner = (el) => el?.classList.add("vf-u-display-none");
@@ -105,7 +112,7 @@ function ensureHcaptchaLoaded() {
 
 // API call
 function postFeedback(payload) {
-  return fetch(FEEDBACK_API_URL, {
+  const request = (url) => fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -116,13 +123,25 @@ function postFeedback(payload) {
     })
   })
     .then((res) => {
-      if (!res.ok) throw new Error("Request failed");
+      if (!res.ok) {
+        const error = new Error("Request failed");
+        error.status = res.status;
+        throw error;
+      }
       return res.json();
     })
     .then((data) => {
       if (!data?.success) throw new Error("API failure");
       return data;
     });
+
+  return request(FEEDBACK_API_URL).catch((error) => {
+    if (IS_LOCALHOST && error?.status === 404 && LOCAL_API_PRIMARY_URL !== LOCAL_API_FALLBACK_URL) {
+      return request(LOCAL_API_FALLBACK_URL);
+    }
+
+    throw error;
+  });
 }
 
 // Shared submit handler creator (reduces duplication)

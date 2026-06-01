@@ -11,7 +11,7 @@ RUN yarn install && \
     if [ "$ENV" = "prod" ]; then \
         gulp build; \
     else \
-        gulp build --env=development; \
+        gulp build --env=development && yarn perf:warn; \
     fi && \
     rm -rf node_modules
 # Serve it from Nginx

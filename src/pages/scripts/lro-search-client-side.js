@@ -82,6 +82,18 @@ function toggleNoResultsFeedback(show) {
   feedbackSection.classList.add("vf-u-display-none");
 }
 
+function scrollToSearchResultsTop(container) {
+  if (!container) return;
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const targetTop = container.getBoundingClientRect().top + window.pageYOffset;
+
+  window.scrollTo({
+    top: Math.max(0, targetTop - 64),
+    behavior: prefersReducedMotion ? "auto" : "smooth"
+  });
+}
+
 // resetPage=true when called from the observer (new search results rendered) —
 // resets to page 1. resetPage=false when called from a pagination link click.
 function applySearchPagination(resetPage) {
@@ -216,6 +228,7 @@ function applySearchPagination(resetPage) {
       const selectedPage = parseInt(this.getAttribute("data-vf-search-page"), 10) || 1;
       setPageQueryParam(selectedPage);
       applySearchPagination(false);
+      scrollToSearchResultsTop(container);
     });
   });
 
