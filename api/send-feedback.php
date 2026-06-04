@@ -39,7 +39,7 @@ if (!is_array($payload)) {
     $payload = [];
 }
 
-$to = ["embldev@service-now.com", "es-wwwdev@ebi.ac.uk"]; // Default recipient(s)
+$to = ["snprod-lrowebsite-feedback@ebi.ac.uk"]; // Default recipient(s)
 $subject = isset($payload['subject']) ? trim((string) $payload['subject']) : 'Feedback';
 $message = isset($payload['message']) ? trim((string) $payload['message']) : '';
 
