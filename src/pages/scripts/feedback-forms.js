@@ -330,8 +330,8 @@ function initFrameworkFeedback() {
     setValidationMessage(validation);
 
     flow.set({
-      subject: "LRO : Framework feedback",
-      message: `Dear Team,\n\nFollowing feedback received:\n\nURL - ${INDEX_URL}\nFeedback - ${feedback}\n\nThanks,\nLRO team`,
+      subject: "LRO Framework feedback",
+      message: `Dear Team,\n\nFollowing feedback received:\n\nURL - ${INDEX_URL}\nFeedback - ${feedback}`,
       type: "framework"
     });
 
@@ -382,8 +382,8 @@ function initArticleFeedback() {
     const category = text(document.querySelector("nav[aria-label='Breadcrumb'] span"));
 
     flow.set({
-      subject: "LRO : Article Feedback",
-      message: `Dear Team\n\nURL - ${location.href}\nCategory - ${category}\nTitle - ${pageTitle}\n\nFeedback - ${feedback}\n\nThanks,\nLRO team`,
+      subject: `LRO Article Feedback : ${pageTitle}`,
+      message: `Dear Team\n\nURL - ${location.href}\nCategory - ${category}\nTitle - ${pageTitle}\n\nFeedback - ${feedback}`,
       type: "article"
     });
 
