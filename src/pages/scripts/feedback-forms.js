@@ -1,7 +1,5 @@
 // Detect environment once
 const hostname = typeof window !== "undefined" ? window.location.hostname : "";
-const pathname = typeof window !== "undefined" ? window.location.pathname : "";
-const origin = typeof window !== "undefined" ? window.location.origin : "";
 const IS_LOCALHOST =
   hostname === "localhost" ||
   hostname === "127.0.0.1" ||
@@ -10,9 +8,7 @@ const IS_LOCALHOST =
 // Base URL (only used outside localhost)
 const INDEX_URL = "https://wwwdev.ebi.ac.uk/web-optimisation-framework/";
 
-const HAS_BASE_PATH = pathname.startsWith("/web-optimisation-framework/");
-const LOCAL_API_PRIMARY_URL = `${origin}${HAS_BASE_PATH ? "/web-optimisation-framework/api/send-feedback.php" : "/api/send-feedback.php"}`;
-const LOCAL_API_FALLBACK_URL = `${origin}${HAS_BASE_PATH ? "/api/send-feedback.php" : "/web-optimisation-framework/api/send-feedback.php"}`;
+const LOCAL_API_PRIMARY_URL = "http://localhost:3333/api/send-feedback.php";
 
 // Build API URL dynamically
 const FEEDBACK_API_URL = IS_LOCALHOST
@@ -134,14 +130,6 @@ function postFeedback(payload) {
       if (!data?.success) throw new Error("API failure");
       return data;
     });
-
-  return request(FEEDBACK_API_URL).catch((error) => {
-    if (IS_LOCALHOST && error?.status === 404 && LOCAL_API_PRIMARY_URL !== LOCAL_API_FALLBACK_URL) {
-      return request(LOCAL_API_FALLBACK_URL);
-    }
-
-    throw error;
-  });
 }
 
 // Shared submit handler creator (reduces duplication)

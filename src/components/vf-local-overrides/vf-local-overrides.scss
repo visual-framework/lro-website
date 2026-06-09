@@ -14,6 +14,11 @@ html {
 //   --lro-mobile-topbar-height: 88px;
 // }
 
+:root {
+  --lro-desktop-header-height: 45px;
+  // --lro-mobile-topbar-height: 76px;
+}
+
 body {
   margin: 0;
 }
@@ -416,6 +421,9 @@ body {
   display: flex !important;
   margin: unset;
   padding-left: 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1210;
 
   .menu-link {
     display: none;
@@ -430,10 +438,12 @@ body {
       position: absolute;
       right: 1em;
 
-      a {
+      a, button {
         padding-bottom: 12px;
         position: relative;
         top: 8px;
+        background-color: transparent;
+        border: none;
       }
 
       svg {
@@ -441,7 +451,7 @@ body {
       }
     }
 
-    a {
+    a, button {
       align-items: center;
       margin: 0;
       padding: 0;
@@ -527,7 +537,8 @@ body {
 .lro-main-content {
   min-width: 0;
   overflow: hidden;
-  z-index: 0;
+  // position: relative;
+  z-index: 2;
 }
 
 .home-two-col-grid {
@@ -539,7 +550,10 @@ body {
 }
 
 .vf-back-top--floating {
-  right: 0rem;
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  right: 1rem;
+  top: auto;
+  z-index: 1300;
 }
 
 .lro-glossary ul.vf-list--inline {
@@ -550,6 +564,18 @@ body {
       padding-inline-start: 0rem;
     }
   }
+}
+
+.lro-glossary {
+  background-color: #fff;
+  // border-bottom: 1px solid #d0d0ce;
+  position: sticky;
+  top: var(--lro-desktop-header-height);
+  z-index: 1205;
+}
+
+.lro-glossary ~ section[id^="glossary-"] {
+  scroll-margin-top: calc(var(--lro-desktop-header-height) + 5rem);
 }
 
 // ============================================================
@@ -745,6 +771,23 @@ body {
   .lro-mobile-panel--menu {
     padding: 0 2rem 2rem 2rem;
   }
+
+  .lro-glossary {
+    margin-top: 0 !important;
+    position: -webkit-sticky;
+    position: sticky;
+    top: var(--lro-mobile-topbar-height);
+    z-index: 1195;
+  }
+
+  article.vf-content {
+    overflow: visible;
+  }
+
+  // .lro-glossary ~ section[id^="glossary-"] {
+  //   scroll-margin-top: 5rem;//calc(var(--lro-mobile-topbar-height) + 5rem);
+  // }
+
   .lro-page-layout {
     grid-template-columns: 1fr;
   }

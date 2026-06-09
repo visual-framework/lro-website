@@ -26,6 +26,7 @@ vfMegaMenu();
   var menuLink = document.querySelector(".menu-link");
   var globalNav = document.querySelector(".vf-navigation--global");
   var searchbarSection = document.querySelector("div.searchbar-content-section");
+  var searchFocusTrapCleanup = null;
 
   function hideEl(el) { if (el) el.style.display = "none"; }
   function showEl(el, display) { if (el) el.style.display = display || "block"; }
@@ -51,12 +52,51 @@ vfMegaMenu();
   function setSearchExpanded(expanded) {
     var section = document.querySelector('[data-vf-js-mega-menu-section="search-menu-content-section"]');
     if (!section) return;
+
+    if (searchFocusTrapCleanup) {
+      searchFocusTrapCleanup();
+      searchFocusTrapCleanup = null;
+    }
+
     section.style.display = expanded ? "block" : "none";
     section.setAttribute("aria-hidden", expanded ? "false" : "true");
     qAll('[data-vf-js-mega-menu-section-id="search-menu-content-section"]').forEach(function (control) {
       control.classList.toggle("is-expanded", expanded);
       control.setAttribute("aria-expanded", expanded ? "true" : "false");
     });
+
+    if (!expanded) return;
+
+    var focusable = Array.prototype.slice.call(section.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    ));
+    if (focusable.length) {
+      focusable[0].focus();
+    }
+
+    var trapHandler = function (event) {
+      if (event.key !== "Tab") return;
+      var currentFocusable = Array.prototype.slice.call(section.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      ));
+      if (!currentFocusable.length) return;
+
+      var first = currentFocusable[0];
+      var last = currentFocusable[currentFocusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    section.addEventListener("keydown", trapHandler);
+    searchFocusTrapCleanup = function () {
+      section.removeEventListener("keydown", trapHandler);
+    };
   }
 
   if (searchLink) {
@@ -101,7 +141,7 @@ vfMegaMenu();
     });
   });
 
-  qAll('a[data-vf-js-mega-menu-section-id="search-menu-content-section"]').forEach(function (control) {
+  qAll('[data-vf-js-mega-menu-section-id="search-menu-content-section"]').forEach(function (control) {
     control.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();

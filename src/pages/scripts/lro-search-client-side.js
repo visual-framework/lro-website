@@ -64,10 +64,32 @@ function renderResultsSummary(container, startIndex, endIndex, totalResults) {
 
 function renderNoResultsMessage(container) {
   container.innerHTML = ""
-    + "<section class='vf-search-no-results'>"
+    + "<section class='vf-search-no-results' role='status'>"
     + "<h3>We couldn’t find any results matching the search criteria</h3>"
     + "<ul><li>Check your spelling</li><li>Use more general terms</li></ul>"
     + "</section>";
+}
+
+function ensureResultsLiveRegion(container) {
+  if (!container) return;
+  container.setAttribute("aria-live", "polite");
+  container.setAttribute("aria-atomic", "true");
+}
+
+function focusResultsSummary(container) {
+  if (!container) return;
+  var summary = container.querySelector("[data-vf-search-results-summary]");
+  if (!summary) return;
+  summary.setAttribute("tabindex", "-1");
+  summary.focus({ preventScroll: true });
+}
+
+function focusNoResultsMessage(container) {
+  if (!container) return;
+  var message = container.querySelector(".vf-search-no-results");
+  if (!message) return;
+  message.setAttribute("tabindex", "-1");
+  message.focus({ preventScroll: true });
 }
 
 function toggleNoResultsFeedback(show) {
@@ -100,6 +122,8 @@ function applySearchPagination(resetPage) {
   const container = document.querySelector("[data-vf-search-client-side-results]");
   if (!container) return;
 
+  ensureResultsLiveRegion(container);
+
   // Disconnect while we mutate the nav to avoid triggering ourselves.
   if (paginationObserver) paginationObserver.disconnect();
 
@@ -119,6 +143,9 @@ function applySearchPagination(resetPage) {
   if (resultItems.length === 0) {
     toggleNoResultsFeedback(true);
     renderNoResultsMessage(container);
+    if (resetPage) {
+      focusNoResultsMessage(container);
+    }
     if (paginationObserver) paginationObserver.observe(container, { childList: true, subtree: true });
     return;
   }
@@ -130,6 +157,9 @@ function applySearchPagination(resetPage) {
       item.style.display = "";
     });
     renderResultsSummary(container, 0, resultItems.length, resultItems.length);
+    if (resetPage) {
+      focusResultsSummary(container);
+    }
     if (paginationObserver) paginationObserver.observe(container, { childList: true, subtree: true });
     return;
   }
@@ -152,6 +182,9 @@ function applySearchPagination(resetPage) {
   });
 
   renderResultsSummary(container, startIndex, Math.min(endIndex, resultItems.length), resultItems.length);
+  if (resetPage) {
+    focusResultsSummary(container);
+  }
 
   const nav = document.createElement("nav");
   nav.className = "vf-pagination";

@@ -65,12 +65,12 @@ templateEngineOverride: njk
   <h3>Parse &amp; Compile Issues</h3>
   <p>Importing entire libraries increases processing time.</p>
   
-  <h4>Avoid:</h4>
+  <h3>Avoid:</h3>
   <pre class="vf-code-example__pre"><code>// Imports the entire lodash library
 // This increases bundle size and adds extra parsing/compilation cost
 import _ from "lodash";</code></pre>
 
-  <h4>Prefer:</h4>
+  <h3>Prefer:</h3>
   <pre class="vf-code-example__pre"><code>// Imports only the required function instead of the whole library
 // Reduces bundle size and improves load + execution time
 import { debounce } from "lodash-es";</code></pre>
@@ -78,14 +78,14 @@ import { debounce } from "lodash-es";</code></pre>
   <h3>Execution Issues</h3>
   <p>Frequent DOM updates and heavy loops block the main thread.</p>
 
-  <h4>Avoid:</h4>
+  <h3>Avoid:</h3>
   <pre class="vf-code-example__pre"><code>// Loop runs many times and updates the DOM on each iteration
 // Each update triggers layout recalculation (reflow), which is expensive
 for (let i = 0; i < 10000; i++) {
   document.body.innerHTML += "&lt;div&gt;&lt;/div&gt;"; 
 }</code></pre>
 
-  <h4>Prefer:</h4>
+  <h3>Prefer:</h3>
   <pre class="vf-code-example__pre"><code>// Create a document fragment (in-memory container)
 // This avoids direct DOM manipulation inside the loop
 const fragment = document.createDocumentFragment();
@@ -321,7 +321,7 @@ function processItems(items) {
   {# ── Do / Don't ── #}
   <h2 id="dos-dont" class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Do / Don't</h2>
 
-  <h4>Do</h4>
+  <h3>Do</h3>
   <ul class="vf-list vf-list--unordered">
     <li class="vf-list__item">Use small modules</li>
     <li class="vf-list__item">Split code by feature</li>
@@ -329,7 +329,7 @@ function processItems(items) {
     <li class="vf-list__item">Remove unused JavaScript</li>
   </ul>
 
-  <h4>Don't</h4>
+  <h3>Don't</h3>
   <ul class="vf-list vf-list--unordered">
     <li class="vf-list__item">Ship large frameworks unnecessarily</li>
     <li class="vf-list__item">Include unused libraries</li>
