@@ -14,7 +14,7 @@ layout: layouts/base.njk
   <div class="vf-content | vf-stack">
 {% render '@vf-search-client-side--default', {
   "search_client_prompt": "Enter a search query",
-  "search_client_autofocus": true,
+  "search_client_autofocus": false,
   "search_client_button": true,
   "search_client_button_text": "Search",
   "search_client_action": ('/search/' | url),
@@ -28,12 +28,12 @@ layout: layouts/base.njk
   <section class="vf-u-grid__col--span-3--md vf-u-grid__col--span-3--lg" style="text-align: center;">
     <h2 class="vf-heading vf-heading--2">Help us improve</h2>
     <p class="vf-text vf-text-body--2">Tell us what works well and what could be improved.</p>
-    <p class="vf-text vf-text-body--2">Your feedback will help us refine the LRO framework and its documentation.</p>
-    <div id="framework-feedback-banner" class="vf-banner vf-banner--alert vf-u-display-none vf-u-margin__top--400" role="status" aria-live="polite">
+    <p class="vf-text vf-text-body--2">Your feedback will help improve the framework and its documentation and will only be visible to the development team.</p>
+    <div id="framework-feedback-banner" class="vf-banner vf-banner--alert vf-u-display-none vf-u-margin__top--400" role="status">
       <div class="vf-banner__content">
         <p class="vf-banner__text"></p>
         <button role="button" aria-label="close notification banner" class="vf-button vf-button--icon vf-button--dismiss | vf-banner__button">
-          <svg role="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <title>dismiss banner</title>
             <path d="M14.3,12.179a.25.25,0,0,1,0-.354l9.263-9.262A1.5,1.5,0,0,0,21.439.442L12.177,9.7a.25.25,0,0,1-.354,0L2.561.442A1.5,1.5,0,0,0,.439,2.563L9.7,11.825a.25.25,0,0,1,0,.354L.439,21.442a1.5,1.5,0,0,0,2.122,2.121L11.823,14.3a.25.25,0,0,1,.354,0l9.262,9.263a1.5,1.5,0,0,0,2.122-2.121Z"></path>
           </svg>

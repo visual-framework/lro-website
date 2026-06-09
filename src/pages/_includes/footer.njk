@@ -2,7 +2,7 @@
   <div class="vf-footer__inner | vf-u-padding--400">
     <div class="vf-minimal-footer__intro">
       <a href="https://www.ebi.ac.uk" class="vf-logo">
-        <img class="vf-logo__image" src="{{ '/images/embl-ebi-rgb-all-white.svg' | url }}" alt="EMBL-EBI Logo" loading="eager">
+        <img class="vf-logo__image" src="{{ '/images/embl-ebi-rgb-all-white.svg' | url }}" alt="EMBL-EBI homepage" loading="eager">
       </a>
       <p class="vf-footer__notice">Low resource optimisation framework is developed and maintained by EMBL-EBI, a world leader in biological data resources.</p>
     </div>
@@ -62,7 +62,46 @@
       return;
     }
 
+    var activePanel = null;
+    var lastToggle = null;
+
+    function getFocusableElements(panel) {
+      if (!panel) return [];
+      return Array.prototype.slice.call(panel.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )).filter(function (element) {
+        return !element.hasAttribute("hidden") && element.getAttribute("aria-hidden") !== "true";
+      });
+    }
+
+    function trapFocusInActivePanel(event) {
+      if (event.key !== "Tab" || !activePanel || !panels[activePanel]) {
+        return;
+      }
+
+      var panel = panels[activePanel];
+      var focusable = getFocusableElements(panel);
+      if (!focusable.length) {
+        return;
+      }
+
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", trapFocusInActivePanel);
+
     function setActivePanel(nextPanel) {
+      activePanel = nextPanel;
+
       toggles.forEach(function (toggle) {
         var panelName = toggle.getAttribute("data-lro-mobile-toggle");
         var isActive = panelName === nextPanel;
@@ -76,10 +115,21 @@
 
       // Prevent body scroll when a panel is open
       document.body.classList.toggle("lro-mobile-panel-open", !!nextPanel);
+
+      if (nextPanel) {
+        var panel = panels[nextPanel];
+        var focusable = getFocusableElements(panel);
+        if (focusable.length) {
+          focusable[0].focus();
+        }
+      } else if (lastToggle) {
+        lastToggle.focus();
+      }
     }
 
     toggles.forEach(function (toggle) {
       toggle.addEventListener("click", function () {
+        lastToggle = toggle;
         var panelName = toggle.getAttribute("data-lro-mobile-toggle");
         var isOpen = toggle.getAttribute("aria-expanded") === "true";
         setActivePanel(isOpen ? null : panelName);
@@ -95,6 +145,12 @@
 
     window.addEventListener("resize", function () {
       if (window.innerWidth > 768) {
+        setActivePanel(null);
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && activePanel) {
         setActivePanel(null);
       }
     });
