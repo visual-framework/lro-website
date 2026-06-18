@@ -74,9 +74,9 @@ templateEngineOverride: njk
   <h3>Poor CSS Strategy</h3>
   <p>Large stylesheets block rendering.</p>
 
-	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
-		<img src="{{ '/images/content_images/LRO diagram 3.2.3a.avif' | url }}" alt="" loading="lazy">
-		<figcaption class="vf-figure__caption"></figcaption>
+	<figure class="vf-figure">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.3a.avif' | url }}" alt="A linear flowchart of the browser's standard CSS rendering path, each step leading to the next: HTML download, HTML parsing, CSS requested, download CSS, parse CSS, build CSSOM, create render tree, layout, and finally paint the page. Painting the page is the last step and happens only after the full stylesheet has been downloaded and processed, so no content appears until all CSS is ready." loading="lazy">
+		<figcaption class="vf-figure__caption">The standard path: the browser must download and process the entire stylesheet before it can paint, so content only appears once all CSS is ready, leaving users on a blank screen meanwhile.</figcaption>
 	</figure>
   
   <h4>Result</h4>
@@ -92,7 +92,7 @@ templateEngineOverride: njk
   <h3>Optimised CSS Strategy</h3>
   <p>An improved strategy ensures that only the critical styles required for the visible part of the page are loaded first.</p>
 
-	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
+	<figure class="vf-figure">
 		<img src="{{ '/images/content_images/LRO diagram 3.2.3.b.avif' | url }}" alt="" loading="lazy">
 		<figcaption class="vf-figure__caption"></figcaption>
 	</figure>

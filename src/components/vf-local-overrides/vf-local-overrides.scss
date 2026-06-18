@@ -602,8 +602,9 @@ body {
     }
   }
 
-  figure {
-    width: 75%;
+  figure img{
+    display: block;
+    margin: 0 auto;
   }
 
   // Measurement and testing: wide tables span into empty right track

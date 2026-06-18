@@ -170,9 +170,9 @@ templateEngineOverride: njk
 	<p>
 		Displaying estimated file size is particularly useful for users with limited data plans.
 	</p>
-	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
-		<img src="{{ '/images/content_images/LRO diagram 2.4.a.avif' | url }}" alt="Example interface showing download size information before file transfer" loading="lazy">
-		<figcaption class="vf-figure__caption"></figcaption>
+	<figure class="vf-figure">
+		<img src="{{ '/images/content_images/LRO diagram 2.4.a.avif' | url }}" alt="A blue "Download" button with the text "File size: 3 MB" shown below it." loading="lazy">
+		<figcaption class="vf-figure__caption">A download button with the estimated file size displayed directly beneath it.</figcaption>
 	</figure>
 	<h3>Best Practices</h3>
 	<ul class="vf-list vf-list--unordered">
@@ -247,9 +247,9 @@ templateEngineOverride: njk
 	<p>
 		Feature gating allows systems to enable advanced features only when certain conditions are met.
 	</p>
-	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
-		<img src="{{ '/images/content_images/LRO diagram 2.4.b.avif' | url }}" alt="Feature gating flow based on network conditions, device capability, and user preference" loading="lazy">
-		<figcaption class="vf-figure__caption"></figcaption>
+	<figure class="vf-figure">
+		<img src="{{ '/images/content_images/LRO diagram 2.4.b.avif' | url }}" alt="A flowchart representing a user request that leads to a check of network conditions, which branches into two paths. On a slow network, the app enables a low-data experience: disabling video autoplay, reducing image quality and disabling prefetching. On a fast network, it enables the full experience: loading full media and high-resolution images, and enabling prefetching." loading="lazy">
+		<figcaption class="vf-figure__caption">Flowchart showing how an application adapts its behaviour based on detected network speed.</figcaption>
 	</figure>
 	<p>
 		Conditions may include:

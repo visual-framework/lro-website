@@ -94,9 +94,9 @@ templateEngineOverride: njk
     <li class="vf-list__item">Minimise shifts caused by late-loading content</li>
   </ul>
   <p>Example image showing layout shift during loading:</p>
-  <figure class="vf-figure vf-figure--align vf-figure--align-centered">
-    <img src="{{ '/images/content_images/LRO diagram 3.2.7a.avif' | url }}" alt="" loading="lazy">
-    <figcaption class="vf-figure__caption"></figcaption>
+  <figure class="vf-figure">
+    <img src="{{ '/images/content_images/LRO diagram 3.2.7a.avif' | url }}" alt="Cumulative layout shift example: a late-loading image inserts above the text without reserved space, pushing the content downward and causing an unexpected jump in the reader’s position." loading="lazy">
+    <figcaption class="vf-figure__caption">When an image loads late, it pushes the content below it downwards — the kind of unexpected shift that CLS measures.</figcaption>
   </figure>
   <p>Explanation</p>
   <ul class="vf-list vf-list--unordered">
@@ -169,9 +169,9 @@ templateEngineOverride: njk
 
   <p>Ads and embedded content should always have reserved space.</p>
 
-  <figure class="vf-figure vf-figure--align vf-figure--align-centered">
-    <img src="{{ '/images/content_images/LRO diagram 3.2.7b.avif' | url }}" alt="" loading="lazy">
-    <figcaption class="vf-figure__caption"></figcaption>
+  <figure class="vf-figure">
+    <img src="{{ '/images/content_images/LRO diagram 3.2.7b.avif' | url }}" alt="Before-and-after view where the main content loads first, then a late-loading advertisement inserts above it without reserved space, pushing the content downward and interrupting reading or interaction." loading="lazy">
+    <figcaption class="vf-figure__caption">When no space is reserved, an ad loading at the top pushes the existing content downwards, shifting the visible area.</figcaption>
   </figure>
 <h3>Concept illustrated:</h3>
 <h4>Without reserved space</h4>
