@@ -602,11 +602,17 @@ body {
     }
   }
 
-  figure img{
-    display: block;
-    margin: 0 auto;
-  }
+  figure{
+    img{
+      display: block;
+      margin: 0 auto;
+    }
 
+    figcaption {
+      text-align: center;
+    }
+  }
+  
   // Measurement and testing: wide tables span into empty right track
   .lro-measurement-testing-page .lro-page-layout--with-empty-right .lro-main-content {
     grid-column: 2 / 4;
