@@ -111,6 +111,7 @@
 
       Object.keys(panels).forEach(function (panelName) {
         panels[panelName].hidden = panelName !== nextPanel;
+        panels[panelName].setAttribute("aria-hidden", panelName === nextPanel ? "false" : "true");
       });
 
       // Prevent body scroll when a panel is open

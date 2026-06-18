@@ -72,7 +72,7 @@ function renderNoResultsMessage(container) {
 
 function ensureResultsLiveRegion(container) {
   if (!container) return;
-  container.setAttribute("aria-live", "polite");
+  // container.setAttribute("aria-live", "polite");
   container.setAttribute("aria-atomic", "true");
 }
 

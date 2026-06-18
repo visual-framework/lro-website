@@ -27,6 +27,7 @@ vfMegaMenu();
   var globalNav = document.querySelector(".vf-navigation--global");
   var searchbarSection = document.querySelector("div.searchbar-content-section");
   var searchFocusTrapCleanup = null;
+  var lastSearchControl = null;
 
   function hideEl(el) { if (el) el.style.display = "none"; }
   function showEl(el, display) { if (el) el.style.display = display || "block"; }
@@ -49,7 +50,7 @@ vfMegaMenu();
     control.classList.toggle("is-expanded", expanded);
     control.setAttribute("aria-expanded", expanded ? "true" : "false");
   }
-  function setSearchExpanded(expanded) {
+  function setSearchExpanded(expanded, trigger) {
     var section = document.querySelector('[data-vf-js-mega-menu-section="search-menu-content-section"]');
     if (!section) return;
 
@@ -65,7 +66,14 @@ vfMegaMenu();
       control.setAttribute("aria-expanded", expanded ? "true" : "false");
     });
 
-    if (!expanded) return;
+    if (!expanded) {
+      if (lastSearchControl) {
+        lastSearchControl.focus();
+      }
+      return;
+    }
+
+    lastSearchControl = trigger || document.activeElement;
 
     var focusable = Array.prototype.slice.call(section.querySelectorAll(
       'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
@@ -75,11 +83,20 @@ vfMegaMenu();
     }
 
     var trapHandler = function (event) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setSearchExpanded(false);
+        return;
+      }
+
       if (event.key !== "Tab") return;
       var currentFocusable = Array.prototype.slice.call(section.querySelectorAll(
         'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
       ));
-      if (!currentFocusable.length) return;
+      if (!currentFocusable.length) {
+        event.preventDefault();
+        return;
+      }
 
       var first = currentFocusable[0];
       var last = currentFocusable[currentFocusable.length - 1];
@@ -146,7 +163,7 @@ vfMegaMenu();
       e.preventDefault();
       e.stopPropagation();
       var isExpanded = control.getAttribute("aria-expanded") === "true";
-      setSearchExpanded(!isExpanded);
+      setSearchExpanded(!isExpanded, control);
     });
   });
 

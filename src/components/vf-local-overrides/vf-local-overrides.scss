@@ -167,8 +167,12 @@ body {
     &:focus-visible {
       background: #f3f3f3;
       color: #3b6fb6;
-      outline: none;
       text-decoration: none;
+    }
+
+    &:focus-visible {
+      outline: 3px solid #3b6fb6;
+      outline-offset: 3px;
     }
   }
 
@@ -606,6 +610,11 @@ body {
   .lro-measurement-testing-page .lro-page-layout--with-empty-right .lro-main-content {
     grid-column: 2 / 4;
     overflow: visible;
+
+    .vf-tabs__link::focus {
+      outline: 2px solid #3b6fb6;
+      outline-offset: 2px;
+    }
   }
 }
 
@@ -743,6 +752,11 @@ body {
       justify-content: center;
       padding: 0 1rem;
       position: relative;
+
+      &:focus-visible {
+        outline: 3px solid #3b6fb6;
+        outline-offset: -3px;
+      }
 
       &.is-active::after {
         background: #3b6fb6;

@@ -42,7 +42,7 @@ templateEngineOverride: njk
   {# ── Why this matters for LRO? ── #}
   <h2 id="why-lro"  class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600">Why this matters for LRO?</h2>
 
-  <h4>Impact on Low-Resource Users</h4>
+  <h3>Impact on Low-Resource Users</h3>
   <ul class="vf-list vf-list--unordered">
     <li class="vf-list__item">Large JavaScript bundles are slow on low-bandwidth networks</li>
     <li class="vf-list__item">Hydration (when JavaScript activates static HTML into an interactive page) consumes CPU and memory</li>
@@ -51,7 +51,7 @@ templateEngineOverride: njk
   </ul>
   <p>Rendering choices determine whether users can access content at all.</p>
 
-  <h4>LRO Design Principles</h4>
+  <h3>LRO Design Principles</h3>
   <ul class="vf-list vf-list--unordered">
     <li class="vf-list__item">Show text first</li>
     <li class="vf-list__item">Avoid blank screens</li>
@@ -60,7 +60,7 @@ templateEngineOverride: njk
     <li class="vf-list__item">Design for low-end devices by default</li>
   </ul>
 
-  <h4>LRO-Friendly Pattern</h4>
+  <h3>LRO-Friendly Pattern</h3>
   <p>
     <strong>Load in layers:</strong> HTML → CSS → images → advanced features (if conditions allow)<br/>
     <strong>Avoid:</strong> Loading large JavaScript before showing content
@@ -228,7 +228,7 @@ templateEngineOverride: njk
   </ul>
 
   <p>
-    As an <strong>example,</strong> Visual Framework uses static site generation. Read more <a class="vf-link" href="https://stable.visual-framework.dev/building/">here</a>.
+    As an <strong>example,</strong> <a class="vf-link" href="https://stable.visual-framework.dev/building/">check how Visual Framework uses static site generation. </a>.
   </p>
 
   <h4>Why it's ideal for LRO</h4>
@@ -312,7 +312,7 @@ templateEngineOverride: njk
   <h3>5. Progressive Enhancement</h3>
   <p>Building frontends that work without JavaScript, then enhancing with interactive features.</p>
 
-  <p><em><a class="vf-link" href="/web-optimisation-framework/principles/progressive-enhancement/">Read more</a></em></p>
+  <p><em><a class="vf-link" href="/web-optimisation-framework/principles/progressive-enhancement/">Read more about Progressive Enhancement</a></em></p>
 
 
   {# ── Summary ── #}
@@ -419,7 +419,7 @@ templateEngineOverride: njk
   {# ── Do's / Don't ── #}
   <h2 id="dos-dont"  class="vf-u-margin--0 vf-u-padding__top--400 vf-u-padding__bottom--600 vf-search-client-side--no-index">Do / Don't</h2>
 
-  <h4>Do</h4>
+  <h3>Do</h3>
   <ul class="vf-list vf-list--unordered">
     <li class="vf-list__item">Serve HTML first</li>
     <li class="vf-list__item">Defer non-critical JS</li>
@@ -427,7 +427,7 @@ templateEngineOverride: njk
     <li class="vf-list__item">Test under 2G and CPU throttling</li>
   </ul>
 
-  <h4>Don't</h4>
+  <h3>Don't</h3>
   <ul class="vf-list vf-list--unordered">
     <li class="vf-list__item">Block content behind JavaScript</li>
     <li class="vf-list__item">Ship large hydration bundles by default</li>
