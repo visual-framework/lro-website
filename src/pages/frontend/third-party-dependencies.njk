@@ -97,9 +97,9 @@ templateEngineOverride: njk
 
 
   <h2 id="third-party-dependencies" class="vf-u-margin--0 vf-u-padding__top--400">How Third-Party dependencies load</h2>
-	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
-		<img src="{{ '/images/content_images/LRO diagram 3.2.4a.avif' | url }}" alt="" loading="lazy">
-		<figcaption class="vf-figure__caption"></figcaption>
+	<figure class="vf-figure">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.4a.avif' | url }}" alt="A linear flowchart showing how third-party dependencies load, each step leading to the next: user requests page, load first-party HTML, load site CSS and JS, request third-party scripts, download external resources, execute scripts on the main thread, and finally render page content. Rendering the page content is the last step, so third-party scripts and external resources are downloaded and executed before any content appears." loading="lazy">
+		<figcaption class="vf-figure__caption">Each third-party dependency adds steps before content can render. When several load at once, they compete with core site resources, which can significantly delay rendering for users on slow networks.</figcaption>
 	</figure>
   <p>When multiple third-party dependencies load simultaneously, they compete with core site resources.</p>
   <p>For users on slow networks, this can significantly delay rendering.</p>
@@ -186,25 +186,25 @@ templateEngineOverride: njk
 
   <p>The browser cannot continue rendering the page while a synchronous script is loading and running. Third-party scripts should rarely block rendering.</p>
 
-	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
-		<img src="{{ '/images/content_images/LRO diagram 3.2.4b.avif' | url }}" alt="" loading="lazy">
-		<figcaption class="vf-figure__caption"></figcaption>
+	<figure class="vf-figure">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.4b.avif' | url }}" alt="A timeline showing the effect of a synchronous script on HTML parsing. Parsing runs normally, then stops, marked “HTML parsing blocked” while the script downloads and then executes. Parsing resumes only once the script has finished. Both downloading and executing happen during the blocked period, so the interruption is at its longest." loading="lazy">
+		<figcaption class="vf-figure__caption">Synchronous script: parsing stops while the script both downloads and executes, so the interruption is at its longest.</figcaption>
 	</figure>
   <p>Third-party scripts should rarely block rendering.</p>
 
   <p><strong>Example #1:</strong></p>
   <pre class="vf-code-example__pre"><code>&lt;script async src="analytics.js"&gt;&lt;/script&gt;</code></pre>
 
-	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
-		<img src="{{ '/images/content_images/LRO diagram 3.2.4c.avif' | url }}" alt="" loading="lazy">
-		<figcaption class="vf-figure__caption"></figcaption>
+	<figure class="vf-figure">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.4c.avif' | url }}" alt="A timeline showing how an async script affects HTML parsing. The script downloads in parallel while HTML parsing carries on uninterrupted. Parsing is blocked only briefly, when the downloaded script executes, after which parsing resumes. Because downloading no longer blocks the parser, only execution does, the interruption is shorter than with a synchronous script." loading="lazy">
+		<figcaption class="vf-figure__caption">Async script: the script downloads in parallel while parsing continues; only its execution briefly blocks parsing.</figcaption>
 	</figure>
   <p><strong>Example #2:</strong></p>
   <pre class="vf-code-example__pre"><code>&lt;script defer src="analytics.js"&gt;&lt;/script&gt;</code></pre>
 
-	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
-		<img src="{{ '/images/content_images/LRO diagram 3.2.4d.avif' | url }}" alt="" loading="lazy">
-		<figcaption class="vf-figure__caption"></figcaption>
+	<figure class="vf-figure">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.4d.avif' | url }}" alt="A timeline showing how a deferred script affects HTML parsing. HTML parsing runs continuously from start to finish without interruption. The script downloads in parallel during parsing, and its execution is held back until after parsing has completely finished. Because the script never interrupts the parser, parsing is not blocked at any point." loading="lazy">
+		<figcaption class="vf-figure__caption">Defer script: the script downloads in parallel during parsing and executes only after parsing has finished, so parsing is never blocked.</figcaption>
 	</figure>
 
   <p>Async downloads scripts while the page continues rendering. <code>defer</code> executes the script after HTML parsing completes.</p>
@@ -318,9 +318,9 @@ function loadWidget() {
   }
 &lt;/script&gt;</code></pre>
 
-	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
-		<img src="{{ '/images/content_images/LRO diagram 3.2.4e.avif' | url }}" alt="Use lazy loading for assets that are not required during the initial page render." loading="lazy">
-		<figcaption class="vf-figure__caption"></figcaption>
+	<figure class="vf-figure">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.4e.avif' | url }}" alt="Conceptual lazy-loading diagram: from a server, resources split into two groups; one delivers a small set of resources for the visible part of the page and loads them immediately, while the other represents off-screen resources that are delayed until the user scrolls or they are needed." loading="lazy">
+		<figcaption class="vf-figure__caption">Lazy loading: resources needed for the visible part of the page load immediately, while non-critical, off-screen resources are deferred until they are needed.</figcaption>
 	</figure>
 
   <h3>Alternative Strategies</h3>

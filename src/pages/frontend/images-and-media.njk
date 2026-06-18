@@ -94,9 +94,9 @@ templateEngineOverride: njk
     <li class="vf-list__item">Uses lossy compression to reduce file size.</li>
   </ul>
 
-	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
-		<img src="{{ '/images/content_images/LRO diagram 3.2.5a.avif' | url }}" alt="Use lazy loading for assets that are not required during the initial page render." loading="lazy">
-		<figcaption class="vf-figure__caption"></figcaption>
+	<figure class="vf-figure">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.5a.avif' | url }}" alt="Side-by-side comparison showing that compressing a PNG reduced the file size from 57 KB to 15 KB without a noticeable change in image quality." loading="lazy">
+		<figcaption class="vf-figure__caption">The same image before and after compression: file size drops from 57 KB to 15 KB with no visible difference in quality.</figcaption>
 	</figure>
   <h4>PNG</h4>
   <ul class="vf-list vf-list--unordered">
@@ -109,9 +109,9 @@ templateEngineOverride: njk
     <li class="vf-list__item">Vector-based and extremely lightweight.</li>
   </ul>
 
-	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
-		<img src="{{ '/images/content_images/LRO diagram 3.2.5b.avif' | url }}" alt="Use lazy loading for assets that are not required during the initial page render." loading="lazy">
-		<figcaption class="vf-figure__caption"></figcaption>
+	<figure class="vf-figure">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.5b.avif' | url }}" alt="Example of an SVG shown at multiple display sizes where the file size remains 10 KB, illustrating that a vector image can scale without increasing the file size." loading="lazy">
+		<figcaption class="vf-figure__caption">Because SVGs are vector-based, the file size stays the same regardless of how large the image is displayed.</figcaption>
 	</figure>
 
   <h4>WebP</h4>
@@ -127,9 +127,9 @@ templateEngineOverride: njk
 
   <h3>Image Format Comparison for LRO</h3>
   
-	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
-		<img src="{{ '/images/content_images/LRO diagram 3.2.5c.avif' | url }}" alt="Use lazy loading for assets that are not required during the initial page render." loading="lazy">
-		<figcaption class="vf-figure__caption"></figcaption>
+	<figure class="vf-figure">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.5c.avif' | url }}" alt="Comparison of the same image saved in four formats (JPG, PNG, WebP, and AVIF) showing that the newer formats (WebP and AVIF) can achieve similar perceived quality with smaller file sizes than JPG or PNG." loading="lazy">
+		<figcaption class="vf-figure__caption">Newer formats like WebP and AVIF produce smaller files than JPG or PNG at the same visual quality.</figcaption>
 	</figure>
 
   <table class="vf-table vf-table--striped">
@@ -208,9 +208,9 @@ templateEngineOverride: njk
 
   <p>Different devices require different image sizes. Responsive images ensure the browser downloads only the most appropriate version.</p>
 
-	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
-		<img src="{{ '/images/content_images/LRO diagram 3.2.5d.avif' | url }}" alt="Use lazy loading for assets that are not required during the initial page render." loading="lazy">
-		<figcaption class="vf-figure__caption"></figcaption>
+	<figure class="vf-figure">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.5d.avif' | url }}" alt="Responsive images example showing the same hero image provided in multiple sizes (e.g., desktop and mobile). The page can serve the best-fit size for the user’s screen and connection, so users are not forced to download an oversized image." loading="lazy">
+		<figcaption class="vf-figure__caption">The same image prepared at different sizes so each device can download only the version it needs, rather than one oversized file.</figcaption>
 	</figure>
 
   <p><strong>Example using the &lt;picture&gt; element:</strong></p>
@@ -248,15 +248,15 @@ templateEngineOverride: njk
   <h3>Optimised Image Delivery Pipeline</h3>
   <p>Typical non-optimised image loading:</p>
 
-	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
-		<img src="{{ '/images/content_images/LRO diagram 3.2.5e.avif' | url }}" alt="Use lazy loading for assets that are not required during the initial page render." loading="lazy">
-		<figcaption class="vf-figure__caption"></figcaption>
+	<figure class="vf-figure">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.5e.avif' | url }}" alt="A flowchart of non-optimised image loading, each step leading to the next: the user requests the page, the browser downloads the HTML, the browser downloads large images immediately, and rendering is delayed until those images have loaded. Because the large images load before anything is shown, rendering waits for them to finish." loading="lazy">
+		<figcaption class="vf-figure__caption">Without optimisation, the browser downloads large images straight away, holding back rendering until they have finished loading.</figcaption>
 	</figure>
   <p>LRO optimised pipeline:</p>
 
-	<figure class="vf-figure vf-figure--align vf-figure--align-centered">
-		<img src="{{ '/images/content_images/LRO diagram 3.2.5f.avif' | url }}" alt="Use lazy loading for assets that are not required during the initial page render." loading="lazy">
-		<figcaption class="vf-figure__caption"></figcaption>
+	<figure class="vf-figure">
+		<img src="{{ '/images/content_images/LRO diagram 3.2.5f.avif' | url }}" alt="A flowchart of the optimised image pipeline, each step leading to the next: the user requests the page, the browser renders the HTML content immediately, a responsive image is selected to match the screen size, critical images load first, and the remaining images lazy load when they become visible. Content appears straight away because rendering no longer waits for images to download." loading="lazy">
+		<figcaption class="vf-figure__caption">With optimisation, the browser renders the HTML straight away, then loads images by priority, critical ones first, the rest only when they come into view.</figcaption>
 	</figure>
   <p>Benefits:</p>
   <ul class="vf-list vf-list--unordered">
