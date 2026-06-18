@@ -610,11 +610,6 @@ body {
   .lro-measurement-testing-page .lro-page-layout--with-empty-right .lro-main-content {
     grid-column: 2 / 4;
     overflow: visible;
-
-    .vf-tabs__link::focus {
-      outline: 2px solid #3b6fb6;
-      outline-offset: 2px;
-    }
   }
 }
 
