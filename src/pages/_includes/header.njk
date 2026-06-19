@@ -21,8 +21,9 @@
     <form action="{{ '/search/' | url }}" class="vf-form vf-form--search vf-form--search--responsive | vf-sidebar vf-sidebar--end">
       <div class="vf-sidebar__inner">
         <div class="vf-form__item">
-          <label id="search-menu-label" for="search-menu-input" class="vf-form__label | vf-search__label vf-text-heading--2" tabindex="0">Search</label>&nbsp;
-                        <input type="search" name="search_query" placeholder="Search" id="search-menu-input" class="vf-form__input" value="" aria-label="Search this framework"/>
+          <h2 id="search-menu-label" class="vf-form__label | vf-search__label vf-text-heading--2" tabindex="0">Search</h2>
+          <label for="search-menu-input" class="vf-u-sr-only">Search this framework</label>
+                        <input type="search" name="search_query" placeholder="Search" id="search-menu-input" class="vf-form__input" value=""/>
         </div>
 
         <button type="submit" role="button" class="vf-search__button | vf-button vf-button--primary">

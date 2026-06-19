@@ -48,9 +48,10 @@
     <div id="lro-mobile-search-panel" class="lro-mobile-panel lro-mobile-panel--search" role="dialog" aria-modal="true" aria-labelledby="lro-mobile-search-label" aria-hidden="true" hidden>
       <form action="{{ '/search/' | url }}" class="vf-form lro-mobile-search-form" role="search">
         <div class="vf-form__item">
-          <label id="lro-mobile-search-label" for="lro-mobile-search-input" class="vf-form__label vf-text-heading--4">Search</label>
+          <h2 id="lro-mobile-search-label" class="vf-form__label vf-text-heading--4">Search</h2>
+          <label for="lro-mobile-search-input" class="vf-u-sr-only">Search this framework</label>
           <div class="lro-mobile-search-form__row">
-            <input type="search" name="search_query" placeholder="Search" id="lro-mobile-search-input" class="vf-form__input" value="" aria-label="Search this framework">
+            <input type="search" name="search_query" placeholder="Search" id="lro-mobile-search-input" class="vf-form__input" value="">
             <button type="submit" class="vf-button vf-button--primary lro-mobile-search-form__submit" aria-label="Submit search">
               <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                 <path d="M19.5123 17.16L15.6439 13.2915C16.8217 11.5283 17.3017 9.38999 16.9903 7.29254C16.6789 5.19508 15.5985 3.28842 13.9592 1.94345C12.3199 0.59848 10.2389 -0.0886447 8.121 0.0157332C6.00312 0.120111 3.99979 1.00853 2.50067 2.50818C1.00155 4.00782 0.113843 6.01147 0.0102139 8.12939C-0.0934152 10.2473 0.594446 12.328 1.94 13.9669C3.28555 15.6057 5.19258 16.6855 7.29015 16.9961C9.38772 17.3067 11.5258 16.8261 13.2886 15.6475L17.1571 19.5152C17.4721 19.8224 17.8947 19.9944 18.3347 19.9944C18.7747 19.9944 19.1973 19.8224 19.5123 19.5152C19.8246 19.2028 20 18.7792 20 18.3376C20 17.8959 19.8246 17.4723 19.5123 17.16ZM8.54903 2.51392C9.74323 2.51392 10.9106 2.86804 11.9036 3.5315C12.8965 4.19496 13.6704 5.13797 14.1274 6.24126C14.5844 7.34456 14.704 8.55859 14.471 9.72984C14.238 10.9011 13.6629 11.977 12.8185 12.8214C11.9741 13.6658 10.8982 14.2409 9.72698 14.4738C8.55573 14.7068 7.3417 14.5872 6.2384 14.1302C5.13511 13.6733 4.1921 12.8993 3.52864 11.9064C2.86518 10.9135 2.51106 9.74609 2.51106 8.55189C2.51283 6.95107 3.14953 5.41631 4.28149 4.28435C5.41345 3.15239 6.9482 2.51569 8.54903 2.51392Z" fill="currentColor"></path>

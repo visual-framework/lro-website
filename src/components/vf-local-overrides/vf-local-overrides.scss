@@ -10,34 +10,13 @@ html {
   scroll-behavior: smooth;
 }
 
-// :root {
-//   --lro-mobile-topbar-height: 88px;
-// }
-
 :root {
   --lro-desktop-header-height: 45px;
-  // --lro-mobile-topbar-height: 76px;
 }
 
 body {
   margin: 0;
 }
-
-// Skip link
-// .skip {
-//   height: 1px;
-//   left: -10000px;
-//   overflow: hidden;
-//   position: absolute;
-//   top: auto;
-//   width: 1px;
-
-//   &:focus {
-//     height: auto;
-//     position: static;
-//     width: auto;
-//   }
-// }
 
 // ============================================================
 // VF component overrides
@@ -69,56 +48,9 @@ body {
   }
 }
 
-// .vf-minimal-footer .vf-logo__image {
-//   display: block;
-//   height: auto;
-// }
-
-// .vf-footer__logo-mission {
-//   display: flex;
-
-//   .vf-footer__notice {
-//     color: var(--vf-color--neutral--300);
-//   }
-// }
-
-// .vf-footer__link.vf-color--neutral--300 {
-//   &,
-//   &:visited,
-//   &:hover,
-//   &:focus,
-//   &:focus-visible {
-//     color: var(--vf-color--neutral--300);
-//   }
-// }
-
 // ============================================================
 // Search page results
 // ============================================================
-
-// #search-content {
-//   .vf-summary__meta {
-//     margin-top: 0.5rem;
-//   }
-
-//   .vf-search-results-summary {
-//     color: #1a1c1a;
-//     font-size: clamp(2rem, 5vw, 3.75rem);
-//     font-weight: 400;
-//     line-height: 1.1;
-//     margin: 0 0 1.5rem;
-//   }
-
-//   div[data-jplist-group] > article {
-//     border-bottom: 1px solid #d0d0ce;
-//     margin: 0;
-//     padding: 2rem 0;
-
-//     &:last-child {
-//       border-bottom: none;
-//     }
-//   }
-// }
 
 [data-vf-search-pagination] {
   margin-bottom: 2rem;
@@ -277,21 +209,6 @@ body {
   max-width: 100%;
   padding: 20px 10px 36px 16px;
 
-  // .vf-form__label {
-  //   display: block;
-  //   font-size: 2.4rem;
-  //   font-weight: 400;
-  //   line-height: 1.1;
-  //   margin-bottom: 1.6rem;
-  // }
-
-  // .vf-form__input {
-  //   border: 1px solid #7e7e7e;
-  //   font-size: 1.05rem;
-  //   height: 4.1rem;
-  //   padding: 0.95rem 1rem;
-  // }
-
   &__row {
     align-items: center;
     display: grid;
@@ -422,6 +339,7 @@ body {
 .desktop-only-menu {
   background-color: #f3f3f3;
   border-bottom: 1px solid #e4e4e4;
+  cursor: default;
   display: flex !important;
   margin: unset;
   padding-left: 2rem;
@@ -431,6 +349,10 @@ body {
 
   .menu-link {
     display: none;
+  }
+
+  .vf-logo {
+      flex: none;
   }
 
   ul.vf-navigation__list li {
@@ -457,6 +379,7 @@ body {
 
     a, button {
       align-items: center;
+      cursor: pointer;
       margin: 0;
       padding: 0;
       text-decoration: none;
@@ -487,33 +410,15 @@ body {
 
 // Desktop search overlay
 .desktop-only {
-  // .vf-search-container {
-  //   background-image: url(https://acxngcvroo.cloudimg.io/v7/www.embl.org/files/wp-content/uploads/EMBL-EBI-Intranet-Background-DNA-scaled.jpg);
-
-  //   form {
-  //     margin: 0 auto;
-  //     padding-bottom: 12%;
-  //     padding-top: 12%;
-  //     width: 65%;
-  //   }
-  // }
 
   .searchbar-content-section {
     background-color: #f3f3f3;
     padding: 78px 0 !important;
 
     .vf-search__button {
-      margin-top: 5rem !important;
+      margin-top: 4rem !important;
     }
   }
-
-  // .vf-form--search .vf-search__label {
-  //   font-family: "IBM Plex Sans", Helvetica, Arial, sans-serif;
-  //   font-size: 30px;
-  //   font-style: normal;
-  //   font-weight: 500;
-  //   line-height: 39px;
-  // }
 
   .vf-mega-menu__content {
     &__section .vf-form--search {
@@ -612,7 +517,7 @@ body {
       text-align: center;
     }
   }
-  
+
   // Measurement and testing: wide tables span into empty right track
   .lro-measurement-testing-page .lro-page-layout--with-empty-right .lro-main-content {
     grid-column: 2 / 4;
