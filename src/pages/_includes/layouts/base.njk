@@ -89,7 +89,11 @@
     {% render '@vf-no-js' -%}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" media="all" href="{{ '/css/styles.css' | url }}"/>
+    <link rel="preload" href="{{ '/css/styles.css' | url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{{ '/css/styles.css' | url }}"></noscript>
+    {% if meta.hero_image and page.url == '/' %}
+    <link rel="preload" as="image" href="{{ meta.hero_image | url }}" fetchpriority="high">
+    {% endif %}
     {# <link rel="stylesheet" media="all" href="{{ '/style/custom-overrides.css' | url }}"/> #}
     <title>
       {% if title and title !== siteConfig.siteInformation.title %}{{ title }} | {{ siteConfig.siteInformation.title }}
