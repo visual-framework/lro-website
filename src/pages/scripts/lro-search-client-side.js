@@ -25,19 +25,136 @@ function setPageQueryParam(page) {
 // Module-level reference so applySearchPagination can disconnect/reconnect it.
 var paginationObserver = null;
 
-function getChevronIconMarkup(type) {
-  const iconPaths = {
-    first: "<path d='M13.5 5.5L8.5 10.5L13.5 15.5' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'></path><path d='M9.5 5.5L4.5 10.5L9.5 15.5' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'></path>",
-    previous: "<path d='M11.5 5.5L6.5 10.5L11.5 15.5' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'></path>",
-    next: "<path d='M8.5 5.5L13.5 10.5L8.5 15.5' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'></path>",
-    last: "<path d='M6.5 5.5L11.5 10.5L6.5 15.5' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'></path><path d='M10.5 5.5L15.5 10.5L10.5 15.5' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'></path>"
-  };
-
-  return "<span class='vf-pagination__icon' aria-hidden='true'><svg width='16' height='16' viewBox='0 0 20 20' focusable='false' xmlns='http://www.w3.org/2000/svg'>" + (iconPaths[type] || "") + "</svg></span>";
-}
-
 function getMaxVisiblePageLinks() {
   return window.matchMedia("(max-width: 768px)").matches ? 3 : 5;
+}
+
+function getPaginationNav(resultsContainer) {
+  if (!resultsContainer) return null;
+  const wrapper = resultsContainer.closest(".vf-search-client-side");
+  if (wrapper) {
+    const navInWrapper = wrapper.querySelector("[data-vf-search-pagination]");
+    if (navInWrapper) return navInWrapper;
+  }
+  return document.querySelector("[data-vf-search-pagination]");
+}
+
+function buildPageHref(page) {
+  const url = new URL(window.location.href);
+  if (page <= 1) {
+    url.searchParams.delete("page");
+  } else {
+    url.searchParams.set("page", String(page));
+  }
+  return url.toString();
+}
+
+function setControlState(item, link, page, disabled) {
+  if (!item || !link) return;
+
+  link.setAttribute("data-vf-search-page", String(page));
+  link.href = buildPageHref(page);
+  item.classList.toggle("vf-pagination__item--is-disabled", disabled);
+
+  if (disabled) {
+    link.setAttribute("aria-disabled", "true");
+    link.setAttribute("tabindex", "-1");
+    return;
+  }
+
+  link.removeAttribute("aria-disabled");
+  link.removeAttribute("tabindex");
+}
+
+function updatePaginationUI(container, currentPage, totalPages) {
+  const nav = getPaginationNav(container);
+  if (!nav) return;
+
+  if (totalPages <= 1) {
+    nav.hidden = true;
+    return;
+  }
+
+  nav.hidden = false;
+
+  const firstLink = nav.querySelector("[data-vf-search-page-role='first']");
+  const previousLink = nav.querySelector("[data-vf-search-page-role='previous']");
+  const nextLink = nav.querySelector("[data-vf-search-page-role='next']");
+  const lastLink = nav.querySelector("[data-vf-search-page-role='last']");
+
+  const firstItem = firstLink ? firstLink.closest(".vf-pagination__item") : null;
+  const previousItem = previousLink ? previousLink.closest(".vf-pagination__item") : null;
+  const nextItem = nextLink ? nextLink.closest(".vf-pagination__item") : null;
+  const lastItem = lastLink ? lastLink.closest(".vf-pagination__item") : null;
+
+  setControlState(firstItem, firstLink, 1, currentPage === 1);
+  setControlState(previousItem, previousLink, Math.max(1, currentPage - 1), currentPage === 1);
+  setControlState(nextItem, nextLink, Math.min(totalPages, currentPage + 1), currentPage === totalPages);
+  setControlState(lastItem, lastLink, totalPages, currentPage === totalPages);
+
+  const pageSlots = Array.from(nav.querySelectorAll("[data-vf-search-page-slot]"));
+  const maxVisiblePageLinks = getMaxVisiblePageLinks();
+  let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePageLinks / 2));
+  let endPage = startPage + maxVisiblePageLinks - 1;
+
+  if (endPage > totalPages) {
+    endPage = totalPages;
+    startPage = Math.max(1, endPage - maxVisiblePageLinks + 1);
+  }
+
+  pageSlots.forEach(function (slot, index) {
+    const page = startPage + index;
+    const link = slot.querySelector("[data-vf-search-page-link]");
+    if (!link) return;
+
+    if (page > endPage) {
+      slot.hidden = true;
+      slot.classList.remove("vf-pagination__item--is-active");
+      link.removeAttribute("aria-current");
+      link.removeAttribute("data-vf-search-page");
+      return;
+    }
+
+    slot.hidden = false;
+    link.innerHTML = "<span class='vf-u-sr-only'>Page </span>" + page;
+    link.setAttribute("aria-label", "Page " + page);
+    link.setAttribute("data-vf-search-page", String(page));
+    link.href = buildPageHref(page);
+
+    const isActive = page === currentPage;
+    slot.classList.toggle("vf-pagination__item--is-active", isActive);
+    if (isActive) {
+      link.setAttribute("aria-current", "page");
+      link.removeAttribute("aria-disabled");
+      link.removeAttribute("tabindex");
+      return;
+    }
+
+    link.removeAttribute("aria-current");
+  });
+}
+
+function initializePaginationInteraction(container) {
+  const nav = getPaginationNav(container);
+  if (!nav || nav.getAttribute("data-vf-search-pagination-bound") === "true") return;
+
+  nav.addEventListener("click", function (event) {
+    const link = event.target.closest("[data-vf-search-page-link]");
+    if (!link) return;
+
+    event.preventDefault();
+
+    if (link.getAttribute("aria-disabled") === "true") {
+      return;
+    }
+
+    const selectedPage = parseInt(link.getAttribute("data-vf-search-page"), 10) || 1;
+    setPageQueryParam(selectedPage);
+    applySearchPagination(false);
+    scrollToSearchResultsTop(container);
+  });
+
+  nav.setAttribute("data-vf-search-pagination-bound", "true");
 }
 
 function renderResultsSummary(container, startIndex, endIndex, totalResults) {
@@ -131,18 +248,16 @@ function applySearchPagination(resetPage) {
     setPageQueryParam(1);
   }
 
-  // Remove old pagination controls before recalculating.
-  const existingPagination = container.querySelector("[data-vf-search-pagination]");
-  if (existingPagination) {
-    existingPagination.remove();
-  }
-
   const resultItems = Array.from(container.querySelectorAll("[data-vf-search-result-item]"));
-  const resultsPerPage = 5;
+  const resultsPerPage = 10;
+  const paginationNav = getPaginationNav(container);
 
   if (resultItems.length === 0) {
     toggleNoResultsFeedback(true);
     renderNoResultsMessage(container);
+    if (paginationNav) {
+      paginationNav.hidden = true;
+    }
     if (resetPage) {
       focusNoResultsMessage(container);
     }
@@ -157,6 +272,9 @@ function applySearchPagination(resetPage) {
       item.style.display = "";
     });
     renderResultsSummary(container, 0, resultItems.length, resultItems.length);
+    if (paginationNav) {
+      paginationNav.hidden = true;
+    }
     if (resetPage) {
       focusResultsSummary(container);
     }
@@ -186,84 +304,7 @@ function applySearchPagination(resetPage) {
     focusResultsSummary(container);
   }
 
-  const nav = document.createElement("nav");
-  nav.className = "vf-pagination";
-  nav.setAttribute("aria-label", "Search pagination");
-  nav.setAttribute("data-vf-search-pagination", "true");
-
-  const list = document.createElement("ul");
-  list.className = "vf-pagination__list";
-
-  function addPageLink(label, page, isActive, extraClass, ariaLabel, iconType, isDisabled) {
-    const li = document.createElement("li");
-    li.className = "vf-pagination__item"
-      + (extraClass ? " " + extraClass : "")
-      + (isActive ? " vf-pagination__item--is-active" : "")
-      + (isDisabled ? " vf-pagination__item--is-disabled" : "");
-
-    if (isActive || isDisabled) {
-      const span = document.createElement("span");
-      span.className = "vf-pagination__label";
-      if (isActive) {
-        span.setAttribute("aria-current", "page");
-      }
-      if (isDisabled) {
-        span.setAttribute("aria-disabled", "true");
-      }
-      if (iconType) {
-        span.innerHTML = getChevronIconMarkup(iconType) + "<span class='vf-u-sr-only'>" + ariaLabel + "</span>";
-      } else {
-        span.innerHTML = "<span class='vf-u-sr-only'>Page </span>" + String(label);
-      }
-      li.appendChild(span);
-    } else {
-      const link = document.createElement("a");
-      link.className = "vf-pagination__link";
-      link.href = "#";
-      link.setAttribute("data-vf-search-page", String(page));
-      if (ariaLabel) link.setAttribute("aria-label", ariaLabel);
-      if (iconType) {
-        link.innerHTML = getChevronIconMarkup(iconType) + "<span class='vf-u-sr-only'>" + ariaLabel + "</span>";
-      } else {
-        link.innerHTML = "<span class='vf-u-sr-only'>Page </span>" + String(label);
-      }
-      li.appendChild(link);
-    }
-
-    list.appendChild(li);
-  }
-
-  addPageLink("First", 1, false, "vf-pagination__item--jump-back", "First page", "first", currentPage === 1);
-  addPageLink("Previous", currentPage - 1, false, "vf-pagination__item--previous-page", "Previous page", "previous", currentPage === 1);
-
-  const maxVisiblePageLinks = getMaxVisiblePageLinks();
-  let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePageLinks / 2));
-  let endPage = startPage + maxVisiblePageLinks - 1;
-
-  if (endPage > totalPages) {
-    endPage = totalPages;
-    startPage = Math.max(1, endPage - maxVisiblePageLinks + 1);
-  }
-
-  for (let page = startPage; page <= endPage; page++) {
-    addPageLink(page, page, page === currentPage, "", "Page " + page, "", false);
-  }
-
-  addPageLink("Next", currentPage + 1, false, "vf-pagination__item--next-page", "Next page", "next", currentPage === totalPages);
-  addPageLink("Last", totalPages, false, "vf-pagination__item--jump-forward", "Last page", "last", currentPage === totalPages);
-
-  nav.appendChild(list);
-  container.appendChild(nav);
-
-  nav.querySelectorAll("[data-vf-search-page]").forEach(function (link) {
-    link.addEventListener("click", function (event) {
-      event.preventDefault();
-      const selectedPage = parseInt(this.getAttribute("data-vf-search-page"), 10) || 1;
-      setPageQueryParam(selectedPage);
-      applySearchPagination(false);
-      scrollToSearchResultsTop(container);
-    });
-  });
+  updatePaginationUI(container, currentPage, totalPages);
 
   // Reconnect now that our DOM changes are done.
   if (paginationObserver) paginationObserver.observe(container, { childList: true, subtree: true });
@@ -274,6 +315,8 @@ function vfSearchClientSide() {
 
   const container = document.querySelector("[data-vf-search-client-side-results]");
   if (!container) return;
+
+  initializePaginationInteraction(container);
 
   // Watch for the core function re-rendering results (e.g. new search query).
   // Disconnect/reconnect inside applySearchPagination prevents an infinite loop.
