@@ -13,6 +13,7 @@ layout: layouts/base.njk
   <h2 class="vf-u-sr-only">Search section</h2>
 
   <div class="vf-content | vf-stack">
+  <div class="vf-search-client-side">
 {% render '@vf-search-client-side--default', {
   "search_client_prompt": "Enter a search query",
   "search_client_autofocus": false,
@@ -23,6 +24,40 @@ layout: layouts/base.njk
   "search_client_results": true,
   "search_client_id": "search_query"
 } %}
+  <nav class="vf-pagination" aria-label="Search pagination" data-vf-search-pagination>
+    <ul class="vf-pagination__list">
+      <li class="vf-pagination__item vf-pagination__item--jump-back">
+        <a href="{{ search_client_action }}" class="vf-pagination__link" data-vf-search-page-link data-vf-search-page-role="first" aria-label="First page"><span class="vf-pagination__icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 20 20" focusable="false" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 5.5L8.5 10.5L13.5 15.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9.5 5.5L4.5 10.5L9.5 15.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><span class="vf-u-sr-only">First page</span></a>
+      </li>
+      <li class="vf-pagination__item vf-pagination__item--previous-page">
+        <a href="{{ search_client_action }}" class="vf-pagination__link" data-vf-search-page-link data-vf-search-page-role="previous" aria-label="Previous page"><span class="vf-pagination__icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 20 20" focusable="false" xmlns="http://www.w3.org/2000/svg"><path d="M11.5 5.5L6.5 10.5L11.5 15.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><span class="vf-u-sr-only">Previous page</span></a>
+      </li>
+
+      <li class="vf-pagination__item" data-vf-search-page-slot="0">
+        <a href="{{ search_client_action }}" class="vf-pagination__link" data-vf-search-page-link data-vf-search-page-role="page"><span class="vf-u-sr-only">Page </span>1</a>
+      </li>
+      <li class="vf-pagination__item" data-vf-search-page-slot="1">
+        <a href="{{ search_client_action }}" class="vf-pagination__link" data-vf-search-page-link data-vf-search-page-role="page"><span class="vf-u-sr-only">Page </span>2</a>
+      </li>
+      <li class="vf-pagination__item" data-vf-search-page-slot="2">
+        <a href="{{ search_client_action }}" class="vf-pagination__link" data-vf-search-page-link data-vf-search-page-role="page"><span class="vf-u-sr-only">Page </span>3</a>
+      </li>
+      <li class="vf-pagination__item" data-vf-search-page-slot="3">
+        <a href="{{ search_client_action }}" class="vf-pagination__link" data-vf-search-page-link data-vf-search-page-role="page"><span class="vf-u-sr-only">Page </span>4</a>
+      </li>
+      <li class="vf-pagination__item" data-vf-search-page-slot="4">
+        <a href="{{ search_client_action }}" class="vf-pagination__link" data-vf-search-page-link data-vf-search-page-role="page"><span class="vf-u-sr-only">Page </span>5</a>
+      </li>
+
+      <li class="vf-pagination__item vf-pagination__item--next-page">
+        <a href="{{ search_client_action }}" class="vf-pagination__link" data-vf-search-page-link data-vf-search-page-role="next" aria-label="Next page"><span class="vf-pagination__icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 20 20" focusable="false" xmlns="http://www.w3.org/2000/svg"><path d="M8.5 5.5L13.5 10.5L8.5 15.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><span class="vf-u-sr-only">Next page</span></a>
+      </li>
+      <li class="vf-pagination__item vf-pagination__item--jump-forward">
+        <a href="{{ search_client_action }}" class="vf-pagination__link" data-vf-search-page-link data-vf-search-page-role="last" aria-label="Last page"><span class="vf-pagination__icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 20 20" focusable="false" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 5.5L11.5 10.5L6.5 15.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M10.5 5.5L15.5 10.5L10.5 15.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><span class="vf-u-sr-only">Last page</span></a>
+      </li>
+    </ul>
+  </nav>
+  </div>
   </div>
   <div id="search-no-results-feedback" class="vf-grid vf-grid__col-5 vf-u-grid-gap--400 vf-u-padding__top--800 vf-u-padding__bottom--800 vf-u-display-none">
   <div></div>
