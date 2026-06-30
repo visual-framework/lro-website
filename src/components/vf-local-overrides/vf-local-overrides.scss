@@ -39,23 +39,6 @@ body {
   text-decoration: none;
 }
 
-// Keep IBM Plex visible during font fetches.
-@font-face {
-  font-family: "IBM Plex Sans";
-  font-style: normal;
-  font-weight: 500;
-  src: url("https://cdn.jsdelivr.net/npm/@ibm/plex@4.0.2/IBM-Plex-Sans/fonts/complete/woff2/IBMPlexSans-Medium.woff2") format("woff2"), url("https://cdn.jsdelivr.net/npm/@ibm/plex@4.0.2/IBM-Plex-Sans/fonts/complete/woff/IBMPlexSans-Medium.woff") format("woff");
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "IBM Plex Sans";
-  font-style: normal;
-  font-weight: 700;
-  src: local("IBM Plex Sans Bold"), local("IBMPlexSans-Bold"), url("../assets/vf-core-components/vf-font-plex-sans/assets/IBM-Plex-Sans/fonts/complete/woff/IBMPlexSans-Bold.woff") format("woff");
-  font-display: swap;
-}
-
 .vf-banner {
   height: 3rem;
   text-align: center;
