@@ -147,7 +147,7 @@ if (!is_array($payload)) {
     $payload = [];
 }
 
-$to = ["snprod-lrowebsite-feedback@ebi.ac.uk"];// ["es-wwwdev@ebi.ac.uk"];
+$to = ["es-wwwdev@ebi.ac.uk"];//["snprod-lrowebsite-feedback@ebi.ac.uk"]; //  
 $subject = isset($payload['subject']) ? trim((string) $payload['subject']) : 'Feedback';
 $message = isset($payload['message']) ? trim((string) $payload['message']) : '';
 
